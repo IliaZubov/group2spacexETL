@@ -4,7 +4,7 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "spacexsparkpool",
+			"referenceName": "spacexmedium",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "63f7141a-5046-4db4-9c7e-23b75e826d36"
+				"spark.autotune.trackingId": "df515cfc-edf8-4c03-877f-294d285e5b16"
 			}
 		},
 		"metadata": {
@@ -31,10 +31,10 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexsparkpool",
-				"name": "spacexsparkpool",
+				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexmedium",
+				"name": "spacexmedium",
 				"type": "Spark",
-				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexsparkpool",
+				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexmedium",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
