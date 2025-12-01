@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "https://api.spacexdata.com/v5/launches/",
+			"url": "https://api.spacexdata.com/v4/launches/",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		},
