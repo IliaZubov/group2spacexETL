@@ -1,5 +1,5 @@
 {
-	"name": "HTTP_spacexdata_JSON",
+	"name": "HTTP_payload_JSON",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "HTTP_spacex",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "HttpServerLocation",
-				"relativeUrl": "launches/"
+				"relativeUrl": "payloads/"
 			}
 		},
 		"schema": {}

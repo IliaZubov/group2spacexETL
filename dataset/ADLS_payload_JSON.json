@@ -1,16 +1,17 @@
 {
-	"name": "HTTP_spacexdata_JSON",
+	"name": "ADLS_payload_JSON",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "HTTP_spacex",
+			"referenceName": "group2spacex-WorkspaceDefaultStorage",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "HttpServerLocation",
-				"relativeUrl": "launches/"
+				"type": "AzureBlobFSLocation",
+				"fileName": "spacex_payloads_v4",
+				"fileSystem": "spacexfs"
 			}
 		},
 		"schema": {}
