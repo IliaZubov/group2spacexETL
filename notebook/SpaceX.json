@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "4f32251c-e5a2-496e-861f-11dc6dac2f63"
+				"spark.autotune.trackingId": "63f7141a-5046-4db4-9c7e-23b75e826d36"
 			}
 		},
 		"metadata": {
@@ -55,7 +55,7 @@
 					"import json\n",
 					"import pandas as pd\n",
 					"\n",
-					"url = \"https://api.spacexdata.com/v5/launches\"\n",
+					"url = \"https://api.spacexdata.com/v3/launches\"\n",
 					"headers = {\n",
 					"    \"Content-Type\": \"application/json\"}\n",
 					"\n",
