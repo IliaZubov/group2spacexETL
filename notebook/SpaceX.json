@@ -4,7 +4,7 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "spacexsparkpool",
+			"referenceName": "spacexmedium",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "63f7141a-5046-4db4-9c7e-23b75e826d36"
+				"spark.autotune.trackingId": "75c91e8e-9dde-4846-8ab9-c81622cb4b0e"
 			}
 		},
 		"metadata": {
@@ -31,10 +31,10 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexsparkpool",
-				"name": "spacexsparkpool",
+				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexmedium",
+				"name": "spacexmedium",
 				"type": "Spark",
-				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexsparkpool",
+				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexmedium",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
@@ -55,7 +55,7 @@
 					"import json\n",
 					"import pandas as pd\n",
 					"\n",
-					"url = \"https://api.spacexdata.com/v3/launches\"\n",
+					"url = \"https://api.spacexdata.com/v5/launches\"\n",
 					"headers = {\n",
 					"    \"Content-Type\": \"application/json\"}\n",
 					"\n",
@@ -70,6 +70,41 @@
 					"data"
 				],
 				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_pandas = pd.json_normalize(\n",
+					"    data,\n",
+					"    record_path=['cores'],\n",
+					"    meta=[\n",
+					"        'flight_number',\n",
+					"        'name',\n",
+					"        'date_utc',\n",
+					"        'date_local',\n",
+					"        'date_unix',\n",
+					"        'date_precision',\n",
+					"        'success',\n",
+					"        'rocket',\n",
+					"        'launchpad',\n",
+					"        'upcoming',\n",
+					"        'details',\n",
+					"        'auto_update',\n",
+					"        'tbd',\n",
+					"        'id'\n",
+					"    ],\n",
+					"    errors='ignore',\n",
+					"    sep=\"_\"\n",
+					")\n",
+					"\n",
+					"# Then safely extract failure reason\n",
+					"df_pandas['failure_reason'] = [\n",
+					"    d.get('failures')[0]['reason'] if (d.get('failures') and len(d.get('failures')) > 0) else None\n",
+					"    for d in data\n",
+					"]\n",
+					""
+				],
+				"execution_count": 9
 			},
 			{
 				"cell_type": "code",
@@ -92,21 +127,21 @@
 					"\t\t\t\t\terrors='ignore'\n",
 					"\t\t\t\t)"
 				],
-				"execution_count": 5
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_pandas.head(20)"
 				],
-				"execution_count": 11
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_pandas.info"
 				],
-				"execution_count": 7
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -118,14 +153,14 @@
 					"response2 = requests.get(url2)\n",
 					"data2 = response2.json()"
 				],
-				"execution_count": 9
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"data2"
 				],
-				"execution_count": 10
+				"execution_count": null
 			}
 		]
 	}
