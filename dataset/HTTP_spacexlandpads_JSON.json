@@ -1,0 +1,17 @@
+{
+	"name": "HTTP_spacexlandpads_JSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HTTP_spacex",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation"
+			}
+		},
+		"schema": {}
+	}
+}
