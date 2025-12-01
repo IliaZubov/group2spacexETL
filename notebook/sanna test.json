@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "e69e5ee1-e074-4d06-8a2f-cf42429010eb"
+				"spark.autotune.trackingId": "465a26c1-0d6a-404d-96ed-f7b04598748a"
 			}
 		},
 		"metadata": {
@@ -54,9 +54,38 @@
 					"import requests\n",
 					"import json\n",
 					"from pyspark.sql.functions import from_json, col\n",
-					"from pyspark.sql.types import StructType, StructField, StringType, IntegerType"
+					"from pyspark.sql.types import StructType, StructField, StringType, IntegerType\n",
+					"from pyspark.sql.functions import schema_of_json, lit\n",
+					"from pyspark.sql.functions import explode"
 				],
-				"execution_count": 6
+				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"url = \"https://api.spacexdata.com/v5/launches/latest\"\n",
+					"response = requests.get(url)\n",
+					"#if there's an error\n",
+					"response.raise_for_status()\n",
+					"data = response.json()"
+				],
+				"execution_count": 16
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#get schema. First, a json string is needed\n",
+					"sample_str = json.dumps(data)\n",
+					"schema_str = (\n",
+					"    spark.range(1)\n",
+					"         .select(schema_of_json(lit(sample_str)))\n",
+					"         .first()[0]\n",
+					")\n",
+					"schema_str\n",
+					"\n",
+					"df = "
+				],
+				"execution_count": 18
 			}
 		]
 	}
