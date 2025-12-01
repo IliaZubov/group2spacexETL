@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "668bc050-6dc5-4411-be37-a85118199e4e"
+				"spark.autotune.trackingId": "3144a4e6-f144-402a-bbb5-8b1ab29cbc0e"
 			}
 		},
 		"metadata": {
@@ -62,14 +62,14 @@
 					"response = requests.get(url)\n",
 					"data = response.json()"
 				],
-				"execution_count": null
+				"execution_count": 2
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"data"
 				],
-				"execution_count": null
+				"execution_count": 3
 			},
 			{
 				"cell_type": "code",
@@ -92,21 +92,21 @@
 					"\t\t\t\t\terrors='ignore'\n",
 					"\t\t\t\t)"
 				],
-				"execution_count": null
+				"execution_count": 4
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_pandas.head(20)"
 				],
-				"execution_count": null
+				"execution_count": 5
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_pandas.info"
 				],
-				"execution_count": null
+				"execution_count": 6
 			},
 			{
 				"cell_type": "code",
@@ -118,14 +118,14 @@
 					"response2 = requests.get(url2)\n",
 					"data2 = response2.json()"
 				],
-				"execution_count": null
+				"execution_count": 7
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"data2"
 				],
-				"execution_count": null
+				"execution_count": 8
 			},
 			{
 				"cell_type": "code",
@@ -137,14 +137,14 @@
 					"response3 = requests.get(url)\n",
 					"data3 = response3.json()"
 				],
-				"execution_count": null
+				"execution_count": 9
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"data3"
 				],
-				"execution_count": null
+				"execution_count": 10
 			}
 		]
 	}
