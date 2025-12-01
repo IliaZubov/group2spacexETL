@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "75c91e8e-9dde-4846-8ab9-c81622cb4b0e"
+				"spark.autotune.trackingId": "04948bf5-a6fb-4b35-8a3c-6395f4ad2ad9"
 			}
 		},
 		"metadata": {
@@ -55,110 +55,301 @@
 					"import json\n",
 					"import pandas as pd\n",
 					"\n",
-					"url = \"https://api.spacexdata.com/v5/launches\"\n",
+					"launches_url = \"https://api.spacexdata.com/v4/launches\"\n",
 					"headers = {\n",
 					"    \"Content-Type\": \"application/json\"}\n",
 					"\n",
-					"response = requests.get(url)\n",
-					"data = response.json()"
+					"response = requests.get(launches_url)\n",
+					"launches_data = response.json()"
 				],
-				"execution_count": 3
+				"execution_count": 75
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"data"
-				],
-				"execution_count": 4
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_pandas = pd.json_normalize(\n",
-					"    data,\n",
-					"    record_path=['cores'],\n",
+					"df_fact_launches = pd.json_normalize(\n",
+					"    launches_data,\n",
+					"    record_path=['cores'], \n",
 					"    meta=[\n",
+					"        'id',\n",
 					"        'flight_number',\n",
 					"        'name',\n",
 					"        'date_utc',\n",
-					"        'date_local',\n",
-					"        'date_unix',\n",
-					"        'date_precision',\n",
-					"        'success',\n",
 					"        'rocket',\n",
-					"        'launchpad',\n",
-					"        'upcoming',\n",
+					"        'success',\n",
 					"        'details',\n",
-					"        'auto_update',\n",
-					"        'tbd',\n",
-					"        'id'\n",
+					"        'launchpad',\n",
+					"        ['fairings', 'reused'],\n",
+					"        ['fairings', 'recovered'],\n",
+					"        ['fairings', 'ships'],\n",
+					"        'payloads'  \n",
 					"    ],\n",
-					"    errors='ignore',\n",
-					"    sep=\"_\"\n",
+					"    sep='_',\n",
+					"    errors='ignore'\n",
 					")\n",
 					"\n",
-					"# Then safely extract failure reason\n",
-					"df_pandas['failure_reason'] = [\n",
-					"    d.get('failures')[0]['reason'] if (d.get('failures') and len(d.get('failures')) > 0) else None\n",
-					"    for d in data\n",
-					"]\n",
+					"df_fact_launches = df_fact_launches.explode('payloads').reset_index(drop=True)\n",
+					"\n",
+					"df_fact_launches.rename(columns={'payloads': 'payload_id'}, inplace=True)\n",
+					"\n",
+					"df_fact_launches['failure_reason'] = df_fact_launches['id'].map(\n",
+					"    lambda x: next((launch.get('failures')[0]['reason']\n",
+					"                    for launch in launches_data\n",
+					"                    if launch['id'] == x and launch.get('failures')), None)\n",
+					")\n",
+					"\n",
+					"df_fact_launches['failure_altitude'] = df_fact_launches['id'].map(\n",
+					"    lambda x: next((launch.get('failures')[0]['altitude']\n",
+					"                    for launch in launches_data\n",
+					"                    if launch['id'] == x and launch.get('failures')), None)\n",
+					")\n",
+					"\n",
+					"df_fact_launches['failure_time'] = df_fact_launches['id'].map(\n",
+					"    lambda x: next((launch.get('failures')[0]['time']\n",
+					"                    for launch in launches_data\n",
+					"                    if launch['id'] == x and launch.get('failures')), None)\n",
+					")\n",
+					"\n",
+					"df_fact_launches = df_fact_launches.loc[:, ~df_fact_launches.columns.str.startswith('links')]\n",
+					"df_fact_launches.columns = df_fact_launches.columns.str.replace(r'\\W+', '_', regex=True)\n",
+					"\n",
+					"\n",
 					""
 				],
-				"execution_count": 9
+				"execution_count": 93
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df_pandas = pd.json_normalize(\n",
-					"\t\t\t\tdata,  # your list of dicts\\n\",\n",
-					"\t\t\t\tmeta=[\n",
-					"\t\t\t\t    'flight_number',\n",
-					"\t\t\t\t    'mission_name',\n",
-					"\t\t\t\t\t'launch_year',\n",
-					"\t\t\t\t\t'launch_date_utc',\n",
-					"\t\t\t\t\t'launch_success',\n",
-					"\t\t\t\t\t['rocket', 'rocket_id'],\n",
-					"\t\t\t\t\t['rocket', 'rocket_name'],\n",
-					"\t\t\t\t\t['rocket', 'rocket_type'],\n",
-					"\t\t\t\t\t['launch_site', 'site_name'],\n",
-					"\t\t\t\t\t['launch_failure_details', 'reason']\n",
-					"\t\t\t\t\t],\n",
-					"\t\t\t\t\trecord_path=['rocket', 'second_stage', 'payloads'],  # nested array to flatten\\n\",\n",
-					"\t\t\t\t\terrors='ignore'\n",
-					"\t\t\t\t)"
+					"df_fact_launches.head()"
 				],
-				"execution_count": null
+				"execution_count": 127
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df_pandas.head(20)"
-				],
-				"execution_count": null
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_pandas.info"
-				],
-				"execution_count": null
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"url2 = \"https://api.spacexdata.com/v5/launches\"\n",
+					"cores_url = \"https://api.spacexdata.com/v4/cores\"\n",
 					"headers = {\n",
 					"    \"Content-Type\": \"application/json\"}\n",
 					"\n",
-					"response2 = requests.get(url2)\n",
-					"data2 = response2.json()"
+					"response = requests.get(cores_url)\n",
+					"cores_data = response.json()"
+				],
+				"execution_count": 83
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_cores = pd.json_normalize(cores_data)\n",
+					"df_dim_cores.drop('launches', axis=1, inplace=True)\n",
+					"df_dim_cores.rename(columns={'id': 'core_id', 'status': 'core_status', 'serial': 'core_serial', 'block': 'core_block'}, inplace=True)\n",
+					"df_dim_cores"
+				],
+				"execution_count": 91
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"launchpad_url = \"https://api.spacexdata.com/v4/launchpads\"\n",
+					"headers = {\n",
+					"    \"Content-Type\": \"application/json\"}\n",
+					"\n",
+					"response = requests.get(launchpad_url)\n",
+					"launchpad_data = response.json()"
+				],
+				"execution_count": 95
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_launchpads = pd.json_normalize(launchpad_data)"
+				],
+				"execution_count": 96
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_launchpads.drop(columns=['images.large', 'launches', 'timezone', 'rockets'], axis=1, inplace=True)\n",
+					"df_dim_launchpads"
+				],
+				"execution_count": 99
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"landpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
+					"headers = {\n",
+					"    \"Content-Type\": \"application/json\"}\n",
+					"\n",
+					"response = requests.get(landpad_url)\n",
+					"landpad_data = response.json()"
+				],
+				"execution_count": 100
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_landpads = pd.json_normalize(landpad_data)"
+				],
+				"execution_count": 101
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_landpads.drop(columns=['launches', 'wikipedia', 'images.large'], axis=1, inplace=True)\n",
+					"df_dim_landpads"
+				],
+				"execution_count": 106
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"rocket_url = \"https://api.spacexdata.com/v4/rockets\"\n",
+					"headers = {\n",
+					"    \"Content-Type\": \"application/json\"}\n",
+					"\n",
+					"response = requests.get(rocket_url)\n",
+					"rocket_data = response.json()"
+				],
+				"execution_count": 107
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"rocket_data"
+				],
+				"execution_count": 111
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_rockets = pd.json_normalize(rocket_data)"
+				],
+				"execution_count": 112
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"'name': 'Falcon 1',\n",
+					"  'type': 'rocket',\n",
+					"  'active': False,\n",
+					"  'stages': 2,\n",
+					"  'boosters': 0,\n",
+					"  'cost_per_launch': 6700000,\n",
+					"  'success_rate_pct': 40,\n",
+					"  'first_flight': '2006-03-24',\n",
+					"  'country': 'Republic of the Marshall Islands',\n",
+					"  'company': 'SpaceX',\n",
+					"  'wikipedia': 'https://en.wikipedia.org/wiki/Falcon_1',\n",
+					"  'description': 'The Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.',\n",
+					"  'id': '5e9d0d95eda69955f709d1eb'"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_rockets = df_rockets[['name', 'type', 'active', 'stages', 'boosters', 'cost_per_launch', 'success_rate_pct', 'first_flight', 'country', 'company', 'description', 'id']]\n",
+					"df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'}, inplace=True)"
+				],
+				"execution_count": 122
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_rockets"
+				],
+				"execution_count": 123
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"payload_url = \"https://api.spacexdata.com/v4/payloads\"\n",
+					"headers = {\n",
+					"    \"Content-Type\": \"application/json\"}\n",
+					"\n",
+					"response = requests.get(payload_url)\n",
+					"payload_data = response.json()"
+				],
+				"execution_count": 124
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"payload_data"
+				],
+				"execution_count": 125
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"'dragon': {'capsule': '5e9e2c5bf3591882af3b2665',\n",
+					"   'mass_returned_kg': None,\n",
+					"   'mass_returned_lbs': None,\n",
+					"   'flight_time_sec': 806400,\n",
+					"   'manifest': None,\n",
+					"   'water_landing': True,\n",
+					"   'land_landing': False},\n",
+					"  'name': 'COTS Demo Flight 2',\n",
+					"  'type': 'Dragon 1.0',\n",
+					"  'reused': False,\n",
+					"  'launch': '5eb87cdfffd86e000604b331',\n",
+					"  'customers': ['NASA(COTS)'],\n",
+					"  'norad_ids': [38348],\n",
+					"  'nationalities': ['United States'],\n",
+					"  'manufacturers': ['SpaceX'],\n",
+					"  'mass_kg': 525,\n",
+					"  'mass_lbs': 1157,\n",
+					"  'orbit': 'LEO',\n",
+					"  'reference_system': 'geocentric',\n",
+					"  'regime': 'low-earth',\n",
+					"  'longitude': None,\n",
+					"  'semi_major_axis_km': 6711.684,\n",
+					"  'eccentricity': 0.0057963,\n",
+					"  'periapsis_km': 294.646,\n",
+					"  'apoapsis_km': 372.452,\n",
+					"  'inclination_deg': 51.6726,\n",
+					"  'period_min': 91.202,\n",
+					"  'lifespan_years': None,\n",
+					"  'epoch': '2012-05-22T09:12:31.000Z',\n",
+					"  'mean_motion': 15.78904505,\n",
+					"  'raan': 251.5418,\n",
+					"  'arg_of_pericenter': 331.7079,\n",
+					"  'mean_anomaly': 31.2745,\n",
+					"  'id': '5eb0e4bab6c3bb0006eeb1ea'},"
 				],
 				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"data2"
+					"df_payloads = pd.json_normalize(\n",
+					"    launches_data,\n",
+					"    record_path=['customers', 'norad_ids', 'nationalities', 'manufactures'], \n",
+					"    meta=[\n",
+					"        'id',\n",
+					"        'name',\n",
+					"        'type',\n",
+					"        'reused',\n",
+					"        ['dragon', 'capsule'],\n",
+					"        ['dragon', 'mass_returned_kg'],\n",
+					"        ['dragon', 'flight_time_sec'],\n",
+					"        ['dragon', 'water_landing'],\n",
+					"        ['dragon', 'land_landing'],\n",
+					"        'mass_kg',\n",
+					"        'orbit',\n",
+					"        \n",
+					"\n",
+					"    ],\n",
+					"    sep='_',\n",
+					"    errors='ignore'\n",
+					")"
 				],
 				"execution_count": null
 			}
