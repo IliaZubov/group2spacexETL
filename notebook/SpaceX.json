@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "04948bf5-a6fb-4b35-8a3c-6395f4ad2ad9"
+				"spark.autotune.trackingId": "74fc7c03-1f5f-432c-a5db-eeae14d29517"
 			}
 		},
 		"metadata": {
@@ -62,7 +62,7 @@
 					"response = requests.get(launches_url)\n",
 					"launches_data = response.json()"
 				],
-				"execution_count": 75
+				"execution_count": 170
 			},
 			{
 				"cell_type": "code",
@@ -116,14 +116,14 @@
 					"\n",
 					""
 				],
-				"execution_count": 93
+				"execution_count": 171
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_fact_launches.head()"
 				],
-				"execution_count": 127
+				"execution_count": 172
 			},
 			{
 				"cell_type": "code",
@@ -135,7 +135,7 @@
 					"response = requests.get(cores_url)\n",
 					"cores_data = response.json()"
 				],
-				"execution_count": 83
+				"execution_count": 173
 			},
 			{
 				"cell_type": "code",
@@ -145,7 +145,7 @@
 					"df_dim_cores.rename(columns={'id': 'core_id', 'status': 'core_status', 'serial': 'core_serial', 'block': 'core_block'}, inplace=True)\n",
 					"df_dim_cores"
 				],
-				"execution_count": 91
+				"execution_count": 174
 			},
 			{
 				"cell_type": "code",
@@ -157,14 +157,14 @@
 					"response = requests.get(launchpad_url)\n",
 					"launchpad_data = response.json()"
 				],
-				"execution_count": 95
+				"execution_count": 175
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_launchpads = pd.json_normalize(launchpad_data)"
 				],
-				"execution_count": 96
+				"execution_count": 176
 			},
 			{
 				"cell_type": "code",
@@ -172,7 +172,7 @@
 					"df_dim_launchpads.drop(columns=['images.large', 'launches', 'timezone', 'rockets'], axis=1, inplace=True)\n",
 					"df_dim_launchpads"
 				],
-				"execution_count": 99
+				"execution_count": 177
 			},
 			{
 				"cell_type": "code",
@@ -184,14 +184,14 @@
 					"response = requests.get(landpad_url)\n",
 					"landpad_data = response.json()"
 				],
-				"execution_count": 100
+				"execution_count": 178
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_landpads = pd.json_normalize(landpad_data)"
 				],
-				"execution_count": 101
+				"execution_count": 179
 			},
 			{
 				"cell_type": "code",
@@ -199,7 +199,7 @@
 					"df_dim_landpads.drop(columns=['launches', 'wikipedia', 'images.large'], axis=1, inplace=True)\n",
 					"df_dim_landpads"
 				],
-				"execution_count": 106
+				"execution_count": 180
 			},
 			{
 				"cell_type": "code",
@@ -211,61 +211,29 @@
 					"response = requests.get(rocket_url)\n",
 					"rocket_data = response.json()"
 				],
-				"execution_count": 107
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"rocket_data"
-				],
-				"execution_count": 111
+				"execution_count": 181
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_rockets = pd.json_normalize(rocket_data)"
 				],
-				"execution_count": 112
-			},
-			{
-				"cell_type": "markdown",
-				"metadata": {
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					"'name': 'Falcon 1',\n",
-					"  'type': 'rocket',\n",
-					"  'active': False,\n",
-					"  'stages': 2,\n",
-					"  'boosters': 0,\n",
-					"  'cost_per_launch': 6700000,\n",
-					"  'success_rate_pct': 40,\n",
-					"  'first_flight': '2006-03-24',\n",
-					"  'country': 'Republic of the Marshall Islands',\n",
-					"  'company': 'SpaceX',\n",
-					"  'wikipedia': 'https://en.wikipedia.org/wiki/Falcon_1',\n",
-					"  'description': 'The Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.',\n",
-					"  'id': '5e9d0d95eda69955f709d1eb'"
-				]
+				"execution_count": 182
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_rockets = df_rockets[['name', 'type', 'active', 'stages', 'boosters', 'cost_per_launch', 'success_rate_pct', 'first_flight', 'country', 'company', 'description', 'id']]\n",
-					"df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'}, inplace=True)"
+					"df_dim_rockets = df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'})"
 				],
-				"execution_count": 122
+				"execution_count": 190
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_rockets"
 				],
-				"execution_count": 123
+				"execution_count": 191
 			},
 			{
 				"cell_type": "code",
@@ -277,61 +245,20 @@
 					"response = requests.get(payload_url)\n",
 					"payload_data = response.json()"
 				],
-				"execution_count": 124
+				"execution_count": 185
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"payload_data"
 				],
-				"execution_count": 125
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"'dragon': {'capsule': '5e9e2c5bf3591882af3b2665',\n",
-					"   'mass_returned_kg': None,\n",
-					"   'mass_returned_lbs': None,\n",
-					"   'flight_time_sec': 806400,\n",
-					"   'manifest': None,\n",
-					"   'water_landing': True,\n",
-					"   'land_landing': False},\n",
-					"  'name': 'COTS Demo Flight 2',\n",
-					"  'type': 'Dragon 1.0',\n",
-					"  'reused': False,\n",
-					"  'launch': '5eb87cdfffd86e000604b331',\n",
-					"  'customers': ['NASA(COTS)'],\n",
-					"  'norad_ids': [38348],\n",
-					"  'nationalities': ['United States'],\n",
-					"  'manufacturers': ['SpaceX'],\n",
-					"  'mass_kg': 525,\n",
-					"  'mass_lbs': 1157,\n",
-					"  'orbit': 'LEO',\n",
-					"  'reference_system': 'geocentric',\n",
-					"  'regime': 'low-earth',\n",
-					"  'longitude': None,\n",
-					"  'semi_major_axis_km': 6711.684,\n",
-					"  'eccentricity': 0.0057963,\n",
-					"  'periapsis_km': 294.646,\n",
-					"  'apoapsis_km': 372.452,\n",
-					"  'inclination_deg': 51.6726,\n",
-					"  'period_min': 91.202,\n",
-					"  'lifespan_years': None,\n",
-					"  'epoch': '2012-05-22T09:12:31.000Z',\n",
-					"  'mean_motion': 15.78904505,\n",
-					"  'raan': 251.5418,\n",
-					"  'arg_of_pericenter': 331.7079,\n",
-					"  'mean_anomaly': 31.2745,\n",
-					"  'id': '5eb0e4bab6c3bb0006eeb1ea'},"
-				],
-				"execution_count": null
+				"execution_count": 186
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_payloads = pd.json_normalize(\n",
-					"    launches_data,\n",
-					"    record_path=['customers', 'norad_ids', 'nationalities', 'manufactures'], \n",
+					"    payload_data,\n",
 					"    meta=[\n",
 					"        'id',\n",
 					"        'name',\n",
@@ -344,14 +271,39 @@
 					"        ['dragon', 'land_landing'],\n",
 					"        'mass_kg',\n",
 					"        'orbit',\n",
-					"        \n",
-					"\n",
+					"        'reference_system',\n",
+					"        'regtime',\n",
+					"        'longitude',\n",
+					"        'semi_major_axis_km',\n",
+					"        'eccentricity',\n",
+					"        'periapsis_km',\n",
+					"        'apoapsis_km',\n",
+					"        'inclination_deg',\n",
+					"        'period_min',\n",
+					"        'lifespan_years',\n",
+					"        'epoch',\n",
+					"        'mean_motion',\n",
+					"        'raan',\n",
+					"        'arg_of_pericenter',\n",
+					"        'mean_anomaly',\n",
+					"        'id'\n",
 					"    ],\n",
 					"    sep='_',\n",
 					"    errors='ignore'\n",
-					")"
+					")\n",
+					"\n",
+					"df_payloads = df_payloads.explode('customers').reset_index(drop=True).explode('manufacturers').reset_index(drop=True).explode('nationalities').reset_index(drop=True).explode('norad_ids').reset_index(drop=True)\n",
+					"\n",
+					""
 				],
-				"execution_count": null
+				"execution_count": 187
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_payloads.head(20)"
+				],
+				"execution_count": 188
 			}
 		]
 	}
