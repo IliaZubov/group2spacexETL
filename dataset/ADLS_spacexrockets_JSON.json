@@ -1,0 +1,19 @@
+{
+	"name": "ADLS_spacexrockets_JSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "group2spacex-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "spacex_rockets_v4",
+				"fileSystem": "spacexfs"
+			}
+		},
+		"schema": {}
+	}
+}
