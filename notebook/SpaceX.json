@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6df02c1e-ee0f-413b-a886-5f3d9e2ca9dd"
+				"spark.autotune.trackingId": "770513f8-c472-4523-9172-09a60592a90e"
 			}
 		},
 		"metadata": {
@@ -62,14 +62,14 @@
 					"response = requests.get(url)\n",
 					"data = response.json()"
 				],
-				"execution_count": 26
+				"execution_count": 36
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"data"
 				],
-				"execution_count": 27
+				"execution_count": 37
 			},
 			{
 				"cell_type": "code",
@@ -92,21 +92,21 @@
 					"\t\t\t\t\terrors='ignore'\n",
 					"\t\t\t\t)"
 				],
-				"execution_count": 28
+				"execution_count": 38
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_pandas.head(20)"
 				],
-				"execution_count": 29
+				"execution_count": 39
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_pandas.info"
 				],
-				"execution_count": 30
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -118,14 +118,14 @@
 					"response2 = requests.get(url2)\n",
 					"data2 = response2.json()"
 				],
-				"execution_count": 31
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"data2"
 				],
-				"execution_count": 32
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -137,14 +137,14 @@
 					"response3 = requests.get(url)\n",
 					"data3 = response3.json()"
 				],
-				"execution_count": 33
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"data3"
 				],
-				"execution_count": 34
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -157,10 +157,12 @@
 					"\n",
 					"df = spark.read.load('abfss://spacexfs@group2dls.dfs.core.windows.net/spacex_launches_v4',\n",
 					"    format='json')\n",
+					"df2 = spark.read.load('abfss://spacexfs@group2dls.dfs.core.windows.net/spacex_payloads_v4',\n",
+					"    format='json')\n",
 					"display(df.limit(10))\n",
-					""
+					"display(df2.limit(10))"
 				],
-				"execution_count": 35
+				"execution_count": null
 			}
 		]
 	}
