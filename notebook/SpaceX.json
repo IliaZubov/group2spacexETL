@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "74fc7c03-1f5f-432c-a5db-eeae14d29517"
+				"spark.autotune.trackingId": "4e6e616b-2967-425e-b496-4967ceb7c16c"
 			}
 		},
 		"metadata": {
@@ -292,18 +292,19 @@
 					"    errors='ignore'\n",
 					")\n",
 					"\n",
-					"df_payloads = df_payloads.explode('customers').reset_index(drop=True).explode('manufacturers').reset_index(drop=True).explode('nationalities').reset_index(drop=True).explode('norad_ids').reset_index(drop=True)\n",
+					"df_dim_payloads = df_payloads.explode('customers').reset_index(drop=True).explode('manufacturers').reset_index(drop=True).explode('nationalities').reset_index(drop=True).explode('norad_ids').reset_index(drop=True)\n",
 					"\n",
 					""
 				],
-				"execution_count": 187
+				"execution_count": 194
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df_payloads.head(20)"
+					"df_dim_payloads.drop('dragon_manifest', axis=1, inplace=True)\n",
+					"df_dim_payloads.head(20)"
 				],
-				"execution_count": 188
+				"execution_count": 195
 			}
 		]
 	}
