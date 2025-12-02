@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6c2a9c1c-29a8-42b4-b3ef-86d0b4f30aae"
+				"spark.autotune.trackingId": "256c8b5b-3913-42ed-8f3f-7d8f729ac898"
 			}
 		},
 		"metadata": {
@@ -70,9 +70,13 @@
 					"df_dim_launchpads = pd.json_normalize(launchpad_data)\n",
 					"#dropping and renaming columns\n",
 					"df_dim_launchpads.drop(columns=['images.large', 'launches', 'timezone', 'rockets'], axis=1, inplace=True)\n",
-					"df_dim_launchpads.rename(columns={'id': 'launchpad_id', 'name': 'launchpad_name', 'status': 'launchpad_status'}, inplace=True)"
+					"df_dim_launchpads.rename(columns={'id': 'launchpad_id', 'name': 'launchpad_name', 'status': 'launchpad_status'}, inplace=True)\n",
+					"\n",
+					"# Hash the launchpad_id\n",
+					"df_dim_launchpads['launchpad_id'] = pd.util.hash_pandas_object(\n",
+					"    df_dim_launchpads['launchpad_id'], index=True)"
 				],
-				"execution_count": 27
+				"execution_count": 43
 			},
 			{
 				"cell_type": "code",
@@ -83,7 +87,7 @@
 					"df_dim_launchpads = df_dim_launchpads[new_cols]\n",
 					"df_dim_launchpads"
 				],
-				"execution_count": 28
+				"execution_count": 44
 			},
 			{
 				"cell_type": "code",
@@ -103,12 +107,35 @@
 					"df_dim_landpads = pd.json_normalize(landpad_data)\n",
 					"df_dim_landpads.drop(columns=['launches', 'wikipedia', 'images.large'], axis=1, inplace=True)\n",
 					"df_dim_landpads.rename(columns={'id': 'landpad_id', 'name': 'landpad_name', 'type': 'landpad_type'}, inplace=True)\n",
+					"\n",
+					"# Hash the landpad_id\n",
+					"df_dim_landpads['landpad_id'] = pd.util.hash_pandas_object(\n",
+					"    df_dim_landpads['landpad_id'], index=True)"
+				],
+				"execution_count": 39
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Reorder columns\n",
 					"cols = df_dim_landpads.columns\n",
 					"new_cols = [\"landpad_id\"] + [c for c in cols if c != \"landpad_id\"]\n",
 					"df_dim_landpads = df_dim_landpads[new_cols]\n",
 					"df_dim_landpads"
 				],
-				"execution_count": 30
+				"execution_count": 42
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"rocket_url = \"https://api.spacexdata.com/v4/rockets\"\n",
+					"headers = {\n",
+					"    \"Content-Type\": \"application/json\"}\n",
+					"\n",
+					"response = requests.get(rocket_url)\n",
+					"rocket_data = response.json()"
+				],
+				"execution_count": 32
 			}
 		]
 	}
