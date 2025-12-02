@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6a4dedea-2c2c-43da-b199-c48717bd145f"
+				"spark.autotune.trackingId": "f4ae899d-acd6-4024-87d0-eac2db242b28"
 			}
 		},
 		"metadata": {
@@ -228,21 +228,6 @@
 					"df.createOrReplaceTempView(\"mytable\")"
 				],
 				"execution_count": 24
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"microsoft": {
-						"language": "sparksql"
-					}
-				},
-				"source": [
-					"%%sql\n",
-					"\n",
-					"SELECT DISTINCT customers\n",
-					"FROM mytable"
-				],
-				"execution_count": 25
 			}
 		]
 	}
