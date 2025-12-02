@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "4403aad1-0b09-4c86-8a7e-f7f8cd3feb7d"
+				"spark.autotune.trackingId": "51a4ad1f-7192-4f7a-9c83-35907c8cf9d3"
 			}
 		},
 		"metadata": {
@@ -179,9 +179,10 @@
 				"source": [
 					"spark_dim_rockets = spark.createDataFrame(df_dim_rockets)\n",
 					"spark_dim_rockets = spark_dim_rockets.withColumn('rocket_id', crc32('rocket_id'))\n",
+					"spark_dim_rockets.write.saveAsTable(\"dim_rockets\")\n",
 					"display(spark_dim_rockets)"
 				],
-				"execution_count": 76
+				"execution_count": 80
 			}
 		]
 	}
