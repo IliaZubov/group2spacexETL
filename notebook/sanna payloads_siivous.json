@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "a310a126-efa0-4319-b13e-4ee47c93fbbd"
+				"spark.autotune.trackingId": "499bf611-d18c-4e88-a2f6-cb53499a6641"
 			}
 		},
 		"metadata": {
@@ -60,7 +60,7 @@
 					"import json\n",
 					"import pandas as pd"
 				],
-				"execution_count": 45
+				"execution_count": 85
 			},
 			{
 				"cell_type": "code",
@@ -72,7 +72,7 @@
 					"response = requests.get(payload_url)\n",
 					"payload_data = response.json()"
 				],
-				"execution_count": 46
+				"execution_count": 86
 			},
 			{
 				"cell_type": "code",
@@ -117,14 +117,14 @@
 					"df_dim_payloads.head(20)\n",
 					""
 				],
-				"execution_count": 47
+				"execution_count": 87
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_payloads.drop(columns=\"norad_ids\")"
 				],
-				"execution_count": 48
+				"execution_count": 88
 			},
 			{
 				"cell_type": "code",
@@ -134,31 +134,80 @@
 					"df_dim_payloads = df_dim_payloads.drop(columns=\"mass_lbs\")\n",
 					"df_dim_payloads = df_dim_payloads.drop(columns=\"norad_ids\")"
 				],
-				"execution_count": 49
+				"execution_count": 89
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"#dropping orbital mechanics stats\n",
-					"df_dim_payloads = df_dim_payloads.drop(columns=[\"semi_major_axis_km\",\"eccentricity\", \"epoch\" \"arg_of_pericenter\", \"inclination_deg\",\"raan\",\"mean_anomaly\",\"period_min\", \"mean_motion\"])\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=[\"semi_major_axis_km\",\"eccentricity\", \"epoch\", \"arg_of_pericenter\", \"inclination_deg\",\"raan\",\"mean_anomaly\",\"period_min\", \"mean_motion\"])\n",
 					"df_dim_payloads.info() "
 				],
-				"execution_count": 50
+				"execution_count": 90
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"#df_dim_payloads = df_dim_payloads.drop(columns=[\"mean_motion\"])\n",
-					"df_dim_payloads.info() "
+					"df_dim_payloads.head(10) "
 				],
-				"execution_count": null
+				"execution_count": 91
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_payloads = df_dim_payloads.rename(columns={\"launch\": \"launch_id\"})"
 				],
+				"execution_count": 92
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					""
+				],
 				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_payloads.info()"
+				],
+				"execution_count": 93
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#reorder columns\n",
+					"df_dim_payloads = df_dim_payloads[\n",
+					"    [\n",
+					"        \"id\", \"name\", \"type\", \"launch_id\", \"reused\", \"customers\",\n",
+					"        \"nationalities\", \"manufacturers\", \"mass_kg\", \"orbit\",\n",
+					"        \"reference_system\", \"regime\", \"periapsis_km\", \"lifespan_years\", \"dragon_capsule\", \n",
+					"        \"dragon_mass_returned_kg\", \"dragon_flight_time_sec\", \"dragon_water_landing\",\n",
+					"        \"dragon_land_landing\"\n",
+					"    ]\n",
+					"]\n",
+					""
+				],
+				"execution_count": 94
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#hashing ids:\n",
+					"df_dim_payloads[\"id\"] = pd.util.hash_pandas_object(df_dim_payloads[\"id\"], index=False)\n",
+					"df_dim_payloads[\"launch_id\"] = pd.util.hash_pandas_object(df_dim_payloads[\"launch_id\"], index=False)"
+				],
+				"execution_count": 96
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#save to spark table:\n",
+					"#spark_df = spark.createDataFrame(df_dim_payloads)\n",
+					"spark_df.write.mode(\"overwrite\").saveAsTable(\"dim_payloads\")"
+				],
+				"execution_count": 101
 			}
 		]
 	}
