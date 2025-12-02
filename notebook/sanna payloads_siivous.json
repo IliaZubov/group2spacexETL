@@ -1,5 +1,5 @@
 {
-	"name": "sanna test",
+	"name": "sanna payloads_siivous",
 	"properties": {
 		"nbformat": 4,
 		"nbformat_minor": 2,
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "eef297e5-49a4-492b-89b4-982c5d6d1924"
+				"spark.autotune.trackingId": "a10b756c-6993-446c-ace1-3a2bc98a4af9"
 			}
 		},
 		"metadata": {
@@ -55,27 +55,103 @@
 					"from pyspark.sql.functions import from_json, col\n",
 					"from pyspark.sql.types import StructType, StructField, StringType, IntegerType\n",
 					"from pyspark.sql.functions import schema_of_json, lit\n",
-					"from pyspark.sql.functions import explode"
+					"from pyspark.sql.functions import explode\n",
+					"import requests\n",
+					"import json\n",
+					"import pandas as pd"
 				],
-				"execution_count": 6
+				"execution_count": 12
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"data = spark.read.json(\"abfss://spacexfs@group2dls.dfs.core.windows.net/spacex_launches_v4\")\n",
-					"payloads_data = spark.read.json(\"abfss://spacexfs@group2dls.dfs.core.windows.net/spacex_payloads_v4\")"
+					"payload_url = \"https://api.spacexdata.com/v4/payloads\"\n",
+					"headers = {\n",
+					"    \"Content-Type\": \"application/json\"}\n",
+					"\n",
+					"response = requests.get(payload_url)\n",
+					"payload_data = response.json()"
 				],
-				"execution_count": 7
+				"execution_count": 13
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df = data.select(\"flight_number\",\"success\", \"payloads\", \"launchpad\", \"name\", \"cores\", \"crew\", \"date_local\", \"details\", \"failures\")\n",
-					"df.show(1)\n",
-					"df2 = payloads_data.select(\"launch\", \"name\")\n",
-					"df2.show(1)"
+					"df_payloads = pd.json_normalize(\n",
+					"    payload_data,\n",
+					"    meta=[\n",
+					"        'id',\n",
+					"        'name',\n",
+					"        'type',\n",
+					"        'reused',\n",
+					"        ['dragon', 'capsule'],\n",
+					"        ['dragon', 'mass_returned_kg'],\n",
+					"        ['dragon', 'flight_time_sec'],\n",
+					"        ['dragon', 'water_landing'],\n",
+					"        ['dragon', 'land_landing'],\n",
+					"        'mass_kg',\n",
+					"        'orbit',\n",
+					"        'reference_system',\n",
+					"        'regtime',\n",
+					"        'longitude',\n",
+					"        'semi_major_axis_km',\n",
+					"        'eccentricity',\n",
+					"        'periapsis_km',\n",
+					"        'apoapsis_km',\n",
+					"        'inclination_deg',\n",
+					"        'period_min',\n",
+					"        'lifespan_years',\n",
+					"        'epoch',\n",
+					"        'mean_motion',\n",
+					"        'raan',\n",
+					"        'arg_of_pericenter',\n",
+					"        'mean_anomaly',\n",
+					"        'id'\n",
+					"    ],\n",
+					"    sep='_',\n",
+					"    errors='ignore'\n",
+					")\n",
+					"\n",
+					"df_dim_payloads = df_payloads.explode('customers').reset_index(drop=True).explode('manufacturers').reset_index(drop=True).explode('nationalities').reset_index(drop=True).explode('norad_ids').reset_index(drop=True)\n",
+					"df_dim_payloads.drop('dragon_manifest', axis=1, inplace=True)\n",
+					"df_dim_payloads.head(20)\n",
+					""
 				],
-				"execution_count": 10
+				"execution_count": 14
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_payloads.drop(columns=\"norad_ids\")"
+				],
+				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#dropping some unnecessary columns (non-metric system, irrelevant orbit identifier)\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=\"dragon_mass_returned_lbs\")\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=\"mass_lbs\")\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=\"norad_ids\")"
+				],
+				"execution_count": 30
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#dropping orbital mechanics stats\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=[\"semi_major_axis_km\",\"eccentricity\", \"epoch\" \"arg_of_pericenter\", \"inclination_deg\",\"raan\",\"mean_anomaly\",\"period_min\", \"mean_motion\"])\n",
+					"df_dim_payloads.info() "
+				],
+				"execution_count": 35
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_payloads = df_dim_payloads.drop(columns=[\"mean_motion\"])\n",
+					"df_dim_payloads.head() "
+				],
+				"execution_count": 41
 			}
 		]
 	}
