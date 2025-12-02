@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "57b7a3a2-bc1f-4684-8dae-315fbed78d8c"
+				"spark.autotune.trackingId": "6a75f992-dc09-4426-b306-8e03977a5d23"
 			}
 		},
 		"metadata": {
@@ -62,7 +62,7 @@
 					"response = requests.get(launchpad_url)\n",
 					"launchpad_data = response.json()"
 				],
-				"execution_count": 26
+				"execution_count": 65
 			},
 			{
 				"cell_type": "code",
@@ -70,13 +70,33 @@
 					"df_dim_launchpads = pd.json_normalize(launchpad_data)\n",
 					"#dropping and renaming columns\n",
 					"df_dim_launchpads.drop(columns=['images.large', 'launches', 'timezone', 'rockets'], axis=1, inplace=True)\n",
-					"df_dim_launchpads.rename(columns={'id': 'launchpad_id', 'name': 'launchpad_name', 'status': 'launchpad_status'}, inplace=True)\n",
-					"\n",
-					"# Hash the launchpad_id\n",
-					"df_dim_launchpads['launchpad_id'] = pd.util.hash_pandas_object(\n",
-					"    df_dim_launchpads['launchpad_id'], index=True)"
+					"df_dim_launchpads.rename(columns={'id': 'launchpad_id', 'name': 'launchpad_name', 'status': 'launchpad_status'}, inplace=True)"
 				],
-				"execution_count": 43
+				"execution_count": 66
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Reorder columns\n",
+					"cols = df_dim_launchpads.columns\n",
+					"new_cols = [\"launchpad_id\"] + [c for c in cols if c != \"launchpad_id\"]\n",
+					"df_dim_launchpads = df_dim_launchpads[new_cols]\n",
+					"df_dim_launchpads"
+				],
+				"execution_count": 67
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"from pyspark.sql.functions import crc32, col\n",
+					"spark_dim_launchpads = spark.createDataFrame(df_dim_launchpads)\n",
+					"spark_dim_launchpads = spark_dim_launchpads.withColumn('launchpad_id', crc32('launchpad_id'))\n",
+					"display(spark_dim_launchpads)"
+				],
+				"execution_count": 68
 			},
 			{
 				"cell_type": "code",
@@ -88,20 +108,16 @@
 					"response = requests.get(landpad_url)\n",
 					"landpad_data = response.json()"
 				],
-				"execution_count": 29
+				"execution_count": 69
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_landpads = pd.json_normalize(landpad_data)\n",
 					"df_dim_landpads.drop(columns=['launches', 'wikipedia', 'images.large'], axis=1, inplace=True)\n",
-					"df_dim_landpads.rename(columns={'id': 'landpad_id', 'name': 'landpad_name', 'type': 'landpad_type'}, inplace=True)\n",
-					"\n",
-					"# Hash the landpad_id\n",
-					"df_dim_landpads['landpad_id'] = pd.util.hash_pandas_object(\n",
-					"    df_dim_landpads['landpad_id'], index=True)"
+					"df_dim_landpads.rename(columns={'id': 'landpad_id', 'name': 'landpad_name', 'type': 'landpad_type'}, inplace=True)"
 				],
-				"execution_count": 39
+				"execution_count": 70
 			},
 			{
 				"cell_type": "code",
@@ -112,7 +128,19 @@
 					"df_dim_landpads = df_dim_landpads[new_cols]\n",
 					"df_dim_landpads"
 				],
-				"execution_count": 42
+				"execution_count": 71
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"spark_dim_landpads = spark.createDataFrame(df_dim_landpads)\n",
+					"spark_dim_landpads = spark_dim_landpads.withColumn('landpad_id', crc32('landpad_id'))\n",
+					"display(spark_dim_landpads)"
+				],
+				"execution_count": 72
 			},
 			{
 				"cell_type": "code",
@@ -124,20 +152,16 @@
 					"response = requests.get(rocket_url)\n",
 					"rocket_data = response.json()"
 				],
-				"execution_count": 32
+				"execution_count": 73
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_rockets = pd.json_normalize(rocket_data)\n",
 					"df_dim_rockets = df_rockets[['name', 'type', 'active', 'stages', 'boosters', 'cost_per_launch', 'success_rate_pct', 'first_flight', 'country', 'company', 'description', 'id']]\n",
-					"df_dim_rockets = df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'})\n",
-					"\n",
-					"# Hash the rocket_id\n",
-					"df_dim_rockets['rocket_id'] = pd.util.hash_pandas_object(\n",
-					"    df_dim_rockets['rocket_id'], index=True)"
+					"df_dim_rockets = df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'})"
 				],
-				"execution_count": 53
+				"execution_count": 74
 			},
 			{
 				"cell_type": "code",
@@ -150,7 +174,19 @@
 					"\n",
 					"df_dim_rockets"
 				],
-				"execution_count": 55
+				"execution_count": 75
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"spark_dim_rockets = spark.createDataFrame(df_dim_rockets)\n",
+					"spark_dim_rockets = spark_dim_rockets.withColumn('rocket_id', crc32('rocket_id'))\n",
+					"display(spark_dim_rockets)"
+				],
+				"execution_count": 76
 			}
 		]
 	}
