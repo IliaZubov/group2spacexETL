@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "4c897a34-8416-4ce7-a49d-1070b965c697"
+				"spark.autotune.trackingId": "e7880456-d01e-4931-af2f-2d05e0bcb68f"
 			}
 		},
 		"metadata": {
@@ -52,7 +52,7 @@
 				"cell_type": "code",
 				"source": [
 					"\n",
-					"from pyspark.sql.functions import from_json, col\n",
+					"from pyspark.sql.functions import from_json, col, crc32\n",
 					"from pyspark.sql.types import StructType, StructField, StringType, IntegerType\n",
 					"from pyspark.sql.functions import schema_of_json, lit\n",
 					"from pyspark.sql.functions import explode\n",
@@ -60,7 +60,7 @@
 					"import json\n",
 					"import pandas as pd"
 				],
-				"execution_count": 3
+				"execution_count": 17
 			},
 			{
 				"cell_type": "code",
@@ -194,6 +194,7 @@
 			{
 				"cell_type": "code",
 				"source": [
+					"#turn to spark df\n",
 					"df_spark =  spark.createDataFrame(df_dim_payloads)"
 				],
 				"execution_count": 14
@@ -201,9 +202,18 @@
 			{
 				"cell_type": "code",
 				"source": [
-					"df_spark.show()"
+					"#hash ids\n",
+					"df_spark = df_spark.withColumn('id', crc32('id'))\n",
+					"df_spark = df_spark.withColumn('launch_id', crc32('launch_id'))"
 				],
-				"execution_count": 15
+				"execution_count": 18
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_spark.write.mode(\"overwrite\").saveAsTable(\"default.dim_payloads\")"
+				],
+				"execution_count": 22
 			}
 		]
 	}
