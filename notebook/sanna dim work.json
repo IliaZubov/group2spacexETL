@@ -12,12 +12,12 @@
 			"driverCores": 4,
 			"executorMemory": "28g",
 			"executorCores": 4,
-			"numExecutors": 2,
+			"numExecutors": 1,
 			"conf": {
-				"spark.dynamicAllocation.enabled": "false",
-				"spark.dynamicAllocation.minExecutors": "2",
-				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "dfc89fbc-fd98-4c35-9fd3-64217c0c0fd4"
+				"spark.dynamicAllocation.enabled": "true",
+				"spark.dynamicAllocation.minExecutors": "1",
+				"spark.dynamicAllocation.maxExecutors": "1",
+				"spark.autotune.trackingId": "805a7e3b-2810-4f24-b50e-bd62dc484ac2"
 			}
 		},
 		"metadata": {
@@ -41,9 +41,9 @@
 				},
 				"sparkVersion": "3.5",
 				"nodeCount": 10,
-				"cores": 4,
-				"memory": 28,
-				"automaticScaleJobs": false
+				"cores": 8,
+				"memory": 56,
+				"automaticScaleJobs": true
 			},
 			"sessionKeepAliveTimeout": 30
 		},
@@ -54,12 +54,12 @@
 					"from pyspark.sql.functions import col, crc32, lit\n",
 					"from pyspark.sql.functions import explode"
 				],
-				"execution_count": 2
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df = spark.sql()"
+					"df = spark.table(\"default.dim_payloads\")"
 				],
 				"execution_count": null
 			}
