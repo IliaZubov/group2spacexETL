@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [launchpad_id]\n,[launchpad_name]\n,[full_name]\n,[locality]\n,[region]\n,[latitude]\n,[longitude]\n,[launch_attempts]\n,[launch_successes]\n,[launchpad_status]\n,[details]\n FROM [default].[dbo].[dim_launchpads]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "default",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [landpad_id]\n,[landpad_name]\n,[full_name]\n,[status]\n,[landpad_type]\n,[locality]\n,[region]\n,[latitude]\n,[longitude]\n,[landing_attempts]\n,[landing_successes]\n,[details]\n FROM [default].[dbo].[dim_landpads]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "default",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
