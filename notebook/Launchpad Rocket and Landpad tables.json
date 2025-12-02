@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6a75f992-dc09-4426-b306-8e03977a5d23"
+				"spark.autotune.trackingId": "4403aad1-0b09-4c86-8a7e-f7f8cd3feb7d"
 			}
 		},
 		"metadata": {
@@ -80,10 +80,9 @@
 					"# Reorder columns\n",
 					"cols = df_dim_launchpads.columns\n",
 					"new_cols = [\"launchpad_id\"] + [c for c in cols if c != \"launchpad_id\"]\n",
-					"df_dim_launchpads = df_dim_launchpads[new_cols]\n",
-					"df_dim_launchpads"
+					"df_dim_launchpads = df_dim_launchpads[new_cols]"
 				],
-				"execution_count": 67
+				"execution_count": 77
 			},
 			{
 				"cell_type": "code",
@@ -125,10 +124,9 @@
 					"# Reorder columns\n",
 					"cols = df_dim_landpads.columns\n",
 					"new_cols = [\"landpad_id\"] + [c for c in cols if c != \"landpad_id\"]\n",
-					"df_dim_landpads = df_dim_landpads[new_cols]\n",
-					"df_dim_landpads"
+					"df_dim_landpads = df_dim_landpads[new_cols]"
 				],
-				"execution_count": 71
+				"execution_count": 78
 			},
 			{
 				"cell_type": "code",
@@ -169,12 +167,9 @@
 					"# Reorder columns\n",
 					"cols = df_dim_rockets.columns\n",
 					"new_cols = [\"rocket_id\"] + [c for c in cols if c != \"rocket_id\"]\n",
-					"df_dim_rockets = df_dim_rockets[new_cols]\n",
-					"df_dim_rockets\n",
-					"\n",
-					"df_dim_rockets"
+					"df_dim_rockets = df_dim_rockets[new_cols]"
 				],
-				"execution_count": 75
+				"execution_count": 79
 			},
 			{
 				"cell_type": "code",
