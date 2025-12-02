@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "51a4ad1f-7192-4f7a-9c83-35907c8cf9d3"
+				"spark.autotune.trackingId": "73d4f48b-c2ac-4adf-bf13-9847ba15f542"
 			}
 		},
 		"metadata": {
@@ -93,6 +93,7 @@
 					"from pyspark.sql.functions import crc32, col\n",
 					"spark_dim_launchpads = spark.createDataFrame(df_dim_launchpads)\n",
 					"spark_dim_launchpads = spark_dim_launchpads.withColumn('launchpad_id', crc32('launchpad_id'))\n",
+					"spark_dim_launchpads.write.saveAsTable(\"dim_launchpads\")\n",
 					"display(spark_dim_launchpads)"
 				],
 				"execution_count": 68
@@ -136,9 +137,10 @@
 				"source": [
 					"spark_dim_landpads = spark.createDataFrame(df_dim_landpads)\n",
 					"spark_dim_landpads = spark_dim_landpads.withColumn('landpad_id', crc32('landpad_id'))\n",
+					"spark_dim_landpads.write.saveAsTable(\"dim_landpads\")\n",
 					"display(spark_dim_landpads)"
 				],
-				"execution_count": 72
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
