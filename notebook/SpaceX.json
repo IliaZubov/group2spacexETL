@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "1063de04-e3ba-4982-aca0-a727809ead06"
+				"spark.autotune.trackingId": "7efef832-858b-41a6-a2d1-7cf4c696ee18"
 			}
 		},
 		"metadata": {
@@ -64,7 +64,7 @@
 					"response = requests.get(launches_url)\n",
 					"launches_data = response.json()"
 				],
-				"execution_count": 114
+				"execution_count": 171
 			},
 			{
 				"cell_type": "code",
@@ -72,7 +72,7 @@
 					"#df_hash = pd.util.hash_pandas_object(df, index=True)\n",
 					"#print(df_hash)"
 				],
-				"execution_count": 115
+				"execution_count": 172
 			},
 			{
 				"cell_type": "code",
@@ -126,21 +126,21 @@
 					"\n",
 					""
 				],
-				"execution_count": 145
+				"execution_count": 173
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_fact_launches.head()"
 				],
-				"execution_count": 146
+				"execution_count": 174
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_fact_launches.columns"
 				],
-				"execution_count": 118
+				"execution_count": 175
 			},
 			{
 				"cell_type": "code",
@@ -164,41 +164,55 @@
 					"    'launchpad': 'launchpad_id'\n",
 					"    }, inplace=True)"
 				],
-				"execution_count": 147
+				"execution_count": 176
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"#df_fact_launches['core_id'] = pd.util.hash_pandas_object(df_fact_launches['core_id'], index=True)\n",
-					"#df_fact_launches['launch_id'] = pd.util.hash_pandas_object(df_fact_launches['launch_id'], index=True)\n",
-					"#df_fact_launches['launchpad_id'] = pd.util.hash_pandas_object(df_fact_launches['launchpad_id'], index=True)\n",
-					"#df_fact_launches['rocket_id'] = pd.util.hash_pandas_object(df_fact_launches['rocket_id'], index=True)\n",
-					"#df_fact_launches['payload_id'] = pd.util.hash_pandas_object(df_fact_launches['payload_id'], index=True)\n",
-					"#df_fact_launches"
+					"df_fact_launches = df_fact_launches.explode('fairings_ships').reset_index(drop=True)"
 				],
-				"execution_count": 142
+				"execution_count": 177
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"spark_fact_launches = spark.createDataFrame(df_fact_launches)\n",
+					"display(spark_fact_launches)"
+				],
+				"execution_count": 178
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"\n",
+					"spark_fact_launches = spark_fact_launches.withColumns(\n",
+					"    {\n",
+					"        'core_id': crc32('core_id'), \n",
+					"        'launch_id': crc32('launch_id'), \n",
+					"        'core_landpad_id': crc32('core_landpad'), \n",
+					"        'rocket_id': crc32('rocket_id'), \n",
+					"        'launchpad_id': crc32('launchpad_id'), \n",
+					"        'payload_id': crc32('payload_id'),\n",
+					"        'fairing_ships_id': crc32('fairings_ships')\n",
+					"    }\n",
+					")\n",
+					"display(spark_fact_launches)"
+				],
+				"execution_count": 179
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df_fact_launches['launch_id']"
+					"#df_fact_launches = df_fact_launches.explode('fairings_ships').reset_index(drop=True)\n",
+					"#df_fact_launches.head(40)"
 				],
-				"execution_count": 154
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_fact_launches = df_fact_launches.explode('fairings_ships').reset_index(drop=True)\n",
-					"df_fact_launches"
-				],
-				"execution_count": 149
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_fact_launches.info()"
-				],
-				"execution_count": 122
+				"execution_count": 180
 			},
 			{
 				"cell_type": "code",
@@ -210,7 +224,7 @@
 					"response = requests.get(cores_url)\n",
 					"cores_data = response.json()"
 				],
-				"execution_count": 123
+				"execution_count": 181
 			},
 			{
 				"cell_type": "code",
@@ -220,7 +234,19 @@
 					"df_dim_cores.rename(columns={'id': 'core_id', 'status': 'core_status', 'serial': 'core_serial', 'block': 'core_block'}, inplace=True)\n",
 					"df_dim_cores"
 				],
-				"execution_count": 124
+				"execution_count": 182
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"spark_dim_cores = spark.createDataFrame(df_dim_cores)\n",
+					"spark_dim_cores = spark_dim_cores.withColumn('core_id', crc32('core_id'))\n",
+					"display(spark_dim_cores)"
+				],
+				"execution_count": 198
 			},
 			{
 				"cell_type": "code",
@@ -232,14 +258,14 @@
 					"response = requests.get(launchpad_url)\n",
 					"launchpad_data = response.json()"
 				],
-				"execution_count": 125
+				"execution_count": 183
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_launchpads = pd.json_normalize(launchpad_data)"
 				],
-				"execution_count": 126
+				"execution_count": 184
 			},
 			{
 				"cell_type": "code",
@@ -247,7 +273,7 @@
 					"df_dim_launchpads.drop(columns=['images.large', 'launches', 'timezone', 'rockets'], axis=1, inplace=True)\n",
 					"df_dim_launchpads"
 				],
-				"execution_count": 127
+				"execution_count": 185
 			},
 			{
 				"cell_type": "code",
@@ -259,14 +285,14 @@
 					"response = requests.get(landpad_url)\n",
 					"landpad_data = response.json()"
 				],
-				"execution_count": 128
+				"execution_count": 186
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_landpads = pd.json_normalize(landpad_data)"
 				],
-				"execution_count": 129
+				"execution_count": 187
 			},
 			{
 				"cell_type": "code",
@@ -274,7 +300,7 @@
 					"df_dim_landpads.drop(columns=['launches', 'wikipedia', 'images.large'], axis=1, inplace=True)\n",
 					"df_dim_landpads"
 				],
-				"execution_count": 130
+				"execution_count": 188
 			},
 			{
 				"cell_type": "code",
@@ -286,14 +312,14 @@
 					"response = requests.get(rocket_url)\n",
 					"rocket_data = response.json()"
 				],
-				"execution_count": 131
+				"execution_count": 189
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_rockets = pd.json_normalize(rocket_data)"
 				],
-				"execution_count": 132
+				"execution_count": 190
 			},
 			{
 				"cell_type": "code",
@@ -301,14 +327,14 @@
 					"df_dim_rockets = df_rockets[['name', 'type', 'active', 'stages', 'boosters', 'cost_per_launch', 'success_rate_pct', 'first_flight', 'country', 'company', 'description', 'id']]\n",
 					"df_dim_rockets = df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'})"
 				],
-				"execution_count": 133
+				"execution_count": 191
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_rockets"
 				],
-				"execution_count": 134
+				"execution_count": 192
 			},
 			{
 				"cell_type": "code",
@@ -320,14 +346,14 @@
 					"response = requests.get(payload_url)\n",
 					"payload_data = response.json()"
 				],
-				"execution_count": 135
+				"execution_count": 193
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"payload_data"
 				],
-				"execution_count": 136
+				"execution_count": 194
 			},
 			{
 				"cell_type": "code",
@@ -371,7 +397,7 @@
 					"\n",
 					""
 				],
-				"execution_count": 137
+				"execution_count": 195
 			},
 			{
 				"cell_type": "code",
@@ -379,7 +405,7 @@
 					"df_dim_payloads.drop('dragon_manifest', axis=1, inplace=True)\n",
 					"df_dim_payloads.head(20)"
 				],
-				"execution_count": 138
+				"execution_count": 196
 			}
 		]
 	}
