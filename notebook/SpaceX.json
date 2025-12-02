@@ -8,16 +8,16 @@
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "28g",
-			"driverCores": 4,
-			"executorMemory": "28g",
-			"executorCores": 4,
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
 			"numExecutors": 2,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "8833cfbd-3baa-4ee5-a8ef-9d47d59ecd9e"
+				"spark.autotune.trackingId": "b2e43e14-2679-43fb-8e7a-d3cfe7211b55"
 			}
 		},
 		"metadata": {
@@ -49,7 +49,14 @@
 		},
 		"cells": [
 			{
-				"cell_type": "code",
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
 				"source": [
 					"import requests\n",
 					"import json\n",
@@ -63,11 +70,103 @@
 					"\n",
 					"response = requests.get(launches_url)\n",
 					"launches_data = response.json()"
-				],
-				"execution_count": null
+				]
 			},
 			{
 				"cell_type": "code",
+				"source": [
+					"import requests, json\n",
+					"from pyspark.sql import SparkSession\n",
+					"from pyspark.sql.functions import hash, col, crc32, explode, explode_outer\n",
+					"\n",
+					"spark = SparkSession.builder.appName(\"launches_data\").getOrCreate()\n",
+					"\n",
+					"launches_url = \"https://api.spacexdata.com/v4/launches\"\n",
+					"\n",
+					"headers = {\n",
+					"    \"Content-Type\": \"application/json\"}\n",
+					"\n",
+					"response = requests.get(launches_url).json()\n",
+					"\n",
+					"json_rdd = sc.parallelize([json.dumps(record) for record in launches_data])\n",
+					"\n",
+					"df_raw = spark.read.json(json_rdd)\n",
+					""
+				],
+				"execution_count": 28
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_fail = df_raw.withColumn(\n",
+					"    \"failure_reason\",  col(\"failures\").getItem(0).reason\n",
+					").withColumn(\n",
+					"    \"failure_time\",    col(\"failures\").getItem(0).time\n",
+					").withColumn(\n",
+					"    \"failure_altitude\",col(\"failures\").getItem(0).altitude\n",
+					")\n",
+					"df1 = df_fail.withColumn(\"core\", explode(\"cores\"))\n",
+					"df2 = df1.withColumn(\"payload_id\", explode(\"payloads\"))\n",
+					"df_spark_launches = df2.select(\n",
+					"    \"id\",\n",
+					"    \"flight_number\",\n",
+					"    \"name\",\n",
+					"    \"date_utc\",\n",
+					"    \"rocket\",\n",
+					"    \"success\",\n",
+					"    \"details\",\n",
+					"    \"launchpad\",\n",
+					"    col(\"fairings.reused\").alias(\"fairings_reused\"),\n",
+					"    col(\"fairings.recovered\").alias(\"fairings_recovered\"),\n",
+					"    col(\"fairings.ships\").alias(\"fairings_ships\"),\n",
+					"    \"payload_id\",\n",
+					"    col(\"core.core\").alias(\"core_id\"),\n",
+					"    col(\"core.flight\").alias(\"core_flight\"),\n",
+					"    col(\"core.gridfins\").alias(\"core_gridfins\"),\n",
+					"    col(\"core.legs\").alias(\"core_legs\"),\n",
+					"    col(\"core.reused\").alias(\"core_reused\"),\n",
+					"    col(\"core.landing_attempt\").alias(\"core_landing_attempt\"),\n",
+					"    col(\"core.landing_success\").alias(\"core_landing_success\"),\n",
+					"    col(\"core.landing_type\").alias(\"core_landing_type\"),\n",
+					"    col(\"core.landpad\").alias(\"core_landpad\"),\n",
+					"    \"failure_reason\",\n",
+					"    \"failure_time\",\n",
+					"    \"failure_altitude\"\n",
+					")\n",
+					"\n",
+					"for c in df_spark_launches.columns:\n",
+					"    new_c = c.replace(\".\", \"_\").replace(\" \", \"_\").replace(\"-\", \"_\")\n",
+					"    df_spark_launches = df_spark_launches.withColumnRenamed(c, new_c)\n",
+					""
+				],
+				"execution_count": 36
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_spark_launches = df_spark_launches.withColumn(\"fairings_ships_id\", explode_outer(\"fairings_ships\"))"
+				],
+				"execution_count": 37
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"display(df_spark_launches)"
+				],
+				"execution_count": 38
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
 				"source": [
 					"df_fact_launches = pd.json_normalize(\n",
 					"    launches_data,\n",
@@ -117,8 +216,7 @@
 					"\n",
 					"\n",
 					""
-				],
-				"execution_count": null
+				]
 			},
 			{
 				"cell_type": "code",
