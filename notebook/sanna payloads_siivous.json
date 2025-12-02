@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "a10b756c-6993-446c-ace1-3a2bc98a4af9"
+				"spark.autotune.trackingId": "a310a126-efa0-4319-b13e-4ee47c93fbbd"
 			}
 		},
 		"metadata": {
@@ -60,7 +60,7 @@
 					"import json\n",
 					"import pandas as pd"
 				],
-				"execution_count": 12
+				"execution_count": 45
 			},
 			{
 				"cell_type": "code",
@@ -72,7 +72,7 @@
 					"response = requests.get(payload_url)\n",
 					"payload_data = response.json()"
 				],
-				"execution_count": 13
+				"execution_count": 46
 			},
 			{
 				"cell_type": "code",
@@ -117,14 +117,14 @@
 					"df_dim_payloads.head(20)\n",
 					""
 				],
-				"execution_count": 14
+				"execution_count": 47
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_payloads.drop(columns=\"norad_ids\")"
 				],
-				"execution_count": 19
+				"execution_count": 48
 			},
 			{
 				"cell_type": "code",
@@ -134,7 +134,7 @@
 					"df_dim_payloads = df_dim_payloads.drop(columns=\"mass_lbs\")\n",
 					"df_dim_payloads = df_dim_payloads.drop(columns=\"norad_ids\")"
 				],
-				"execution_count": 30
+				"execution_count": 49
 			},
 			{
 				"cell_type": "code",
@@ -143,15 +143,22 @@
 					"df_dim_payloads = df_dim_payloads.drop(columns=[\"semi_major_axis_km\",\"eccentricity\", \"epoch\" \"arg_of_pericenter\", \"inclination_deg\",\"raan\",\"mean_anomaly\",\"period_min\", \"mean_motion\"])\n",
 					"df_dim_payloads.info() "
 				],
-				"execution_count": 35
+				"execution_count": 50
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df_dim_payloads = df_dim_payloads.drop(columns=[\"mean_motion\"])\n",
-					"df_dim_payloads.head() "
+					"#df_dim_payloads = df_dim_payloads.drop(columns=[\"mean_motion\"])\n",
+					"df_dim_payloads.info() "
 				],
-				"execution_count": 41
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_payloads = df_dim_payloads.rename(columns={\"launch\": \"launch_id\"})"
+				],
+				"execution_count": null
 			}
 		]
 	}
