@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "256c8b5b-3913-42ed-8f3f-7d8f729ac898"
+				"spark.autotune.trackingId": "57b7a3a2-bc1f-4684-8dae-315fbed78d8c"
 			}
 		},
 		"metadata": {
@@ -81,17 +81,6 @@
 			{
 				"cell_type": "code",
 				"source": [
-					"#reordering columns\n",
-					"cols = df_dim_launchpads.columns\n",
-					"new_cols = [\"launchpad_id\"] + [c for c in cols if c != \"launchpad_id\"]\n",
-					"df_dim_launchpads = df_dim_launchpads[new_cols]\n",
-					"df_dim_launchpads"
-				],
-				"execution_count": 44
-			},
-			{
-				"cell_type": "code",
-				"source": [
 					"landpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
 					"headers = {\n",
 					"    \"Content-Type\": \"application/json\"}\n",
@@ -136,6 +125,32 @@
 					"rocket_data = response.json()"
 				],
 				"execution_count": 32
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_rockets = pd.json_normalize(rocket_data)\n",
+					"df_dim_rockets = df_rockets[['name', 'type', 'active', 'stages', 'boosters', 'cost_per_launch', 'success_rate_pct', 'first_flight', 'country', 'company', 'description', 'id']]\n",
+					"df_dim_rockets = df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'})\n",
+					"\n",
+					"# Hash the rocket_id\n",
+					"df_dim_rockets['rocket_id'] = pd.util.hash_pandas_object(\n",
+					"    df_dim_rockets['rocket_id'], index=True)"
+				],
+				"execution_count": 53
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Reorder columns\n",
+					"cols = df_dim_rockets.columns\n",
+					"new_cols = [\"rocket_id\"] + [c for c in cols if c != \"rocket_id\"]\n",
+					"df_dim_rockets = df_dim_rockets[new_cols]\n",
+					"df_dim_rockets\n",
+					"\n",
+					"df_dim_rockets"
+				],
+				"execution_count": 55
 			}
 		]
 	}
