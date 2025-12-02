@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "f19bf14e-cdd0-43fd-83d0-6d9ea06d548c"
+				"spark.autotune.trackingId": "672620a1-6e34-4edb-9929-6bb01f35a270"
 			}
 		},
 		"metadata": {
@@ -68,10 +68,22 @@
 				"cell_type": "code",
 				"source": [
 					"df_dim_launchpads = pd.json_normalize(launchpad_data)\n",
+					"#dropping and renaming columns\n",
 					"df_dim_launchpads.drop(columns=['images.large', 'launches', 'timezone', 'rockets'], axis=1, inplace=True)\n",
+					"df_dim_launchpads.rename(columns={'id': 'launchpad_id', 'name': 'launchpad_name', 'status': 'launchpad_status'}, inplace=True)"
+				],
+				"execution_count": 21
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#reordering columns\n",
+					"cols = df_dim_launchpads.columns\n",
+					"new_cols = [\"launchpad_id\"] + [c for c in cols if c != \"launchpad_id\"]\n",
+					"df_dim_launchpads = df_dim_launchpads[new_cols]\n",
 					"df_dim_launchpads"
 				],
-				"execution_count": null
+				"execution_count": 22
 			},
 			{
 				"cell_type": "code",
@@ -83,16 +95,20 @@
 					"response = requests.get(landpad_url)\n",
 					"landpad_data = response.json()"
 				],
-				"execution_count": null
+				"execution_count": 3
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_landpads = pd.json_normalize(landpad_data)\n",
 					"df_dim_landpads.drop(columns=['launches', 'wikipedia', 'images.large'], axis=1, inplace=True)\n",
+					"df_dim_landpads.rename(columns={'id': 'landpad_id', 'name': 'landpad_name', 'type': 'landpad_type'}, inplace=True)\n",
+					"cols = df_dim_landpads.columns\n",
+					"new_cols = [\"landpad_id\"] + [c for c in cols if c != \"landpad_id\"]\n",
+					"df_dim_landpads = df_dim_landpads[new_cols]\n",
 					"df_dim_landpads"
 				],
-				"execution_count": null
+				"execution_count": 23
 			}
 		]
 	}
