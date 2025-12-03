@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "fd490866-caec-449d-9c47-81324d965681"
+				"spark.autotune.trackingId": "b9b8e614-ecbf-4819-b7c2-ed4a2d3e85e1"
 			}
 		},
 		"metadata": {
@@ -181,13 +181,6 @@
 			},
 			{
 				"cell_type": "code",
-				"source": [
-					""
-				],
-				"execution_count": null
-			},
-			{
-				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
 						"source_hidden": false,
@@ -198,12 +191,13 @@
 							"deleting": false
 						}
 					},
-					"editable": false,
+					"editable": true,
 					"run_control": {
-						"frozen": true
+						"frozen": false
 					}
 				},
 				"source": [
+					"# pandas\n",
 					"rocket_url = \"https://api.spacexdata.com/v4/rockets\"\n",
 					"headers = {\n",
 					"    \"Content-Type\": \"application/json\"}\n",
@@ -216,9 +210,9 @@
 			{
 				"cell_type": "code",
 				"metadata": {
-					"editable": false,
+					"editable": true,
 					"run_control": {
-						"frozen": true
+						"frozen": false
 					}
 				},
 				"source": [
@@ -231,9 +225,9 @@
 			{
 				"cell_type": "code",
 				"metadata": {
-					"editable": false,
+					"editable": true,
 					"run_control": {
-						"frozen": true
+						"frozen": false
 					}
 				},
 				"source": [
@@ -247,9 +241,9 @@
 			{
 				"cell_type": "code",
 				"metadata": {
-					"editable": false,
+					"editable": true,
 					"run_control": {
-						"frozen": true
+						"frozen": false
 					},
 					"collapsed": false
 				},
