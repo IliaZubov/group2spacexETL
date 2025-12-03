@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "14b80252-d3af-4ce9-9894-a345b8484b36"
+				"spark.autotune.trackingId": "12fc9671-c543-4cb1-b21b-9940ee082b78"
 			}
 		},
 		"metadata": {
@@ -672,6 +672,26 @@
 					"dim_payloads.write.mode(\"overwrite\").saveAsTable(\"dim_payloads\")"
 				],
 				"execution_count": 250
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"import com.microsoft.spark.sqlanalytics\n",
+					"\n",
+					"fact_launches.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.fact_launches\")\n",
+					"dim_payloads.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_payloads\")\n",
+					"dim_cores.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_cores\")\n",
+					"dim_landpads.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_landpads\")\n",
+					"dim_launchpads.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_launchpads\")\n",
+					"dim_rockets.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_rockets\")\n",
+					"df2.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_manufacturers\")\n",
+					"df3.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_nationalities\")\n",
+					"df4.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_customers\")\n",
+					"df5.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.payloads_manufacturers\")\n",
+					"df6.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.payloads_nationalities\")\n",
+					"df7.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.payloads_customers\")"
+				],
+				"execution_count": 252
 			}
 		]
 	}
