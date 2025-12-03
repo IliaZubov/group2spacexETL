@@ -12,12 +12,12 @@
 			"driverCores": 4,
 			"executorMemory": "28g",
 			"executorCores": 4,
-			"numExecutors": 1,
+			"numExecutors": 3,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "true",
-				"spark.dynamicAllocation.minExecutors": "1",
-				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "805a7e3b-2810-4f24-b50e-bd62dc484ac2"
+				"spark.dynamicAllocation.minExecutors": "3",
+				"spark.dynamicAllocation.maxExecutors": "3",
+				"spark.autotune.trackingId": "968f2a49-fdba-4264-a4ea-8c7de8ebac9a"
 			}
 		},
 		"metadata": {
@@ -41,8 +41,8 @@
 				},
 				"sparkVersion": "3.5",
 				"nodeCount": 10,
-				"cores": 8,
-				"memory": 56,
+				"cores": 16,
+				"memory": 112,
 				"automaticScaleJobs": true
 			},
 			"sessionKeepAliveTimeout": 30
@@ -54,12 +54,38 @@
 					"from pyspark.sql.functions import col, crc32, lit\n",
 					"from pyspark.sql.functions import explode"
 				],
-				"execution_count": null
+				"execution_count": 1
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df = spark.table(\"default.dim_payloads\")"
+					"df = spark.table(\"default.dim_payloads\")\n",
+					"df2 = df.select(\"manufacturers\")"
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"\n",
+					"df2 = df2.withColumnRenamed(\"manufacturers\", \"manufacturer\")\n",
+					"df2 = df2.withColumn(\"id\", crc32(\"manufacturer\"))\n",
+					"df2 = df2.select(\"id\", \"manufacturer\")\n",
+					"df2 = df2.dropna(how=\"all\")\n",
+					"df2 = df2.distinct()\n",
+					"df2.show()"
+				],
+				"execution_count": 16
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df3 = df2.withColumnRenamed(\"manufacturers\", \"manufacturer\")\n",
+					"df3 = df2.withColumn(\"id\", crc32(\"manufacturer\"))\n",
+					"df3 = df2.select(\"id\", \"manufacturer\")\n",
+					"df3 = df2.dropna(how=\"all\")\n",
+					"df3 = df2.distinct()\n",
+					"df3.show()"
 				],
 				"execution_count": null
 			}
