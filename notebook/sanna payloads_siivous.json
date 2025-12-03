@@ -1,0 +1,234 @@
+{
+	"name": "sanna payloads_siivous",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "spacexmedium",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "f3e5d8ee-d1d0-4f0f-8cf2-f0d08929d101"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexmedium",
+				"name": "spacexmedium",
+				"type": "Spark",
+				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexmedium",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.5",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"\n",
+					"from pyspark.sql.functions import from_json, col, crc32\n",
+					"from pyspark.sql.types import StructType, StructField, StringType, IntegerType\n",
+					"from pyspark.sql.functions import schema_of_json, lit\n",
+					"from pyspark.sql.functions import explode\n",
+					"import requests\n",
+					"import json\n",
+					"import pandas as pd"
+				],
+				"execution_count": 17
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"payload_url = \"https://api.spacexdata.com/v4/payloads\"\n",
+					"headers = {\n",
+					"    \"Content-Type\": \"application/json\"}\n",
+					"\n",
+					"response = requests.get(payload_url)\n",
+					"payload_data = response.json()"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_payloads = pd.json_normalize(\n",
+					"    payload_data,\n",
+					"    meta=[\n",
+					"        'id',\n",
+					"        'name',\n",
+					"        'type',\n",
+					"        'reused',\n",
+					"        ['dragon', 'capsule'],\n",
+					"        ['dragon', 'mass_returned_kg'],\n",
+					"        ['dragon', 'flight_time_sec'],\n",
+					"        ['dragon', 'water_landing'],\n",
+					"        ['dragon', 'land_landing'],\n",
+					"        'mass_kg',\n",
+					"        'orbit',\n",
+					"        'reference_system',\n",
+					"        'regtime',\n",
+					"        'longitude',\n",
+					"        'semi_major_axis_km',\n",
+					"        'eccentricity',\n",
+					"        'periapsis_km',\n",
+					"        'apoapsis_km',\n",
+					"        'inclination_deg',\n",
+					"        'period_min',\n",
+					"        'lifespan_years',\n",
+					"        'epoch',\n",
+					"        'mean_motion',\n",
+					"        'raan',\n",
+					"        'arg_of_pericenter',\n",
+					"        'mean_anomaly',\n",
+					"        'id'\n",
+					"    ],\n",
+					"    sep='_',\n",
+					"    errors='ignore'\n",
+					")\n",
+					"\n",
+					"df_dim_payloads = df_payloads.explode('customers').reset_index(drop=True).explode('manufacturers').reset_index(drop=True).explode('nationalities').reset_index(drop=True).explode('norad_ids').reset_index(drop=True)\n",
+					"df_dim_payloads.drop('dragon_manifest', axis=1, inplace=True)\n",
+					"df_dim_payloads.head(20)\n",
+					""
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_payloads.drop(columns=\"norad_ids\")"
+				],
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#dropping some unnecessary columns (non-metric system, irrelevant orbit identifier)\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=\"dragon_mass_returned_lbs\")\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=\"mass_lbs\")\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=\"norad_ids\")"
+				],
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#dropping orbital mechanics stats\n",
+					"df_dim_payloads = df_dim_payloads.drop(columns=[\"semi_major_axis_km\",\"eccentricity\", \"epoch\", \"arg_of_pericenter\", \"inclination_deg\",\"raan\",\"mean_anomaly\",\"period_min\", \"mean_motion\"])\n",
+					"df_dim_payloads.info() "
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#df_dim_payloads = df_dim_payloads.drop(columns=[\"mean_motion\"])\n",
+					"df_dim_payloads.head(10) "
+				],
+				"execution_count": 9
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_payloads = df_dim_payloads.rename(columns={\"launch\": \"launch_id\"})"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_payloads.info()"
+				],
+				"execution_count": 11
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#reorder columns\n",
+					"df_dim_payloads = df_dim_payloads[\n",
+					"    [\n",
+					"        \"id\", \"name\", \"type\", \"launch_id\", \"reused\", \"customers\",\n",
+					"        \"nationalities\", \"manufacturers\", \"mass_kg\", \"orbit\",\n",
+					"        \"reference_system\", \"regime\", \"periapsis_km\", \"lifespan_years\", \"dragon_capsule\", \n",
+					"        \"dragon_mass_returned_kg\", \"dragon_flight_time_sec\", \"dragon_water_landing\",\n",
+					"        \"dragon_land_landing\"\n",
+					"    ]\n",
+					"]\n",
+					""
+				],
+				"execution_count": 12
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_payloads.head()"
+				],
+				"execution_count": 13
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#turn to spark df\n",
+					"df_spark =  spark.createDataFrame(df_dim_payloads)"
+				],
+				"execution_count": 14
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#hash ids\n",
+					"df_spark = df_spark.withColumn('id', crc32('id'))\n",
+					"df_spark = df_spark.withColumn('launch_id', crc32('launch_id'))"
+				],
+				"execution_count": 18
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_spark.write.mode(\"overwrite\").saveAsTable(\"default.dim_payloads\")"
+				],
+				"execution_count": 22
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df = spark.table(\"default.dim_payloads\")"
+				],
+				"execution_count": 23
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df.createOrReplaceTempView(\"mytable\")"
+				],
+				"execution_count": 24
+			}
+		]
+	}
+}

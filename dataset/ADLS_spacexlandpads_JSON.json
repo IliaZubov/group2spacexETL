@@ -1,0 +1,19 @@
+{
+	"name": "ADLS_spacexlandpads_JSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "group2spacex-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "spacex_landpads_v4",
+				"fileSystem": "spacexfs"
+			}
+		},
+		"schema": {}
+	}
+}
