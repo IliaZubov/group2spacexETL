@@ -8,16 +8,16 @@
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "56g",
-			"driverCores": 8,
-			"executorMemory": "56g",
-			"executorCores": 8,
-			"numExecutors": 2,
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 3,
 			"conf": {
-				"spark.dynamicAllocation.enabled": "false",
-				"spark.dynamicAllocation.minExecutors": "2",
-				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "c30cf9da-2281-4bb2-a2aa-87110ad552ce"
+				"spark.dynamicAllocation.enabled": "true",
+				"spark.dynamicAllocation.minExecutors": "3",
+				"spark.dynamicAllocation.maxExecutors": "3",
+				"spark.autotune.trackingId": "15e8d2b1-b70b-4572-a556-ae0a55c4e5cd"
 			}
 		},
 		"metadata": {
@@ -41,8 +41,8 @@
 				},
 				"sparkVersion": "3.5",
 				"nodeCount": 10,
-				"cores": 8,
-				"memory": 56,
+				"cores": 16,
+				"memory": 112,
 				"automaticScaleJobs": true
 			},
 			"sessionKeepAliveTimeout": 30
@@ -50,29 +50,47 @@
 		"cells": [
 			{
 				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
 				"source": [
 					"import requests\n",
 					"import json\n",
-					"import pandas as pd\n",
+					"from pyspark.sql import SparkSession\n",
+					"from pyspark.sql.functions import col, crc32\n",
 					"\n",
+					"# Fetch from API\n",
 					"launchpad_url = \"https://api.spacexdata.com/v4/launchpads\"\n",
-					"headers = {\n",
-					"    \"Content-Type\": \"application/json\"}\n",
-					"\n",
 					"response = requests.get(launchpad_url)\n",
-					"launchpad_data = response.json()"
+					"launchpad_data = response.json()\n",
+					"\n",
+					"# Convert Python list/dict → Spark RDD → Spark DataFrame\n",
+					"rdd = spark.sparkContext.parallelize(launchpad_data)\n",
+					"df_dim_launchpads = spark.read.json(rdd)"
 				],
-				"execution_count": 1
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df_dim_launchpads = pd.json_normalize(launchpad_data)\n",
-					"#dropping and renaming columns\n",
-					"df_dim_launchpads.drop(columns=['images.large', 'launches', 'timezone', 'rockets'], axis=1, inplace=True)\n",
-					"df_dim_launchpads.rename(columns={'id': 'launchpad_id', 'name': 'launchpad_name', 'status': 'launchpad_status'}, inplace=True)"
+					"# Drop and rename columns\n",
+					"df_dim_launchpads = (\n",
+					"    df_dim_launchpads\n",
+					"    .drop(\"images\", \"launches\", \"timezone\", \"rockets\")  # remove nested + unused\n",
+					"    .withColumnRenamed(\"id\", \"launchpad_id\")\n",
+					"    .withColumnRenamed(\"name\", \"launchpad_name\")\n",
+					"    .withColumnRenamed(\"status\", \"launchpad_status\")\n",
+					")"
 				],
-				"execution_count": 2
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -80,9 +98,12 @@
 					"# Reorder columns\n",
 					"cols = df_dim_launchpads.columns\n",
 					"new_cols = [\"launchpad_id\"] + [c for c in cols if c != \"launchpad_id\"]\n",
-					"df_dim_launchpads = df_dim_launchpads[new_cols]"
+					"df_dim_launchpads.columns = df_dim_launchpads.columns.select(new_cols)\n",
+					"\n",
+					"# Hash the ID column\n",
+					"df_dim_launchpads = df_dim_launchpads.withColumn(\"launchpad_id\", crc32(col(\"launchpad_id\")))"
 				],
-				"execution_count": 3
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -90,34 +111,39 @@
 					"collapsed": false
 				},
 				"source": [
-					"from pyspark.sql.functions import crc32, col\n",
-					"spark_dim_launchpads = spark.createDataFrame(df_dim_launchpads)\n",
-					"spark_dim_launchpads = spark_dim_launchpads.withColumn('launchpad_id', crc32('launchpad_id'))\n",
-					"spark_dim_launchpads.write.saveAsTable(\"dim_launchpads\")\n",
-					"display(spark_dim_launchpads)"
+					"# Write to SQL table\n",
+					"df_dim_launchpads.write.mode(\"overwrite\").saveAsTable(\"dim_launchpads\")\n",
+					"display(df_dim_launchpads)"
 				],
-				"execution_count": 4
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"landpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
-					"headers = {\n",
-					"    \"Content-Type\": \"application/json\"}\n",
+					"# Fetch from API\n",
+					"launchpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
+					"response = requests.get(launchpad_url)\n",
+					"landhpad_data = response.json()\n",
 					"\n",
-					"response = requests.get(landpad_url)\n",
-					"landpad_data = response.json()"
+					"# Convert Python list/dict → Spark RDD → Spark DataFrame\n",
+					"rdd = spark.sparkContext.parallelize(landpad_data)\n",
+					"df_dim_landpads = spark.read.json(rdd)"
 				],
-				"execution_count": 5
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df_dim_landpads = pd.json_normalize(landpad_data)\n",
-					"df_dim_landpads.drop(columns=['launches', 'wikipedia', 'images.large'], axis=1, inplace=True)\n",
-					"df_dim_landpads.rename(columns={'id': 'landpad_id', 'name': 'landpad_name', 'type': 'landpad_type'}, inplace=True)"
+					"# Drop and rename columns\n",
+					"df_dim_landpads = (\n",
+					"    df_dim_landpads\n",
+					"    .drop(\"launches\", \"wikipedia\", \"images.large\")  # remove nested + unused\n",
+					"    .withColumnRenamed(\"id\", \"landpad_id\")\n",
+					"    .withColumnRenamed(\"name\", \"landpad_name\")\n",
+					"    .withColumnRenamed(\"type\", \"landpad_type\")\n",
+					")"
 				],
-				"execution_count": 6
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -125,9 +151,12 @@
 					"# Reorder columns\n",
 					"cols = df_dim_landpads.columns\n",
 					"new_cols = [\"landpad_id\"] + [c for c in cols if c != \"landpad_id\"]\n",
-					"df_dim_landpads = df_dim_landpads[new_cols]"
+					"df_dim_landpads.columns = df_dim_landpads.columns.select(new_cols)\n",
+					"\n",
+					"# Hash the ID column\n",
+					"df_dim_landpads = df_dim_landpads.withColumn(\"landpad_id\", crc32(col(\"landpad_id\")))"
 				],
-				"execution_count": 7
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -135,15 +164,21 @@
 					"collapsed": false
 				},
 				"source": [
-					"spark_dim_landpads = spark.createDataFrame(df_dim_landpads)\n",
-					"spark_dim_landpads = spark_dim_landpads.withColumn('landpad_id', crc32('landpad_id'))\n",
-					"spark_dim_landpads.write.saveAsTable(\"dim_landpads\")\n",
-					"display(spark_dim_landpads)"
+					"# Write to SQL table\n",
+					"df_dim_landpads.write.mode(\"overwrite\").saveAsTable(\"dim_landpads\")\n",
+					"display(df_dim_landpads)"
 				],
-				"execution_count": 8
+				"execution_count": null
 			},
 			{
-				"cell_type": "code",
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
 				"source": [
 					"rocket_url = \"https://api.spacexdata.com/v4/rockets\"\n",
 					"headers = {\n",
@@ -151,31 +186,46 @@
 					"\n",
 					"response = requests.get(rocket_url)\n",
 					"rocket_data = response.json()"
-				],
-				"execution_count": 9
+				]
 			},
 			{
 				"cell_type": "code",
+				"metadata": {
+					"editable": false,
+					"run_control": {
+						"frozen": true
+					}
+				},
 				"source": [
 					"df_rockets = pd.json_normalize(rocket_data)\n",
 					"df_dim_rockets = df_rockets[['name', 'type', 'active', 'stages', 'boosters', 'cost_per_launch', 'success_rate_pct', 'first_flight', 'country', 'company', 'description', 'id']]\n",
 					"df_dim_rockets = df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'})"
 				],
-				"execution_count": 10
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
+				"metadata": {
+					"editable": false,
+					"run_control": {
+						"frozen": true
+					}
+				},
 				"source": [
 					"# Reorder columns\n",
 					"cols = df_dim_rockets.columns\n",
 					"new_cols = [\"rocket_id\"] + [c for c in cols if c != \"rocket_id\"]\n",
 					"df_dim_rockets = df_dim_rockets[new_cols]"
 				],
-				"execution_count": 11
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"metadata": {
+					"editable": false,
+					"run_control": {
+						"frozen": true
+					},
 					"collapsed": false
 				},
 				"source": [
@@ -184,7 +234,7 @@
 					"spark_dim_rockets.write.saveAsTable(\"dim_rockets\")\n",
 					"display(spark_dim_rockets)"
 				],
-				"execution_count": 12
+				"execution_count": null
 			}
 		]
 	}
