@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 7",
+	"properties": {
+		"content": {
+			"query": "DROP TABLE payloads_manufacturers\nGO\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "group2spacexDP",
+				"poolName": "group2spacexDP"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
