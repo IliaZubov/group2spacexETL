@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "69c3f71d-1e67-4fcf-afa9-0121e0ed6006"
+				"spark.autotune.trackingId": "c0f36f84-b2eb-4a95-987f-196ccb313de4"
 			}
 		},
 		"metadata": {
@@ -70,7 +70,7 @@
 					"df_raw = spark.read.json(json_rdd)\n",
 					""
 				],
-				"execution_count": 67
+				"execution_count": 79
 			},
 			{
 				"cell_type": "code",
@@ -116,21 +116,21 @@
 					"    df_spark_launches = df_spark_launches.withColumnRenamed(c, new_c)\n",
 					""
 				],
-				"execution_count": 68
+				"execution_count": 80
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_spark_launches = df_spark_launches.withColumn(\"fairings_ships_id\", explode_outer(\"fairings_ships\"))"
 				],
-				"execution_count": 69
+				"execution_count": 81
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_spark_launches = df_spark_launches.drop(\"fairings_ships\")"
 				],
-				"execution_count": 70
+				"execution_count": 82
 			},
 			{
 				"cell_type": "code",
@@ -140,7 +140,7 @@
 				"source": [
 					"display(df_spark_launches)"
 				],
-				"execution_count": 71
+				"execution_count": 83
 			},
 			{
 				"cell_type": "code",
@@ -172,7 +172,7 @@
 					"\n",
 					"df_spark_launches = rename_columns(df_spark_launches, rename_map)"
 				],
-				"execution_count": 72
+				"execution_count": 84
 			},
 			{
 				"cell_type": "code",
@@ -182,7 +182,7 @@
 				"source": [
 					"display(df_spark_launches)"
 				],
-				"execution_count": 73
+				"execution_count": 85
 			},
 			{
 				"cell_type": "code",
@@ -203,7 +203,7 @@
 					")\n",
 					"display(fact_launches)"
 				],
-				"execution_count": 74
+				"execution_count": 86
 			},
 			{
 				"cell_type": "code",
@@ -219,7 +219,7 @@
 					"\n",
 					"df_cores_raw = spark.read.json(json_rdd)"
 				],
-				"execution_count": 75
+				"execution_count": 87
 			},
 			{
 				"cell_type": "code",
@@ -233,7 +233,7 @@
 					")\n",
 					""
 				],
-				"execution_count": 76
+				"execution_count": 88
 			},
 			{
 				"cell_type": "code",
@@ -242,9 +242,9 @@
 				},
 				"source": [
 					"dim_cores = df_cores_raw.withColumn(\"core_id\", crc32(\"core_id\"))\n",
-					"display(dim_cores)"
+					"display(df_dim_cores)"
 				],
-				"execution_count": 77
+				"execution_count": 89
 			},
 			{
 				"cell_type": "code",
@@ -253,7 +253,15 @@
 					"  .count() \\\n",
 					"  .show()"
 				],
-				"execution_count": 78
+				"execution_count": 90
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dim_cores.write.mode(\"overwrite\").saveAsTable(\"default.dim_cores\")\n",
+					"fact_launches.write.mode(\"overwrite\").saveAsTable(\"default.fact_launches\")"
+				],
+				"execution_count": 91
 			}
 		]
 	}
