@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "c0f36f84-b2eb-4a95-987f-196ccb313de4"
+				"spark.autotune.trackingId": "6f71f611-fece-4dab-8340-bb01d3263a96"
 			}
 		},
 		"metadata": {
@@ -262,6 +262,177 @@
 					"fact_launches.write.mode(\"overwrite\").saveAsTable(\"default.fact_launches\")"
 				],
 				"execution_count": 91
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"launchpad_url = \"https://api.spacexdata.com/v4/launchpads\"\n",
+					"\n",
+					"response = requests.get(launchpad_url)\n",
+					"\n",
+					"launchpad_data = response.json()\n",
+					"\n",
+					"rdd = spark.sparkContext.parallelize(launchpad_data)\n",
+					"\n",
+					"df_dim_launchpads = spark.read.json(rdd)"
+				],
+				"execution_count": 97
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_launchpads = (\n",
+					"    df_dim_launchpads\n",
+					"    .drop(\"images\", \"launches\", \"timezone\", \"rockets\")\n",
+					"    .withColumnRenamed(\"id\", \"launchpad_id\")\n",
+					"    .withColumnRenamed(\"name\", \"launchpad_name\")\n",
+					"    .withColumnRenamed(\"status\", \"launchpad_status\")\n",
+					")"
+				],
+				"execution_count": 98
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"dim_launchpads = df_dim_launchpads.withColumn(\"launchpad_id\", crc32(col(\"launchpad_id\")))\n",
+					"display(dim_launchpads)"
+				],
+				"execution_count": 99
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dim_launchpads.write.mode(\"overwrite\").saveAsTable(\"dim_launchpads\")"
+				],
+				"execution_count": 100
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"launchpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
+					"response = requests.get(launchpad_url)\n",
+					"landhpad_data = response.json()\n",
+					"\n",
+					"rdd = spark.sparkContext.parallelize(landpad_data)\n",
+					"df_dim_landpads = spark.read.json(rdd)"
+				],
+				"execution_count": 111
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df_dim_landpads = (\n",
+					"    df_dim_landpads\n",
+					"    .drop(\"launches\", \"wikipedia\", \"images\")  \n",
+					"    .withColumnRenamed(\"id\", \"landpad_id\")\n",
+					"    .withColumnRenamed(\"name\", \"landpad_name\")\n",
+					"    .withColumnRenamed(\"type\", \"landpad_type\")\n",
+					")"
+				],
+				"execution_count": 112
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#cols = df_dim_landpads.columns\n",
+					"#new_cols = [\"landpad_id\"] + [c for c in cols if c != \"landpad_id\"]\n",
+					"#df_dim_landpads.columns = df_dim_landpads.columns.select(new_cols)\n",
+					"\n",
+					"dim_landpads = df_dim_landpads.withColumn(\"landpad_id\", crc32(col(\"landpad_id\")))"
+				],
+				"execution_count": 113
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"display(dim_landpads)"
+				],
+				"execution_count": 114
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dim_landpads.write.mode(\"overwrite\").saveAsTable(\"dim_landpads\")"
+				],
+				"execution_count": 115
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"rocket_url = \"https://api.spacexdata.com/v4/rockets\"\n",
+					"\n",
+					"response = requests.get(rocket_url).json()\n",
+					"#rocket_data = response.json()\n",
+					"\n",
+					"#rdd = spark.sparkContext.parallelize(rocket_data)\n",
+					"\n",
+					"json_rdd = sc.parallelize([json.dumps(record) for record in response])\n",
+					"df_dim_rockets = spark.read.json(json_rdd)"
+				],
+				"execution_count": 118
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"display(df_dim_rockets)"
+				],
+				"execution_count": 119
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"dim_rockets = df_dim_rockets.select(\n",
+					"    col(\"id\").alias(\"rocket_id\"),\n",
+					"    col(\"name\"),\n",
+					"    col(\"type\"),\n",
+					"    col(\"active\"),\n",
+					"    col(\"stages\"),\n",
+					"    col(\"boosters\"),\n",
+					"    col(\"cost_per_launch\"),\n",
+					"    col(\"success_rate_pct\"),\n",
+					"    col(\"first_flight\"),\n",
+					"    col(\"country\"),\n",
+					"    col(\"company\"),\n",
+					"    col(\"description\")\n",
+					")"
+				],
+				"execution_count": 121
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dim_rockets = dim_rockets.withColumn(\"rocket_id\", crc32(\"rocket_id\"))"
+				],
+				"execution_count": 124
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"display(dim_rockets)"
+				],
+				"execution_count": 125
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dim_rockets.write.mode(\"overwrite\").saveAsTable(\"dim_rockets\")"
+				],
+				"execution_count": 126
 			}
 		]
 	}
