@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "b9b8e614-ecbf-4819-b7c2-ed4a2d3e85e1"
+				"spark.autotune.trackingId": "87b3d1ee-cfc0-4079-8c31-c6bc104684f0"
 			}
 		},
 		"metadata": {
@@ -126,9 +126,9 @@
 				"cell_type": "code",
 				"source": [
 					"# Fetch from API\n",
-					"launchpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
-					"response = requests.get(launchpad_url)\n",
-					"landhpad_data = response.json()\n",
+					"landpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
+					"response = requests.get(landpad_url)\n",
+					"landpad_data = response.json()\n",
 					"\n",
 					"# Convert Python list/dict → Spark RDD → Spark DataFrame\n",
 					"rdd = spark.sparkContext.parallelize(landpad_data)\n",
