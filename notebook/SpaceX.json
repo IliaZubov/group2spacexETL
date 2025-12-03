@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "471d34ad-ae9c-4b58-a50a-25c6c13d2d1b"
+				"spark.autotune.trackingId": "69c3f71d-1e67-4fcf-afa9-0121e0ed6006"
 			}
 		},
 		"metadata": {
@@ -70,7 +70,7 @@
 					"df_raw = spark.read.json(json_rdd)\n",
 					""
 				],
-				"execution_count": 1
+				"execution_count": 67
 			},
 			{
 				"cell_type": "code",
@@ -116,21 +116,21 @@
 					"    df_spark_launches = df_spark_launches.withColumnRenamed(c, new_c)\n",
 					""
 				],
-				"execution_count": 2
+				"execution_count": 68
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_spark_launches = df_spark_launches.withColumn(\"fairings_ships_id\", explode_outer(\"fairings_ships\"))"
 				],
-				"execution_count": 3
+				"execution_count": 69
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_spark_launches = df_spark_launches.drop(\"fairings_ships\")"
 				],
-				"execution_count": 4
+				"execution_count": 70
 			},
 			{
 				"cell_type": "code",
@@ -140,67 +140,7 @@
 				"source": [
 					"display(df_spark_launches)"
 				],
-				"execution_count": 5
-			},
-			{
-				"cell_type": "markdown",
-				"metadata": {
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					"df_fact_launches = pd.json_normalize(\n",
-					"    launches_data,\n",
-					"    record_path=['cores'], \n",
-					"    meta=[\n",
-					"        'id',\n",
-					"        'flight_number',\n",
-					"        'name',\n",
-					"        'date_utc',\n",
-					"        'rocket',\n",
-					"        'success',\n",
-					"        'details',\n",
-					"        'launchpad',\n",
-					"        ['fairings', 'reused'],\n",
-					"        ['fairings', 'recovered'],\n",
-					"        ['fairings', 'ships'],\n",
-					"        'payloads'  \n",
-					"    ],\n",
-					"    sep='_',\n",
-					"    errors='ignore'\n",
-					")\n",
-					"\n",
-					"df_fact_launches = df_fact_launches.explode('payloads').reset_index(drop=True)\n",
-					"\n",
-					"df_fact_launches.rename(columns={'payloads': 'payload_id'}, inplace=True)\n",
-					"\n",
-					"df_fact_launches['failure_reason'] = df_fact_launches['id'].map(\n",
-					"    lambda x: next((launch.get('failures')[0]['reason']\n",
-					"                    for launch in launches_data\n",
-					"                    if launch['id'] == x and launch.get('failures')), None)\n",
-					")\n",
-					"\n",
-					"df_fact_launches['failure_altitude'] = df_fact_launches['id'].map(\n",
-					"    lambda x: next((launch.get('failures')[0]['altitude']\n",
-					"                    for launch in launches_data\n",
-					"                    if launch['id'] == x and launch.get('failures')), None)\n",
-					")\n",
-					"\n",
-					"df_fact_launches['failure_time'] = df_fact_launches['id'].map(\n",
-					"    lambda x: next((launch.get('failures')[0]['time']\n",
-					"                    for launch in launches_data\n",
-					"                    if launch['id'] == x and launch.get('failures')), None)\n",
-					")\n",
-					"\n",
-					"df_fact_launches = df_fact_launches.loc[:, ~df_fact_launches.columns.str.startswith('links')]\n",
-					"df_fact_launches.columns = df_fact_launches.columns.str.replace(r'\\W+', '_', regex=True)\n",
-					"\n",
-					"\n",
-					""
-				]
+				"execution_count": 71
 			},
 			{
 				"cell_type": "code",
@@ -232,7 +172,7 @@
 					"\n",
 					"df_spark_launches = rename_columns(df_spark_launches, rename_map)"
 				],
-				"execution_count": 6
+				"execution_count": 72
 			},
 			{
 				"cell_type": "code",
@@ -242,7 +182,7 @@
 				"source": [
 					"display(df_spark_launches)"
 				],
-				"execution_count": 7
+				"execution_count": 73
 			},
 			{
 				"cell_type": "code",
@@ -263,30 +203,7 @@
 					")\n",
 					"display(fact_launches)"
 				],
-				"execution_count": 8
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					"cores_url = \"https://api.spacexdata.com/v4/cores\"\n",
-					"headers = {\n",
-					"    \"Content-Type\": \"application/json\"}\n",
-					"\n",
-					"response = requests.get(cores_url)\n",
-					"cores_data = response.json()"
-				],
-				"execution_count": 9
+				"execution_count": 74
 			},
 			{
 				"cell_type": "code",
@@ -302,17 +219,21 @@
 					"\n",
 					"df_cores_raw = spark.read.json(json_rdd)"
 				],
-				"execution_count": 10
+				"execution_count": 75
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"df_dim_cores = pd.json_normalize(cores_data)\n",
-					"df_dim_cores.drop('launches', axis=1, inplace=True)\n",
-					"df_dim_cores.rename(columns={'id': 'core_id', 'status': 'core_status', 'serial': 'core_serial', 'block': 'core_block'}, inplace=True)\n",
-					"df_dim_cores"
+					"df_cores_raw = df_cores_raw.drop('launches', 'serial')\n",
+					"df_cores_raw = (df_cores_raw\n",
+					"    .withColumnRenamed(\"id\", \"core_id\")\n",
+					"    .withColumnRenamed(\"status\", \"core_status\")\n",
+					"    .withColumnRenamed(\"serial\", \"core_serial\")\n",
+					"    .withColumnRenamed(\"block\", \"core_block\")\n",
+					")\n",
+					""
 				],
-				"execution_count": 11
+				"execution_count": 76
 			},
 			{
 				"cell_type": "code",
@@ -320,170 +241,19 @@
 					"collapsed": false
 				},
 				"source": [
-					"spark_dim_cores = spark.createDataFrame(df_dim_cores)\n",
-					"spark_dim_cores = spark_dim_cores.withColumn('core_id', crc32('core_id'))\n",
-					"display(spark_dim_cores)"
+					"dim_cores = df_cores_raw.withColumn(\"core_id\", crc32(\"core_id\"))\n",
+					"display(dim_cores)"
 				],
-				"execution_count": 12
+				"execution_count": 77
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"launchpad_url = \"https://api.spacexdata.com/v4/launchpads\"\n",
-					"headers = {\n",
-					"    \"Content-Type\": \"application/json\"}\n",
-					"\n",
-					"response = requests.get(launchpad_url)\n",
-					"launchpad_data = response.json()"
+					"dim_cores.groupBy(\"core_id\") \\\n",
+					"  .count() \\\n",
+					"  .show()"
 				],
-				"execution_count": 13
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_dim_launchpads = pd.json_normalize(launchpad_data)"
-				],
-				"execution_count": 14
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_dim_launchpads.drop(columns=['images.large', 'launches', 'timezone', 'rockets'], axis=1, inplace=True)\n",
-					"df_dim_launchpads"
-				],
-				"execution_count": 15
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"landpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
-					"headers = {\n",
-					"    \"Content-Type\": \"application/json\"}\n",
-					"\n",
-					"response = requests.get(landpad_url)\n",
-					"landpad_data = response.json()"
-				],
-				"execution_count": 16
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_dim_landpads = pd.json_normalize(landpad_data)"
-				],
-				"execution_count": 17
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_dim_landpads.drop(columns=['launches', 'wikipedia', 'images.large'], axis=1, inplace=True)\n",
-					"df_dim_landpads"
-				],
-				"execution_count": 18
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"rocket_url = \"https://api.spacexdata.com/v4/rockets\"\n",
-					"headers = {\n",
-					"    \"Content-Type\": \"application/json\"}\n",
-					"\n",
-					"response = requests.get(rocket_url)\n",
-					"rocket_data = response.json()"
-				],
-				"execution_count": 19
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_rockets = pd.json_normalize(rocket_data)"
-				],
-				"execution_count": 20
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_dim_rockets = df_rockets[['name', 'type', 'active', 'stages', 'boosters', 'cost_per_launch', 'success_rate_pct', 'first_flight', 'country', 'company', 'description', 'id']]\n",
-					"df_dim_rockets = df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'})"
-				],
-				"execution_count": 21
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_dim_rockets"
-				],
-				"execution_count": 22
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"payload_url = \"https://api.spacexdata.com/v4/payloads\"\n",
-					"headers = {\n",
-					"    \"Content-Type\": \"application/json\"}\n",
-					"\n",
-					"response = requests.get(payload_url)\n",
-					"payload_data = response.json()"
-				],
-				"execution_count": 23
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"payload_data"
-				],
-				"execution_count": 24
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_payloads = pd.json_normalize(\n",
-					"    payload_data,\n",
-					"    meta=[\n",
-					"        'id',\n",
-					"        'name',\n",
-					"        'type',\n",
-					"        'reused',\n",
-					"        ['dragon', 'capsule'],\n",
-					"        ['dragon', 'mass_returned_kg'],\n",
-					"        ['dragon', 'flight_time_sec'],\n",
-					"        ['dragon', 'water_landing'],\n",
-					"        ['dragon', 'land_landing'],\n",
-					"        'mass_kg',\n",
-					"        'orbit',\n",
-					"        'reference_system',\n",
-					"        'regtime',\n",
-					"        'longitude',\n",
-					"        'semi_major_axis_km',\n",
-					"        'eccentricity',\n",
-					"        'periapsis_km',\n",
-					"        'apoapsis_km',\n",
-					"        'inclination_deg',\n",
-					"        'period_min',\n",
-					"        'lifespan_years',\n",
-					"        'epoch',\n",
-					"        'mean_motion',\n",
-					"        'raan',\n",
-					"        'arg_of_pericenter',\n",
-					"        'mean_anomaly',\n",
-					"        'id'\n",
-					"    ],\n",
-					"    sep='_',\n",
-					"    errors='ignore'\n",
-					")\n",
-					"\n",
-					"df_dim_payloads = df_payloads.explode('customers').reset_index(drop=True).explode('manufacturers').reset_index(drop=True).explode('nationalities').reset_index(drop=True).explode('norad_ids').reset_index(drop=True)\n",
-					"\n",
-					""
-				],
-				"execution_count": 25
-			},
-			{
-				"cell_type": "code",
-				"source": [
-					"df_dim_payloads.drop('dragon_manifest', axis=1, inplace=True)\n",
-					"df_dim_payloads.head(20)"
-				],
-				"execution_count": 26
+				"execution_count": 78
 			}
 		]
 	}
