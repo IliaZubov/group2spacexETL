@@ -1,0 +1,139 @@
+table dim_payloads
+	lineageTag: 587d5430-fdda-4c19-b3d4-286aa9df411d
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3a973197-5eba-4f4c-9ae2-268153c9e1d6
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 053e4243-4d34-4bc3-a743-fbfd6ba6ae51
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: d3367275-2a45-4da0-b6f6-9a35441b3db0
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column reused
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f5ce66e5-844d-4c35-9220-2bf38db805ff
+		summarizeBy: none
+		sourceColumn: reused
+
+		annotation SummarizationSetBy = Automatic
+
+	column mass_kg
+		dataType: double
+		lineageTag: 797ff6d7-2840-4624-b9a6-82afa3099dc8
+		summarizeBy: sum
+		sourceColumn: mass_kg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column orbit
+		dataType: string
+		lineageTag: 363d4b3a-2b27-4688-9ca6-5c355fcf0749
+		summarizeBy: none
+		sourceColumn: orbit
+
+		annotation SummarizationSetBy = Automatic
+
+	column reference_system
+		dataType: string
+		lineageTag: 2946955b-241b-48f2-ac2d-1a35be1cf44f
+		summarizeBy: none
+		sourceColumn: reference_system
+
+		annotation SummarizationSetBy = Automatic
+
+	column regime
+		dataType: string
+		lineageTag: c802baa8-d106-41b1-a873-825e5712c892
+		summarizeBy: none
+		sourceColumn: regime
+
+		annotation SummarizationSetBy = Automatic
+
+	column lifespan_years
+		dataType: double
+		lineageTag: 54dfde86-ef68-40ae-a909-327866978546
+		summarizeBy: sum
+		sourceColumn: lifespan_years
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column dragon_capsule
+		dataType: string
+		lineageTag: 9ad5e28c-be9f-4933-a27d-3a9da920c789
+		summarizeBy: none
+		sourceColumn: dragon_capsule
+
+		annotation SummarizationSetBy = Automatic
+
+	column dragon_mass_returned_kg
+		dataType: double
+		lineageTag: d7469221-2000-4b2f-8413-baedec1c0834
+		summarizeBy: sum
+		sourceColumn: dragon_mass_returned_kg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column dragon_flight_time_sec
+		dataType: double
+		lineageTag: 234c1932-fe3a-41cd-84a6-b1d736803a09
+		summarizeBy: sum
+		sourceColumn: dragon_flight_time_sec
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column dragon_water_landing
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: dbb6373d-8fb5-4e55-b641-4d10c09004a3
+		summarizeBy: none
+		sourceColumn: dragon_water_landing
+
+		annotation SummarizationSetBy = Automatic
+
+	column dragon_land_landing
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 823bb598-c766-483d-99ef-f7934632651c
+		summarizeBy: none
+		sourceColumn: dragon_land_landing
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_payloads = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
+				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
+				    dbo_dim_payloads = group2spacexDP{[Schema="dbo",Item="dim_payloads"]}[Data]
+				in
+				    dbo_dim_payloads
+
+	annotation PBI_ResultType = Table
+
