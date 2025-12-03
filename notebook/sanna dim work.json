@@ -4,7 +4,7 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "spacexmedium",
+			"referenceName": "spacexlarge",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
@@ -12,12 +12,12 @@
 			"driverCores": 4,
 			"executorMemory": "28g",
 			"executorCores": 4,
-			"numExecutors": 3,
+			"numExecutors": 2,
 			"conf": {
-				"spark.dynamicAllocation.enabled": "true",
-				"spark.dynamicAllocation.minExecutors": "3",
-				"spark.dynamicAllocation.maxExecutors": "3",
-				"spark.autotune.trackingId": "32c639f3-bc48-46ff-aa9d-b385396deba9"
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "cdd1c545-e8d2-454c-a877-19a4409f62b4"
 			}
 		},
 		"metadata": {
@@ -31,10 +31,10 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexmedium",
-				"name": "spacexmedium",
+				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexlarge",
+				"name": "spacexlarge",
 				"type": "Spark",
-				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexmedium",
+				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexlarge",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
@@ -62,7 +62,7 @@
 					"df = spark.table(\"default.dim_payloads\")\n",
 					"df2 = df.select(\"manufacturers\")"
 				],
-				"execution_count": 8
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -76,7 +76,7 @@
 					"#df2.show()\n",
 					"#df2.write.mode(\"overwrite\").saveAsTable(\"default.dim_manufacturer\")"
 				],
-				"execution_count": 18
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -89,7 +89,7 @@
 					"df3 = df3.distinct()\n",
 					"df3.show()"
 				],
-				"execution_count": 19
+				"execution_count": null
 			}
 		]
 	}
