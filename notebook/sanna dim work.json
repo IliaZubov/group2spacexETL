@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "3",
 				"spark.dynamicAllocation.maxExecutors": "3",
-				"spark.autotune.trackingId": "08d8f6b8-dece-425a-abf4-8ca879472d12"
+				"spark.autotune.trackingId": "32c639f3-bc48-46ff-aa9d-b385396deba9"
 			}
 		},
 		"metadata": {
@@ -54,7 +54,7 @@
 					"from pyspark.sql.functions import col, crc32, lit\n",
 					"from pyspark.sql.functions import explode"
 				],
-				"execution_count": 1
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -74,7 +74,7 @@
 					"df2 = df2.dropna(how=\"all\")\n",
 					"df2 = df2.distinct()\n",
 					"#df2.show()\n",
-					"df2.write.mode(\"overwrite\").saveAsTable(\"default.dim_manufacturer\")"
+					"#df2.write.mode(\"overwrite\").saveAsTable(\"default.dim_manufacturer\")"
 				],
 				"execution_count": 18
 			},
