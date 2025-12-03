@@ -1,0 +1,11 @@
+{
+	"name": "SpaceXPowerBI",
+	"properties": {
+		"annotations": [],
+		"type": "PowerBIWorkspace",
+		"typeProperties": {
+			"workspaceID": "d6ca58fa-2af4-4a26-8ed6-6377a16044bb",
+			"tenantID": "e9885073-5c41-4cad-84b0-174903b19bec"
+		}
+	}
+}
