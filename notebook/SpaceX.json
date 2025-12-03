@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "fa0c24cc-6e0a-4104-908f-be2269393b3f"
+				"spark.autotune.trackingId": "14b80252-d3af-4ce9-9894-a345b8484b36"
 			}
 		},
 		"metadata": {
@@ -70,7 +70,7 @@
 					"df_raw = spark.read.json(json_rdd)\n",
 					""
 				],
-				"execution_count": 79
+				"execution_count": 204
 			},
 			{
 				"cell_type": "code",
@@ -116,21 +116,21 @@
 					"    df_spark_launches = df_spark_launches.withColumnRenamed(c, new_c)\n",
 					""
 				],
-				"execution_count": 80
+				"execution_count": 205
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_spark_launches = df_spark_launches.withColumn(\"fairings_ships_id\", explode_outer(\"fairings_ships\"))"
 				],
-				"execution_count": 81
+				"execution_count": 206
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_spark_launches = df_spark_launches.drop(\"fairings_ships\")"
 				],
-				"execution_count": 82
+				"execution_count": 207
 			},
 			{
 				"cell_type": "code",
@@ -140,7 +140,7 @@
 				"source": [
 					"display(df_spark_launches)"
 				],
-				"execution_count": 83
+				"execution_count": 208
 			},
 			{
 				"cell_type": "code",
@@ -172,7 +172,7 @@
 					"\n",
 					"df_spark_launches = rename_columns(df_spark_launches, rename_map)"
 				],
-				"execution_count": 84
+				"execution_count": 209
 			},
 			{
 				"cell_type": "code",
@@ -182,7 +182,7 @@
 				"source": [
 					"display(df_spark_launches)"
 				],
-				"execution_count": 85
+				"execution_count": 210
 			},
 			{
 				"cell_type": "code",
@@ -203,7 +203,7 @@
 					")\n",
 					"display(fact_launches)"
 				],
-				"execution_count": 86
+				"execution_count": 211
 			},
 			{
 				"cell_type": "code",
@@ -219,7 +219,7 @@
 					"\n",
 					"df_cores_raw = spark.read.json(json_rdd)"
 				],
-				"execution_count": 87
+				"execution_count": 212
 			},
 			{
 				"cell_type": "code",
@@ -233,7 +233,7 @@
 					")\n",
 					""
 				],
-				"execution_count": 88
+				"execution_count": 213
 			},
 			{
 				"cell_type": "code",
@@ -242,9 +242,9 @@
 				},
 				"source": [
 					"dim_cores = df_cores_raw.withColumn(\"core_id\", crc32(\"core_id\"))\n",
-					"display(df_dim_cores)"
+					"display(dim_cores)"
 				],
-				"execution_count": 89
+				"execution_count": 214
 			},
 			{
 				"cell_type": "code",
@@ -253,7 +253,7 @@
 					"  .count() \\\n",
 					"  .show()"
 				],
-				"execution_count": 90
+				"execution_count": 215
 			},
 			{
 				"cell_type": "code",
@@ -261,7 +261,7 @@
 					"dim_cores.write.mode(\"overwrite\").saveAsTable(\"default.dim_cores\")\n",
 					"fact_launches.write.mode(\"overwrite\").saveAsTable(\"default.fact_launches\")"
 				],
-				"execution_count": 91
+				"execution_count": 216
 			},
 			{
 				"cell_type": "code",
@@ -276,7 +276,7 @@
 					"\n",
 					"df_dim_launchpads = spark.read.json(rdd)"
 				],
-				"execution_count": 97
+				"execution_count": 217
 			},
 			{
 				"cell_type": "code",
@@ -289,7 +289,7 @@
 					"    .withColumnRenamed(\"status\", \"launchpad_status\")\n",
 					")"
 				],
-				"execution_count": 98
+				"execution_count": 218
 			},
 			{
 				"cell_type": "code",
@@ -300,26 +300,26 @@
 					"dim_launchpads = df_dim_launchpads.withColumn(\"launchpad_id\", crc32(col(\"launchpad_id\")))\n",
 					"display(dim_launchpads)"
 				],
-				"execution_count": 99
+				"execution_count": 219
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"dim_launchpads.write.mode(\"overwrite\").saveAsTable(\"dim_launchpads\")"
 				],
-				"execution_count": 100
+				"execution_count": 220
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"launchpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
-					"response = requests.get(launchpad_url)\n",
-					"landhpad_data = response.json()\n",
+					"landpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
+					"response = requests.get(landpad_url)\n",
+					"landpad_data = response.json()\n",
 					"\n",
 					"rdd = spark.sparkContext.parallelize(landpad_data)\n",
 					"df_dim_landpads = spark.read.json(rdd)"
 				],
-				"execution_count": 111
+				"execution_count": 221
 			},
 			{
 				"cell_type": "code",
@@ -332,18 +332,14 @@
 					"    .withColumnRenamed(\"type\", \"landpad_type\")\n",
 					")"
 				],
-				"execution_count": 112
+				"execution_count": 222
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					"#cols = df_dim_landpads.columns\n",
-					"#new_cols = [\"landpad_id\"] + [c for c in cols if c != \"landpad_id\"]\n",
-					"#df_dim_landpads.columns = df_dim_landpads.columns.select(new_cols)\n",
-					"\n",
 					"dim_landpads = df_dim_landpads.withColumn(\"landpad_id\", crc32(col(\"landpad_id\")))"
 				],
-				"execution_count": 113
+				"execution_count": 223
 			},
 			{
 				"cell_type": "code",
@@ -353,14 +349,14 @@
 				"source": [
 					"display(dim_landpads)"
 				],
-				"execution_count": 114
+				"execution_count": 224
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"dim_landpads.write.mode(\"overwrite\").saveAsTable(\"dim_landpads\")"
 				],
-				"execution_count": 115
+				"execution_count": 225
 			},
 			{
 				"cell_type": "code",
@@ -375,7 +371,7 @@
 					"json_rdd = sc.parallelize([json.dumps(record) for record in response])\n",
 					"df_dim_rockets = spark.read.json(json_rdd)"
 				],
-				"execution_count": 118
+				"execution_count": 226
 			},
 			{
 				"cell_type": "code",
@@ -385,7 +381,7 @@
 				"source": [
 					"display(df_dim_rockets)"
 				],
-				"execution_count": 119
+				"execution_count": 227
 			},
 			{
 				"cell_type": "code",
@@ -408,14 +404,14 @@
 					"    col(\"description\")\n",
 					")"
 				],
-				"execution_count": 121
+				"execution_count": 228
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"dim_rockets = dim_rockets.withColumn(\"rocket_id\", crc32(\"rocket_id\"))"
 				],
-				"execution_count": 124
+				"execution_count": 229
 			},
 			{
 				"cell_type": "code",
@@ -425,14 +421,14 @@
 				"source": [
 					"display(dim_rockets)"
 				],
-				"execution_count": 125
+				"execution_count": 230
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"dim_rockets.write.mode(\"overwrite\").saveAsTable(\"dim_rockets\")"
 				],
-				"execution_count": 126
+				"execution_count": 231
 			},
 			{
 				"cell_type": "code",
@@ -444,7 +440,7 @@
 					"response = requests.get(payload_url)\n",
 					"payload_data = response.json()"
 				],
-				"execution_count": 145
+				"execution_count": 232
 			},
 			{
 				"cell_type": "code",
@@ -489,7 +485,7 @@
 					"df_dim_payloads.head(20)\n",
 					""
 				],
-				"execution_count": 146
+				"execution_count": 233
 			},
 			{
 				"cell_type": "code",
@@ -499,14 +495,14 @@
 					"df_dim_payloads = df_dim_payloads.drop(columns=\"norad_ids\")\n",
 					"df_dim_payloads = df_dim_payloads.drop(columns=[\"semi_major_axis_km\",\"eccentricity\", \"epoch\", \"arg_of_pericenter\", \"inclination_deg\",\"raan\",\"mean_anomaly\",\"period_min\", \"mean_motion\"])"
 				],
-				"execution_count": 147
+				"execution_count": 234
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_dim_payloads = df_dim_payloads.rename(columns={\"launch\": \"launch_id\"})"
 				],
-				"execution_count": 148
+				"execution_count": 235
 			},
 			{
 				"cell_type": "code",
@@ -523,14 +519,14 @@
 					"]\n",
 					""
 				],
-				"execution_count": 149
+				"execution_count": 236
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"df_spark_payloads =  spark.createDataFrame(df_dim_payloads)"
 				],
-				"execution_count": 150
+				"execution_count": 237
 			},
 			{
 				"cell_type": "code",
@@ -538,7 +534,7 @@
 					"df_spark_payloads = df_spark_payloads.withColumn('id', crc32('id'))\n",
 					"df_spark_payloads = df_spark_payloads.withColumn('launch_id', crc32('launch_id'))"
 				],
-				"execution_count": 151
+				"execution_count": 238
 			},
 			{
 				"cell_type": "code",
@@ -550,7 +546,7 @@
 					"df2 = df2.dropna(how=\"all\")\n",
 					"df2 = df2.distinct()"
 				],
-				"execution_count": 152
+				"execution_count": 239
 			},
 			{
 				"cell_type": "code",
@@ -563,7 +559,7 @@
 					"df3 = df3.distinct()\n",
 					"df3.show()"
 				],
-				"execution_count": 153
+				"execution_count": 240
 			},
 			{
 				"cell_type": "code",
@@ -576,7 +572,7 @@
 					"df4 = df4.distinct()\n",
 					"df4.show()"
 				],
-				"execution_count": 154
+				"execution_count": 241
 			},
 			{
 				"cell_type": "code",
@@ -585,7 +581,7 @@
 					"df3.write.mode(\"overwrite\").saveAsTable(\"dim_nationalities\")\n",
 					"df4.write.mode(\"overwrite\").saveAsTable(\"dim_customers\")"
 				],
-				"execution_count": 155
+				"execution_count": 242
 			},
 			{
 				"cell_type": "code",
@@ -595,7 +591,7 @@
 				"source": [
 					"display(df_spark_payloads)"
 				],
-				"execution_count": 156
+				"execution_count": 243
 			},
 			{
 				"cell_type": "code",
@@ -610,7 +606,7 @@
 					"df5 = df5.distinct()\n",
 					"display(df5)"
 				],
-				"execution_count": 161
+				"execution_count": 244
 			},
 			{
 				"cell_type": "code",
@@ -625,7 +621,7 @@
 					"df6 = df6.distinct()\n",
 					"display(df6)"
 				],
-				"execution_count": 162
+				"execution_count": 245
 			},
 			{
 				"cell_type": "code",
@@ -640,7 +636,7 @@
 					"df7 = df7.distinct()\n",
 					"display(df7)"
 				],
-				"execution_count": 163
+				"execution_count": 246
 			},
 			{
 				"cell_type": "code",
@@ -649,7 +645,7 @@
 					"df6.write.mode(\"overwrite\").saveAsTable(\"payloads_nationalities\")\n",
 					"df7.write.mode(\"overwrite\").saveAsTable(\"payloads_customers\")"
 				],
-				"execution_count": 164
+				"execution_count": 247
 			},
 			{
 				"cell_type": "code",
@@ -661,21 +657,21 @@
 					"dim_payloads = dim_payloads.distinct()\n",
 					"display(dim_payloads)"
 				],
-				"execution_count": 169
+				"execution_count": 248
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"dim_payloads.groupBy(\"id\").count().filter(\"count > 1\").show()"
 				],
-				"execution_count": 168
+				"execution_count": 249
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"dim_payloads.write.mode(\"overwrite\").saveAsTable(\"dim_payloads\")"
 				],
-				"execution_count": 170
+				"execution_count": 250
 			}
 		]
 	}
