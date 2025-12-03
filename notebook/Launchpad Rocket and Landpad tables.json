@@ -4,7 +4,7 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "spacexmedium",
+			"referenceName": "spacexlarge",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "cc64000a-3406-4883-bb6d-9a56303c4fc2"
+				"spark.autotune.trackingId": "fd490866-caec-449d-9c47-81324d965681"
 			}
 		},
 		"metadata": {
@@ -31,10 +31,10 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexmedium",
-				"name": "spacexmedium",
+				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexlarge",
+				"name": "spacexlarge",
 				"type": "Spark",
-				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexmedium",
+				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexlarge",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
@@ -101,13 +101,18 @@
 					"df_dim_launchpads.columns = df_dim_launchpads.columns.select(new_cols)\n",
 					"\n",
 					"# Hash the ID column\n",
-					"df_dim_launchpads = df_dim_launchpads.withColumn(\"launchpad_id\", crc32(col(\"launchpad_id\")))"
+					"df_dim_launchpads = df_dim_launchpads.withColumn(\"launchpad_id\", crc32(col(\"launchpad_id\")))\n",
+					"display(df_dim_launchpads)"
 				],
 				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"metadata": {
+					"editable": false,
+					"run_control": {
+						"frozen": true
+					},
 					"collapsed": false
 				},
 				"source": [
@@ -161,12 +166,23 @@
 			{
 				"cell_type": "code",
 				"metadata": {
+					"editable": false,
+					"run_control": {
+						"frozen": true
+					},
 					"collapsed": false
 				},
 				"source": [
 					"# Write to SQL table\n",
 					"df_dim_landpads.write.mode(\"overwrite\").saveAsTable(\"dim_landpads\")\n",
 					"display(df_dim_landpads)"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					""
 				],
 				"execution_count": null
 			},
