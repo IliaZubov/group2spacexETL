@@ -1,0 +1,215 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "cee709cfdca096ca7934",
+  "position": {
+    "x": 687.00564971751407,
+    "y": 285.13317191283289,
+    "z": 2,
+    "height": 413.2364810330912,
+    "width": 592.99435028248581,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Altitude",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " ↑"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " 40000 km                              • Geostationary Transfer Orbit (GTO)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |                                  ~200 km → ~35,786 km (elliptical)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "35786 km ----------------------------• Geostationary Orbit"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "20000 km                     • Medium Earth Orbit (MEO)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |                        ~2,000 – 20,000 km"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  800 km              • Sun-Synchronous Orbit (SSO)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |                 ~600 – 800 km (LEO but polar)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  550 km           • ISS (International Space Station)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |                ~400 – 420 km"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  300 km      • Low Earth Orbit (LEO)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |         ~160 – 2,000 km"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  200 km   • Very Low Earth Orbit (VLEO)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |      ~160 – 300 km"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         |"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    0 km|-------------------------------------------------- "
+                  },
+                  {
+                    "value": "Earth Surface",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "isHidden": true
+}
