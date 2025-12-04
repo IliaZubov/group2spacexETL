@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "0c98d905189067ae05c7",
   "position": {
-    "x": 0,
-    "y": 401.90294957183636,
+    "x": 4.615384615384615,
+    "y": 365.38461538461536,
     "z": 0,
-    "height": 278.89628924833494,
-    "width": 667.40247383444341,
-    "tabOrder": 1
+    "height": 350,
+    "width": 635.38461538461536,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -47,11 +47,11 @@
                       "Property": "flight_number"
                     }
                   },
-                  "Function": 5
+                  "Function": 2
                 }
               },
               "queryRef": "Sum(fact_launches.flight_number)",
-              "nativeQueryRef": "Count of flight_number"
+              "nativeQueryRef": "Count of flight_number1"
             }
           ]
         }
@@ -71,7 +71,7 @@
                     "Property": "flight_number"
                   }
                 },
-                "Function": 5
+                "Function": 2
               }
             },
             "direction": "Descending"
@@ -176,7 +176,8 @@
               }
             }
           ]
-        }
+        },
+        "howCreated": "User"
       },
       {
         "name": "aacab8437296e04907ba",
@@ -249,6 +250,25 @@
             }
           ]
         }
+      },
+      {
+        "name": "b02d4309b42be3720427",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_launches"
+                  }
+                },
+                "Property": "flight_number"
+              }
+            },
+            "Function": 2
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

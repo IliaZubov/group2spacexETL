@@ -80,6 +80,12 @@ table dim_cores
 
 		annotation SummarizationSetBy = Automatic
 
+	column core_reused = IF(dim_cores[reuse_count] > 0, "Reused", "Disposed")
+		lineageTag: 0f0fe6d6-1870-46b0-bbd1-5c6145ff5760
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_cores = m
 		mode: import
 		source =

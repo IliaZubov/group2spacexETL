@@ -1,6 +1,18 @@
 table dim_payloads
 	lineageTag: 587d5430-fdda-4c19-b3d4-286aa9df411d
 
+	measure dragon_capsule_landing_rate = ```
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(dim_payloads[dragon_capsule]), 
+			        dim_payloads[dragon_water_landing] = TRUE()),
+			        CALCULATE(
+			            DISTINCTCOUNT(dim_payloads[dragon_capsule])
+			        ))
+			```
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: b4a2567f-5c21-453c-bc41-79766aee2cbe
+
 	column id
 		dataType: int64
 		formatString: 0

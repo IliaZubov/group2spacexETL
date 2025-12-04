@@ -1,0 +1,74 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "66d810e8d3407c470810",
+  "position": {
+    "x": 1008.4615384615385,
+    "y": 4.615384615384615,
+    "z": 3001,
+    "height": 164.61538461538461,
+    "width": 265.38461538461536,
+    "tabOrder": 3001
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_payloads"
+                    }
+                  },
+                  "Property": "dragon_capsule_landing_rate"
+                }
+              },
+              "queryRef": "dim_payloads.dragon_capsule_landing_rate",
+              "nativeQueryRef": "dragon_capsule_landing_rate"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dim_payloads"
+                  }
+                },
+                "Property": "dragon_capsule_landing_rate"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "0c901c4f1c929ed752ad",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_payloads"
+              }
+            },
+            "Property": "dragon_capsule_landing_rate"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
