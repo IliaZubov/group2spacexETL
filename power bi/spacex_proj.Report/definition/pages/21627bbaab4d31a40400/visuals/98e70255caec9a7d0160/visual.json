@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "98e70255caec9a7d0160",
   "position": {
-    "x": 1083.0265848670756,
-    "y": 56.932515337423311,
+    "x": 158.97183098591552,
+    "y": 97.352112676056336,
     "z": 1000,
-    "height": 85.725971370143156,
-    "width": 193.04703476482618,
-    "tabOrder": 1000
+    "height": 85.814084507042253,
+    "width": 151.43661971830986,
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "card",
@@ -80,7 +80,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "9D"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
@@ -94,8 +101,9 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "Literal": {
-                      "Value": "'#005288'"
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
                     }
                   }
                 }
@@ -139,7 +147,7 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "100D"
                 }
               }
             }
@@ -159,7 +167,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -180,6 +188,7 @@
     },
     "drillFilterOtherVisuals": true
   },
+  "parentGroupName": "ff4a6f707b504c905526",
   "filterConfig": {
     "filters": [
       {
@@ -256,7 +265,7 @@
         }
       },
       {
-        "name": "f79203b603b05960392c",
+        "name": "9f39f714de8c71ad0198",
         "field": {
           "Aggregation": {
             "Expression": {

@@ -1,12 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "d04ed0f89091922dbc48",
   "position": {
     "x": 4,
     "y": 2,
     "z": 0,
     "height": 50,
-    "width": 1272
+    "width": 1272,
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "textbox",
@@ -20,7 +21,6 @@
                   {
                     "value": "SpaceX Historical Launch Analysis (2006–2022)",
                     "textStyle": {
-                      "fontWeight": "bold",
                       "fontSize": "20pt",
                       "color": "#005288"
                     }

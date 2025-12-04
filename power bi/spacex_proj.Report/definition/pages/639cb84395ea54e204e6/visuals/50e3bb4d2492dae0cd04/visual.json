@@ -1,12 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "50e3bb4d2492dae0cd04",
   "position": {
     "x": 411.2340425531915,
     "y": 7.48936170212766,
     "z": 1000,
     "height": 129.36170212765958,
-    "width": 251.2340425531915
+    "width": 251.2340425531915,
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "card",
@@ -61,28 +62,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "0ec2d15d82379370068d",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "dim_payloads"
-                  }
-                },
-                "Property": "mass_kg"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 4",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [rocket_id]\n,[name]\n,[rocket_type]\n,[active]\n,[stages]\n,[boosters]\n,[cost_per_launch]\n,[success_rate_pct]\n,[first_flight]\n,[country]\n,[company]\n,[description]\n FROM [default].[dbo].[dim_rockets]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "default",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

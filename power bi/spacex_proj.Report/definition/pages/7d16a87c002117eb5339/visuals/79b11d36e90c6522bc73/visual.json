@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "79b11d36e90c6522bc73",
   "position": {
     "x": 110.29787234042553,
@@ -102,48 +102,6 @@
         "sort": [
           {
             "field": {
-              "Aggregation": {
-                "Expression": {
-                  "Column": {
-                    "Expression": {
-                      "SourceRef": {
-                        "Entity": "dim_payloads"
-                      }
-                    },
-                    "Property": "mass_kg"
-                  }
-                },
-                "Function": 0
-              }
-            },
-            "direction": "Descending"
-          }
-        ]
-      }
-    },
-    "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "c051d5161a95d116b944",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_success"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "c3769312d3c700b20809",
-        "field": {
-          "Aggregation": {
-            "Expression": {
               "Column": {
                 "Expression": {
                   "SourceRef": {
@@ -153,58 +111,11 @@
                 "Property": "core_landing_success"
               }
             },
-            "Function": 5
+            "direction": "Descending"
           }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "3c47cf338b9b90b12050",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_type"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "c69b1c7127b0231507d5",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "dim_payloads"
-                  }
-                },
-                "Property": "mass_kg"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "d03ad67ab83b5a102348",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_payloads"
-              }
-            },
-            "Property": "orbit"
-          }
-        },
-        "type": "Categorical"
+        ]
       }
-    ]
+    },
+    "drillFilterOtherVisuals": true
   }
 }
