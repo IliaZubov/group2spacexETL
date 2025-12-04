@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
-  "name": "c1c2d32f42960e440316",
+  "name": "33d786293a3c99526d15",
   "position": {
-    "x": 849.532293986637,
-    "y": 72.694877505567931,
-    "z": 6,
-    "height": 191.00222717149222,
-    "width": 182.44988864142539,
-    "tabOrder": 6
+    "x": 1032,
+    "y": 73,
+    "z": 7,
+    "height": 179,
+    "width": 215,
+    "tabOrder": 7
   },
   "visual": {
     "visualType": "slicer",
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "dim_rockets"
+                      "Entity": "dim_payloads"
                     }
                   },
-                  "Property": "name"
+                  "Property": "type"
                 }
               },
-              "queryRef": "dim_rockets.name",
-              "nativeQueryRef": "name",
+              "queryRef": "dim_payloads.type",
+              "nativeQueryRef": "type",
               "active": true
             }
           ]
@@ -59,15 +59,15 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "f5f3ad6006303e3a96ae",
+        "name": "537b162a48459cb90227",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "dim_rockets"
+                "Entity": "dim_payloads"
               }
             },
-            "Property": "name"
+            "Property": "type"
           }
         },
         "type": "Categorical"
