@@ -1,0 +1,32 @@
+table dim_manufacturers
+	lineageTag: dfc51b74-0398-4061-a94c-2bf93954bd9c
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 647992f8-ea5c-4808-a194-49534c3120cb
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column manufacturer
+		dataType: string
+		lineageTag: 80d9dcc1-89bd-4f63-8761-ca61f080b600
+		summarizeBy: none
+		sourceColumn: manufacturer
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_manufacturers = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
+				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
+				    dbo_dim_manufacturers = group2spacexDP{[Schema="dbo",Item="dim_manufacturers"]}[Data]
+				in
+				    dbo_dim_manufacturers
+
+	annotation PBI_ResultType = Table
+

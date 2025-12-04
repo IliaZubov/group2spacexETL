@@ -1,0 +1,244 @@
+table fact_launches
+	lineageTag: d160c2ff-2ef4-4972-8f61-c25c56aa7fc1
+
+	column launch_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c488725f-c9ba-4a57-91e8-666356cc1cee
+		summarizeBy: sum
+		sourceColumn: launch_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column flight_number
+		dataType: int64
+		formatString: 0
+		lineageTag: f714d456-9eeb-4bc4-92f0-40ef7be3f447
+		summarizeBy: sum
+		sourceColumn: flight_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column launch_name
+		dataType: string
+		lineageTag: a735f041-4b8d-48c0-b5ed-6c62573a83ef
+		summarizeBy: none
+		sourceColumn: launch_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column rocket_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 784c7674-dac9-486d-bf24-4ed3946edf6e
+		summarizeBy: none
+		sourceColumn: rocket_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column launch_success
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c909c512-c18c-4759-b3d8-aa8f3bb9e413
+		summarizeBy: none
+		sourceColumn: launch_success
+
+		annotation SummarizationSetBy = Automatic
+
+	column launch_details
+		dataType: string
+		lineageTag: c04cb552-0d3b-4244-8f12-eefb63f924e7
+		summarizeBy: none
+		sourceColumn: launch_details
+
+		annotation SummarizationSetBy = Automatic
+
+	column launchpad_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 99b130ca-a0f0-4dd9-8f41-0c915c292a8a
+		summarizeBy: none
+		sourceColumn: launchpad_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column fairings_reused
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b0bb4caa-026e-4381-8832-6c63eae1097f
+		summarizeBy: none
+		sourceColumn: fairings_reused
+
+		annotation SummarizationSetBy = Automatic
+
+	column fairings_recovered
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e4ac329a-7d5e-4e31-8939-af6dae33066c
+		summarizeBy: none
+		sourceColumn: fairings_recovered
+
+		annotation SummarizationSetBy = Automatic
+
+	column payload_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c292ebdf-a684-481f-a0e3-36a30b82949c
+		summarizeBy: none
+		sourceColumn: payload_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 79428c3d-0059-4087-ad0f-c04f3c6f5ae9
+		summarizeBy: none
+		sourceColumn: core_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_flight
+		dataType: int64
+		formatString: 0
+		lineageTag: 95ccc3e1-6316-46cf-9bbd-2b43edb36ad4
+		summarizeBy: sum
+		sourceColumn: core_flight
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_gridfins
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3bc326ec-26b8-43ba-8f57-e5b638088506
+		summarizeBy: none
+		sourceColumn: core_gridfins
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_legs
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b76c0964-989a-45e6-9ffb-f9c1fe7bd276
+		summarizeBy: none
+		sourceColumn: core_legs
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_reused
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6bf9dd2f-9484-4b62-b738-712e93b22a16
+		summarizeBy: none
+		sourceColumn: core_reused
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_landing_attempt
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d91f9c10-4693-488c-a80d-f07118e37d79
+		summarizeBy: none
+		sourceColumn: core_landing_attempt
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_landing_success
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 016c9d5e-6f6e-4bd8-b6ef-c100ed1f7e32
+		summarizeBy: none
+		sourceColumn: core_landing_success
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_landing_type
+		dataType: string
+		lineageTag: 2b8c05a1-3610-404e-81e2-4e3c566dc3a3
+		summarizeBy: none
+		sourceColumn: core_landing_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column failure_reason
+		dataType: string
+		lineageTag: 0584a950-9656-4eff-87d5-5832a06cab5b
+		summarizeBy: none
+		sourceColumn: failure_reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column failure_time
+		dataType: int64
+		formatString: 0
+		lineageTag: d4b98e6b-7ba2-4cb5-ae5c-797559fd4d04
+		summarizeBy: sum
+		sourceColumn: failure_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column failure_altitude
+		dataType: int64
+		formatString: 0
+		lineageTag: c2738ef4-55f0-49f8-a016-f6ec8606cba0
+		summarizeBy: sum
+		sourceColumn: failure_altitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column fairings_ships_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3959d851-69c5-4485-8186-702adb63537f
+		summarizeBy: sum
+		sourceColumn: fairings_ships_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column core_landpad_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c7862327-a9c7-45e0-b880-e0a3da84dcc7
+		summarizeBy: none
+		sourceColumn: core_landpad_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column launch_date_utc
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 4a72abe0-f30c-4e26-ba7e-038cb54793c3
+		summarizeBy: none
+		sourceColumn: launch_date_utc
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'launch_date_utc.2'
+		dataType: string
+		lineageTag: 466448b7-d02b-4cdc-9c79-3030904e62ba
+		summarizeBy: none
+		sourceColumn: launch_date_utc.2
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_launches = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
+				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
+				    dbo_fact_launches = group2spacexDP{[Schema="dbo",Item="fact_launches"]}[Data],
+				    #"Split Column by Delimiter" = Table.SplitColumn(dbo_fact_launches, "launch_date_utc", Splitter.SplitTextByDelimiter("T", QuoteStyle.Csv), {"launch_date_utc.1", "launch_date_utc.2"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"launch_date_utc.1", type date}, {"launch_date_utc.2", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"launch_date_utc.1", "launch_date_utc"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,117 @@
+table dim_rockets
+	lineageTag: 7519b19e-f6b8-4bf8-8d6c-67079977b0b6
+
+	column rocket_id
+		dataType: int64
+		formatString: 0
+		lineageTag: cc5e363c-829b-4512-8b16-a63dd5079e24
+		summarizeBy: none
+		sourceColumn: rocket_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: b7b70dd4-a4dd-4b34-b247-69c09afaea79
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: 8563bd82-b6be-4f3c-a943-69c2d5b53078
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column active
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e477ebc6-a16a-421d-958a-bace0df751bf
+		summarizeBy: none
+		sourceColumn: active
+
+		annotation SummarizationSetBy = Automatic
+
+	column stages
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b95c9af-8be9-4f89-a2f6-025137e8f723
+		summarizeBy: none
+		sourceColumn: stages
+
+		annotation SummarizationSetBy = Automatic
+
+	column boosters
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f9dedab-b38e-4bba-bd1a-3cd16f67314c
+		summarizeBy: none
+		sourceColumn: boosters
+
+		annotation SummarizationSetBy = Automatic
+
+	column cost_per_launch
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e37ad30-f87c-4726-9322-7ebff108b6fc
+		summarizeBy: none
+		sourceColumn: cost_per_launch
+
+		annotation SummarizationSetBy = Automatic
+
+	column success_rate_pct
+		dataType: int64
+		formatString: 0
+		lineageTag: 47b468bd-bb12-433e-a5b4-31cf74dc60aa
+		summarizeBy: none
+		sourceColumn: success_rate_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_flight
+		dataType: string
+		lineageTag: d0ee294e-f9ce-4af0-b852-963775cc4915
+		summarizeBy: none
+		sourceColumn: first_flight
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 28a2314b-d599-4044-b8ae-4436ff3e8b09
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column company
+		dataType: string
+		lineageTag: f147c61e-93ef-4623-ae99-007905b859f4
+		summarizeBy: none
+		sourceColumn: company
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 1b076838-dd55-4f65-a592-6de85b61365e
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_rockets = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
+				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
+				    dbo_dim_rockets = group2spacexDP{[Schema="dbo",Item="dim_rockets"]}[Data]
+				in
+				    dbo_dim_rockets
+
+	annotation PBI_ResultType = Table
+

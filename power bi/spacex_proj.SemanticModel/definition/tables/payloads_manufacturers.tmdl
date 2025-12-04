@@ -1,0 +1,33 @@
+table payloads_manufacturers
+	lineageTag: f2f3f7b1-d77e-42fe-b4fe-0ac9a1e968d5
+
+	column payloads_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3ff53671-61f8-4720-b699-1a1638457a80
+		summarizeBy: none
+		sourceColumn: payloads_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column manufacturer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 50df8a9a-9da9-4b94-8e51-392240de907a
+		summarizeBy: none
+		sourceColumn: manufacturer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition payloads_manufacturers = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
+				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
+				    dbo_payloads_manufacturers = group2spacexDP{[Schema="dbo",Item="payloads_manufacturers"]}[Data]
+				in
+				    dbo_payloads_manufacturers
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "spacex_proj"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1b81a568-d86e-4bbc-a1c5-df1225ef03c8"
+  }
+}

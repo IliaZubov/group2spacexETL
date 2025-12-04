@@ -1,0 +1,200 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "name": "1d72203cb2b1bbac4678",
+  "position": {
+    "x": 698.44097995545656,
+    "y": 458.97550111358578,
+    "z": 5,
+    "height": 233.76391982182628,
+    "width": 548.77505567928733,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_launches"
+                    }
+                  },
+                  "Property": "core_landpad_id"
+                }
+              },
+              "queryRef": "fact_launches.core_landpad_id",
+              "nativeQueryRef": "core_landpad_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_launches"
+                    }
+                  },
+                  "Property": "core_landing_type"
+                }
+              },
+              "queryRef": "fact_launches.core_landing_type",
+              "nativeQueryRef": "core_landing_type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_launches"
+                    }
+                  },
+                  "Property": "core_landing_attempt"
+                }
+              },
+              "queryRef": "fact_launches.core_landing_attempt",
+              "nativeQueryRef": "core_landing_attempt"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_launches"
+                    }
+                  },
+                  "Property": "core_landing_success"
+                }
+              },
+              "queryRef": "fact_launches.core_landing_success",
+              "nativeQueryRef": "core_landing_success"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_launches"
+                  }
+                },
+                "Property": "core_landpad_id"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "accessibility": [
+        {
+          "properties": {
+            "rowWithReferenceText": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Default'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "c8c96f5056a02ce88c87",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "core_landing_attempt"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "0d6776a602b04aeed987",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "core_landing_success"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "d4b6ab3f160450492830",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "core_landpad_id"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a607710d875caee2b025",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "core_landing_type"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

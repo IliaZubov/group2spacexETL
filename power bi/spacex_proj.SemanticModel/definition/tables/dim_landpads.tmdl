@@ -1,0 +1,118 @@
+table dim_landpads
+	lineageTag: 6644fb29-3df0-4ecf-be6b-304d705d1f04
+
+	column details
+		dataType: string
+		lineageTag: bbd32eb4-7242-402f-97ec-f1a28a636c27
+		summarizeBy: none
+		sourceColumn: details
+
+		annotation SummarizationSetBy = Automatic
+
+	column full_name
+		dataType: string
+		lineageTag: 1b7e52e5-319d-48b4-b813-bb8b789c0e00
+		summarizeBy: none
+		sourceColumn: full_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column landpad_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d5a74467-5c13-4363-9c1f-954ee2b45038
+		summarizeBy: none
+		sourceColumn: landpad_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column landing_attempts
+		dataType: int64
+		formatString: 0
+		lineageTag: ccfc1dad-e015-4932-9f45-8d2a5cc7ebb3
+		summarizeBy: none
+		sourceColumn: landing_attempts
+
+		annotation SummarizationSetBy = Automatic
+
+	column landing_successes
+		dataType: int64
+		formatString: 0
+		lineageTag: 0eba0d2b-47e6-437a-a912-525637dd4fde
+		summarizeBy: none
+		sourceColumn: landing_successes
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: 67b07afa-2722-4672-bc50-07723e04f2a1
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column locality
+		dataType: string
+		lineageTag: af974b60-9e48-4ed2-afe8-9247a5e03744
+		summarizeBy: none
+		sourceColumn: locality
+
+		annotation SummarizationSetBy = Automatic
+
+	column longitude
+		dataType: double
+		lineageTag: 299df952-2532-4145-9ba9-d8f74a8d0f10
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column landpad_name
+		dataType: string
+		lineageTag: 1c9cd438-7a40-48bb-874e-a944d82bee1e
+		summarizeBy: none
+		sourceColumn: landpad_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: 9b680427-3814-44e9-b26a-5965af96c25a
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: bdae07b0-8f00-4e7a-86ff-7c8a478b3e94
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column landpad_type
+		dataType: string
+		lineageTag: dd49d346-e025-446f-b600-fa4a718c08d4
+		summarizeBy: none
+		sourceColumn: landpad_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_landpads = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
+				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
+				    dbo_dim_landpads = group2spacexDP{[Schema="dbo",Item="dim_landpads"]}[Data]
+				in
+				    dbo_dim_landpads
+
+	annotation PBI_ResultType = Table
+

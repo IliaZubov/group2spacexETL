@@ -1,0 +1,35 @@
+table payloads_customers
+	lineageTag: 291a063c-6437-456f-bd8c-329ae27c0b87
+
+	column payloads_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 80c2c4f6-40bc-4f3e-89c0-0c919fab763c
+		summarizeBy: none
+		sourceColumn: payloads_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 332fbfe0-e5a8-4a42-9a74-0bad836c997f
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition payloads_customers = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
+				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
+				    dbo_payloads_customers = group2spacexDP{[Schema="dbo",Item="payloads_customers"]}[Data]
+				in
+				    dbo_payloads_customers
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

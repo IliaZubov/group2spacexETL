@@ -1,0 +1,35 @@
+table payloads_nationalities
+	lineageTag: 81cef9ed-cd8a-4f20-8928-080dd1802ac6
+
+	column payloads_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 78c81dce-3b07-4983-997d-36e89d884477
+		summarizeBy: none
+		sourceColumn: payloads_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nationality_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e14667c3-9c87-4250-a5f1-8ccbd0b5f041
+		summarizeBy: none
+		sourceColumn: nationality_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition payloads_nationalities = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
+				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
+				    dbo_payloads_nationalities = group2spacexDP{[Schema="dbo",Item="payloads_nationalities"]}[Data]
+				in
+				    dbo_payloads_nationalities
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

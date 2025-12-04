@@ -1,0 +1,210 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "name": "79b11d36e90c6522bc73",
+  "position": {
+    "x": 110.29787234042553,
+    "y": 17.702127659574469,
+    "z": 0,
+    "height": 297.531914893617,
+    "width": 659.063829787234,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_launches"
+                    }
+                  },
+                  "Property": "core_landing_success"
+                }
+              },
+              "queryRef": "fact_launches.core_landing_success",
+              "nativeQueryRef": "core_landing_success"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_launches"
+                        }
+                      },
+                      "Property": "core_landing_success"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "CountNonNull(fact_launches.core_landing_success)",
+              "nativeQueryRef": "Count of core_landing_success"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_launches"
+                    }
+                  },
+                  "Property": "core_landing_type"
+                }
+              },
+              "queryRef": "fact_launches.core_landing_type",
+              "nativeQueryRef": "core_landing_type"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dim_payloads"
+                        }
+                      },
+                      "Property": "mass_kg"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(dim_payloads.mass_kg)",
+              "nativeQueryRef": "Sum of mass_kg"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_payloads"
+                    }
+                  },
+                  "Property": "orbit"
+                }
+              },
+              "queryRef": "dim_payloads.orbit",
+              "nativeQueryRef": "orbit"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "dim_payloads"
+                      }
+                    },
+                    "Property": "mass_kg"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "c051d5161a95d116b944",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "core_landing_success"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c3769312d3c700b20809",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_launches"
+                  }
+                },
+                "Property": "core_landing_success"
+              }
+            },
+            "Function": 5
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3c47cf338b9b90b12050",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "core_landing_type"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c69b1c7127b0231507d5",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dim_payloads"
+                  }
+                },
+                "Property": "mass_kg"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d03ad67ab83b5a102348",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_payloads"
+              }
+            },
+            "Property": "orbit"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}
