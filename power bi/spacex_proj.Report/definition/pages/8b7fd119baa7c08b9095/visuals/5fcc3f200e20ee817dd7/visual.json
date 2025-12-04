@@ -1,13 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "5fcc3f200e20ee817dd7",
   "position": {
-    "x": 1031.9821826280624,
-    "y": 252.29398663697106,
-    "z": 4,
-    "height": 173.89755011135858,
-    "width": 215.23385300668153,
-    "tabOrder": 4
+    "x": 186.15086098682761,
+    "y": 84.579541798561465,
+    "z": 4000,
+    "height": 93.72512395775864,
+    "width": 126.61648002876765
   },
   "visual": {
     "visualType": "card",
@@ -61,12 +60,41 @@
         "isDefaultSort": true
       }
     },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "27D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "drillFilterOtherVisuals": true
   },
+  "parentGroupName": "83113fab703c50348c79",
   "filterConfig": {
     "filters": [
       {
-        "name": "63025221c6b75e0e322a",
+        "name": "513a2519459624b0e4dc",
         "field": {
           "Aggregation": {
             "Expression": {

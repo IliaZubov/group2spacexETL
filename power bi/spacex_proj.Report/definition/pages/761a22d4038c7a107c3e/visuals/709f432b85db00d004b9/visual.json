@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "709f432b85db00d004b9",
   "position": {
-    "x": 9.72644376899696,
-    "y": 0,
+    "x": 4.9042145593869737,
+    "y": 4.9042145593869737,
     "z": 1000,
-    "height": 280.1215805471125,
-    "width": 481.45896656534956,
+    "height": 280.24083196496991,
+    "width": 481.31362889983581,
     "tabOrder": 0
   },
   "visual": {
@@ -47,11 +47,11 @@
                       "Property": "flight_number"
                     }
                   },
-                  "Function": 5
+                  "Function": 2
                 }
               },
               "queryRef": "CountNonNull(fact_launches.flight_number)",
-              "nativeQueryRef": "Count of flight_number"
+              "nativeQueryRef": "Count of flight_number1"
             }
           ]
         }
@@ -71,7 +71,7 @@
                     "Property": "flight_number"
                   }
                 },
-                "Function": 5
+                "Function": 2
               }
             },
             "direction": "Descending"
@@ -81,5 +81,42 @@
       }
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "8e7dc6843cbc3c3d4072",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_payloads"
+              }
+            },
+            "Property": "type"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "57cfd4154257b77a5736",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_launches"
+                  }
+                },
+                "Property": "flight_number"
+              }
+            },
+            "Function": 2
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

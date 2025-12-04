@@ -44,16 +44,6 @@ table dim_landpads
 
 		annotation SummarizationSetBy = Automatic
 
-	column latitude
-		dataType: double
-		lineageTag: 67b07afa-2722-4672-bc50-07723e04f2a1
-		summarizeBy: none
-		sourceColumn: latitude
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column locality
 		dataType: string
 		lineageTag: af974b60-9e48-4ed2-afe8-9247a5e03744
@@ -61,16 +51,6 @@ table dim_landpads
 		sourceColumn: locality
 
 		annotation SummarizationSetBy = Automatic
-
-	column longitude
-		dataType: double
-		lineageTag: 299df952-2532-4145-9ba9-d8f74a8d0f10
-		summarizeBy: none
-		sourceColumn: longitude
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column landpad_name
 		dataType: string
@@ -104,15 +84,52 @@ table dim_landpads
 
 		annotation SummarizationSetBy = Automatic
 
+	column landtype_type_text = IF(dim_landpads[landpad_type] = "RTLS", "Land", "Ocean")
+		lineageTag: f53105c9-6794-4f2d-8f83-a1ad81a5bb72
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: 7cd35056-757b-4683-b818-30be4036e252
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column longitude
+		dataType: double
+		lineageTag: f64960cd-b8f9-4716-a5ab-f79e2cde7da5
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition dim_landpads = m
 		mode: import
 		source =
 				let
 				    Source = Sql.Databases("group2spacex.sql.azuresynapse.net", [CreateNavigationProperties=false]),
 				    group2spacexDP = Source{[Name="group2spacexDP"]}[Data],
-				    dbo_dim_landpads = group2spacexDP{[Schema="dbo",Item="dim_landpads"]}[Data]
+				    dbo_dim_landpads = group2spacexDP{[Schema="dbo",Item="dim_landpads"]}[Data],
+				    #"Sorted Rows" = Table.Sort(dbo_dim_landpads,{{"landpad_type", Order.Ascending}}),
+				    #"Added Custom" = Table.AddColumn(#"Sorted Rows", "Custom", each if [locality] = "Port Canaveral" then "28,4104" else [latitude]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Custom", type number}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"latitude"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Custom", "latitude"}}),
+				    #"Added Custom1" = Table.AddColumn(#"Renamed Columns", "Custom", each if [locality] = "Port Canaveral" then "-80,6188" else [longitude]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom1",{{"Custom", type number}}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Changed Type1",{"longitude"}),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Removed Columns1",{{"Custom", "longitude"}})
 				in
-				    dbo_dim_landpads
+				    #"Renamed Columns1"
 
 	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
 

@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
-  "name": "1d72203cb2b1bbac4678",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "ad280a4f03d88b8c63ae",
   "position": {
-    "x": 698.44097995545656,
-    "y": 458.97550111358578,
-    "z": 5,
-    "height": 233.76391982182628,
-    "width": 548.77505567928733,
-    "tabOrder": 5
+    "x": 690.79365079365084,
+    "y": 86.174055829228251,
+    "z": 1001,
+    "height": 234.00109469074988,
+    "width": 547.87082649151614,
+    "tabOrder": 1001
   },
   "visual": {
     "visualType": "tableEx",
@@ -84,10 +84,10 @@
                     "Entity": "fact_launches"
                   }
                 },
-                "Property": "core_landpad_id"
+                "Property": "core_landing_type"
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
         ]
       }
@@ -140,35 +140,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "c8c96f5056a02ce88c87",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_attempt"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "0d6776a602b04aeed987",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_success"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "d4b6ab3f160450492830",
+        "name": "48b2d99691b8a56638ed",
         "field": {
           "Column": {
             "Expression": {
@@ -182,7 +154,7 @@
         "type": "Advanced"
       },
       {
-        "name": "a607710d875caee2b025",
+        "name": "8796c9cae3b74aebdd38",
         "field": {
           "Column": {
             "Expression": {
@@ -191,6 +163,34 @@
               }
             },
             "Property": "core_landing_type"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "1c7fd93f49ebb86b0085",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "core_landing_attempt"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c3809734c646e406ad31",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "core_landing_success"
           }
         },
         "type": "Categorical"

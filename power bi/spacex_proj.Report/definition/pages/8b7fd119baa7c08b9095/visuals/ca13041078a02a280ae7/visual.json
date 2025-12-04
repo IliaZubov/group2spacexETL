@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "ca13041078a02a280ae7",
   "position": {
-    "x": 607.21603563474389,
-    "y": 32.783964365256125,
-    "z": 2,
-    "height": 109.75501113585746,
-    "width": 163.91982182628064,
-    "tabOrder": 2
+    "x": 431.57088122605364,
+    "y": 61.652983032293378,
+    "z": 2000,
+    "height": 109.29392446633827,
+    "width": 163.24028461959497,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "card",
@@ -66,7 +66,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "54d53f344ba81a39ab7e",
+        "name": "c78fde95231530d29240",
         "field": {
           "Aggregation": {
             "Expression": {
