@@ -1,6 +1,18 @@
 table fact_launches
 	lineageTag: d160c2ff-2ef4-4972-8f61-c25c56aa7fc1
 
+	measure core_landind_success_rate = ```
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(fact_launches[flight_number]), 
+			        fact_launches[core_landing_success] = TRUE()),
+			        DISTINCTCOUNT(fact_launches[flight_number]) 
+			        ) * 100
+			```
+		lineageTag: f67b359f-3e45-422a-a096-3f4deff552c0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column launch_id
 		dataType: int64
 		formatString: 0

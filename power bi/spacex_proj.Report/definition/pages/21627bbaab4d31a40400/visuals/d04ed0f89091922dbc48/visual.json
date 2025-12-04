@@ -21,7 +21,6 @@
                   {
                     "value": "SpaceX Historical Launch Analysis (2006–2022)",
                     "textStyle": {
-                      "fontWeight": "bold",
                       "fontSize": "20pt",
                       "color": "#005288"
                     }
