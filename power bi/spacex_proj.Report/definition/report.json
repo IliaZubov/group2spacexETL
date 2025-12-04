@@ -37,6 +37,22 @@
           "type": "BaseTheme"
         }
       ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "SpaceX-Simbolo38321252393480987.jpg",
+          "path": "SpaceX-Simbolo38321252393480987.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "station6611074853239691.png",
+          "path": "station6611074853239691.png",
+          "type": "Image"
+        }
+      ]
     }
   ],
   "settings": {

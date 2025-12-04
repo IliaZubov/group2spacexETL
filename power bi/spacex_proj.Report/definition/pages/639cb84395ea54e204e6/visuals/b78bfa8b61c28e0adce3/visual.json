@@ -4,9 +4,10 @@
   "position": {
     "x": 14.978723404255319,
     "y": 367.65957446808511,
-    "z": 507,
+    "z": 5000,
     "height": 316.59574468085106,
-    "width": 616.17021276595744
+    "width": 616.17021276595744,
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "tableEx",
@@ -64,37 +65,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "df7399c3dbcd8677597c",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_payloads"
-              }
-            },
-            "Property": "name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "1592205b6013a77e8eb3",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_payloads"
-              }
-            },
-            "Property": "type"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

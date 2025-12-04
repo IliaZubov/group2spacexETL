@@ -1,56 +1,19 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "0b356b2b32eed6d56eeb",
+  "name": "98e70255caec9a7d0160",
   "position": {
-    "x": 658.38297872340422,
-    "y": 398.29787234042556,
-    "z": 4000,
-    "height": 316.59574468085106,
-    "width": 616.17021276595744,
-    "tabOrder": 2000
+    "x": 1083.0265848670756,
+    "y": 56.932515337423311,
+    "z": 1000,
+    "height": 85.725971370143156,
+    "width": 193.04703476482618,
+    "tabOrder": 1000
   },
   "visual": {
-    "visualType": "columnChart",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "DateTable"
-                    }
-                  },
-                  "Property": "Year"
-                }
-              },
-              "queryRef": "DateTable.Year",
-              "nativeQueryRef": "Year",
-              "active": true
-            }
-          ]
-        },
-        "Series": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "fact_launches"
-                    }
-                  },
-                  "Property": "launch_success"
-                }
-              },
-              "queryRef": "fact_launches.launch_success",
-              "nativeQueryRef": "launch_success"
-            }
-          ]
-        },
-        "Y": {
+        "Values": {
           "projections": [
             {
               "field": {
@@ -69,7 +32,8 @@
                 }
               },
               "queryRef": "Sum(fact_launches.flight_number)",
-              "nativeQueryRef": "Count of flight_number"
+              "nativeQueryRef": "Total Launches",
+              "displayName": "Total Launches"
             }
           ]
         }
@@ -99,20 +63,24 @@
       }
     },
     "objects": {
-      "valueAxis": [
+      "categoryLabels": [
         {
           "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#005288'"
+                    }
+                  }
                 }
               }
             },
-            "showAxisTitle": {
+            "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "10D"
                 }
               }
             }
@@ -122,23 +90,87 @@
       "labels": [
         {
           "properties": {
-            "show": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#005288'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "27D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
           }
         }
       ],
-      "legend": [
+      "background": [
         {
           "properties": {
-            "showTitle": {
+            "show": {
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#005288'"
+                    }
+                  }
                 }
               }
             }
@@ -151,7 +183,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "8f4c50ba09c35b40c88e",
+        "name": "a0b8c0eb96b05d5004a8",
         "field": {
           "Column": {
             "Expression": {
@@ -206,6 +238,7 @@
             }
           ]
         },
+        "howCreated": "User",
         "objects": {
           "general": [
             {
@@ -223,21 +256,7 @@
         }
       },
       {
-        "name": "8d63ad808d17d36bb170",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "DateTable"
-              }
-            },
-            "Property": "Year"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "746c61a26b2c104b825c",
+        "name": "f79203b603b05960392c",
         "field": {
           "Aggregation": {
             "Expression": {

@@ -6,7 +6,8 @@
     "y": 17.702127659574469,
     "z": 0,
     "height": 297.531914893617,
-    "width": 659.063829787234
+    "width": 659.063829787234,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "tableEx",
@@ -116,89 +117,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "81a66660a0ccbd2d1ec6",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_success"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "182e2a8725805e8de788",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_launches"
-                  }
-                },
-                "Property": "core_landing_success"
-              }
-            },
-            "Function": 5
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "7c0f47f932e4406a4b58",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_type"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "aa636c8ae8698a421e2b",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "dim_payloads"
-                  }
-                },
-                "Property": "mass_kg"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "55ced5a9b706b7d2144a",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_payloads"
-              }
-            },
-            "Property": "orbit"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

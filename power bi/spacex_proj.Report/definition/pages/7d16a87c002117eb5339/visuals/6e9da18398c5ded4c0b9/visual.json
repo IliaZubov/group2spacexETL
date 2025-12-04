@@ -4,10 +4,10 @@
   "position": {
     "x": 110.29787234042553,
     "y": 326.12765957446811,
-    "z": 1,
+    "z": 1000,
     "height": 358.80851063829789,
     "width": 965.44680851063833,
-    "tabOrder": 1
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "azureMap",
@@ -184,70 +184,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "4caacd0874a1197b0e16",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_launchpads"
-              }
-            },
-            "Property": "latitude"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "3ebdfa269cd4ac945916",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_launchpads"
-              }
-            },
-            "Property": "longitude"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "dfd82a526e200d209678",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_launches"
-                  }
-                },
-                "Property": "flight_number"
-              }
-            },
-            "Function": 2
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "b931472040154d799529",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_launchpads"
-              }
-            },
-            "Property": "launchpad_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }
