@@ -1,12 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "9a5ba3c5149a9394d96e",
+  "name": "f43b862f0d5301104a9b",
   "position": {
-    "x": 203.68948133157181,
-    "y": 35.630452482335876,
-    "z": 2000,
-    "height": 222.21157565313828,
-    "width": 156.05286330972453
+    "x": 259.88082523308867,
+    "y": 105.39863418559361,
+    "z": 6000,
+    "height": 74.27605633802817,
+    "width": 34.61408450704225,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "image",
@@ -19,7 +20,7 @@
                 "name": {
                   "expr": {
                     "Literal": {
-                      "Value": "'station.png'"
+                      "Value": "'vector-rocket-icon.jpg'"
                     }
                   }
                 },
@@ -28,7 +29,7 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "station6611074853239691.png"
+                      "ItemName": "vector-rocket-icon052605807325831644.jpg"
                     }
                   }
                 },
@@ -47,5 +48,5 @@
     },
     "drillFilterOtherVisuals": true
   },
-  "parentGroupName": "4440bd2b2818c8393cd0"
+  "parentGroupName": "ff4a6f707b504c905526"
 }

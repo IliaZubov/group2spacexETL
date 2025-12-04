@@ -3,11 +3,11 @@
   "name": "e32da5669a5806b8e4c0",
   "position": {
     "x": 4.3267605633802813,
-    "y": 388.68732394366197,
-    "z": 3001,
-    "height": 325.22816901408453,
-    "width": 636.03380281690136,
-    "tabOrder": 6001
+    "y": 356.95774647887322,
+    "z": 3000,
+    "height": 356.95774647887322,
+    "width": 584,
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "lineChart",
@@ -349,6 +349,13 @@
                   "Value": "'Number of Launches by Year'"
                 }
               }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
             }
           }
         }
@@ -494,39 +501,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "4d4f0eccea242a1b24ea",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "DateTable"
-              }
-            },
-            "Property": "Year"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "1f5741714db71c7a01d7",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_launches"
-                  }
-                },
-                "Property": "flight_number"
-              }
-            },
-            "Function": 2
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

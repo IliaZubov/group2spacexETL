@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "9ec3f0baedd39a3110bc",
+  "name": "8635a2309646c7a62c3b",
   "position": {
-    "x": 1083.1323943661971,
-    "y": 143,
-    "z": 5000,
-    "height": 85.092957746478874,
-    "width": 193.26197183098591,
-    "tabOrder": 3000
+    "x": 1082.8471411901983,
+    "y": 54.515752625437571,
+    "z": 9001,
+    "height": 85.134189031505244,
+    "width": 193.41890315052507,
+    "tabOrder": 7001
   },
   "visual": {
     "visualType": "card",
@@ -17,23 +17,17 @@
           "projections": [
             {
               "field": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "dim_payloads"
-                        }
-                      },
-                      "Property": "mass_kg"
+                    "SourceRef": {
+                      "Entity": "fact_launches"
                     }
                   },
-                  "Function": 0
+                  "Property": "core_landind_success_rate"
                 }
               },
-              "queryRef": "Sum(dim_payloads.mass_kg)",
-              "nativeQueryRef": "Total Payload Delivered (kg)",
-              "displayName": "Total Payload Delivered (kg)"
+              "queryRef": "fact_launches.core_landind_success_rate",
+              "nativeQueryRef": "core_landind_success_rate"
             }
           ]
         }
@@ -42,18 +36,13 @@
         "sort": [
           {
             "field": {
-              "Aggregation": {
+              "Measure": {
                 "Expression": {
-                  "Column": {
-                    "Expression": {
-                      "SourceRef": {
-                        "Entity": "dim_payloads"
-                      }
-                    },
-                    "Property": "mass_kg"
+                  "SourceRef": {
+                    "Entity": "fact_launches"
                   }
                 },
-                "Function": 0
+                "Property": "core_landind_success_rate"
               }
             },
             "direction": "Descending"
@@ -183,20 +172,15 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "b7c52a985c80a0818ecb",
+        "name": "5a9c68df9970a07b5843",
         "field": {
-          "Aggregation": {
+          "Measure": {
             "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "dim_payloads"
-                  }
-                },
-                "Property": "mass_kg"
+              "SourceRef": {
+                "Entity": "fact_launches"
               }
             },
-            "Function": 0
+            "Property": "core_landind_success_rate"
           }
         },
         "type": "Advanced"
