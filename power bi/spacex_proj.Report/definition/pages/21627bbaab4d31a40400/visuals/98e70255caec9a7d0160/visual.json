@@ -263,25 +263,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "9f39f714de8c71ad0198",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_launches"
-                  }
-                },
-                "Property": "flight_number"
-              }
-            },
-            "Function": 2
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

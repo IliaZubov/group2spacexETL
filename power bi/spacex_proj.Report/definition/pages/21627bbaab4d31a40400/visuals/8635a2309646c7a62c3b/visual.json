@@ -4,10 +4,10 @@
   "position": {
     "x": 1082.8471411901983,
     "y": 54.515752625437571,
-    "z": 9001,
+    "z": 9000,
     "height": 85.134189031505244,
     "width": 193.41890315052507,
-    "tabOrder": 7001
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "card",
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "fact_launches.core_landind_success_rate",
-              "nativeQueryRef": "core_landind_success_rate"
+              "nativeQueryRef": "Booster Successful Landing Rate",
+              "displayName": "Booster Successful Landing Rate"
             }
           ]
         }
@@ -168,23 +169,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "5a9c68df9970a07b5843",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landind_success_rate"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

@@ -3,11 +3,11 @@
   "name": "9ec3f0baedd39a3110bc",
   "position": {
     "x": 1083.1323943661971,
-    "y": 143,
+    "y": 142,
     "z": 5000,
     "height": 85.092957746478874,
     "width": 193.26197183098591,
-    "tabOrder": 3000
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "card",
@@ -179,28 +179,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "b7c52a985c80a0818ecb",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "dim_payloads"
-                  }
-                },
-                "Property": "mass_kg"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

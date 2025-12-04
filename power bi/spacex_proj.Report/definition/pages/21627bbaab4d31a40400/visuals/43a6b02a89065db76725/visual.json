@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "0ea40a8100d080d07e57",
+  "name": "43a6b02a89065db76725",
   "position": {
-    "x": 420.18704360753736,
-    "y": 238.14012685360575,
-    "z": 5000,
-    "height": 36.8141592920354,
-    "width": 112.13204446250904,
-    "tabOrder": 2000
+    "x": 420.51552476717268,
+    "y": 239.22950500998462,
+    "z": 4875,
+    "height": 36.938519447929735,
+    "width": 112.4215809284818,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "actionButton",
@@ -54,7 +54,7 @@
                 "color": {
                   "expr": {
                     "ThemeDataColor": {
-                      "ColorId": 0,
+                      "ColorId": 1,
                       "Percent": 0
                     }
                   }
@@ -72,6 +72,31 @@
           "selector": {
             "id": "default"
           }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#005288'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "hover"
+          }
         }
       ],
       "outline": [
@@ -80,7 +105,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }
@@ -111,44 +136,6 @@
             "id": "default"
           }
         }
-      ],
-      "fill": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        },
-        {
-          "properties": {
-            "fillColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#005288'"
-                    }
-                  }
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "default"
-          }
-        }
       ]
     },
     "visualContainerObjects": {
@@ -165,7 +152,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'FalconHeavy_2'"
+                  "Value": "'FalconHeavy'"
                 }
               }
             }
@@ -224,7 +211,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -249,6 +236,5 @@
     "drillFilterOtherVisuals": true
   },
   "parentGroupName": "4440bd2b2818c8393cd0",
-  "isHidden": true,
   "howCreated": "InsertVisualButton"
 }
