@@ -4,10 +4,10 @@
   "position": {
     "x": 4.3267605633802813,
     "y": 356.95774647887322,
-    "z": 3000,
-    "height": 356.95774647887322,
+    "z": 2000,
+    "height": 358,
     "width": 584,
-    "tabOrder": 2000
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "lineChart",
@@ -101,7 +101,7 @@
             "titleText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Number'"
+                  "Value": "'Launches'"
                 }
               }
             }
@@ -309,6 +309,20 @@
                   "Value": "false"
                 }
               }
+            },
+            "logAxisScale": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
             }
           }
         }
@@ -501,6 +515,39 @@
             }
           ]
         }
+      },
+      {
+        "name": "0c600ba7b2ed40a0307c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DateTable"
+              }
+            },
+            "Property": "Year"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "97c295c070d3ed614b26",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_launches"
+                  }
+                },
+                "Property": "flight_number"
+              }
+            },
+            "Function": 2
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

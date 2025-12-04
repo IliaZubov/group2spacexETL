@@ -7,11 +7,10 @@ table fact_launches
 			        DISTINCTCOUNT(fact_launches[flight_number]), 
 			        fact_launches[core_landing_success] = TRUE()),
 			        DISTINCTCOUNT(fact_launches[flight_number]) 
-			        ) * 100
+			        )
 			```
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
 		lineageTag: f67b359f-3e45-422a-a096-3f4deff552c0
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column launch_id
 		dataType: int64
