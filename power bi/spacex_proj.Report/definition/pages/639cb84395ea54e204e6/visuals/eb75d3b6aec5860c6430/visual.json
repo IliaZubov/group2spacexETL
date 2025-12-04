@@ -4,9 +4,10 @@
   "position": {
     "x": 667.91489361702122,
     "y": 7.48936170212766,
-    "z": 501,
+    "z": 0,
     "height": 302.29787234042556,
-    "width": 606.63829787234044
+    "width": 606.63829787234044,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "donutChart",
@@ -95,42 +96,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "17b59aabd21ed4494352",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "launch_success"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "2349b3087718bc0ac7b9",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_launches"
-                  }
-                },
-                "Property": "launch_success"
-              }
-            },
-            "Function": 5
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

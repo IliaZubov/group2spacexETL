@@ -4,9 +4,10 @@
   "position": {
     "x": 411.2340425531915,
     "y": 149.78723404255319,
-    "z": 504,
+    "z": 3000,
     "height": 149.78723404255319,
-    "width": 251.2340425531915
+    "width": 251.2340425531915,
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "card",
@@ -109,28 +110,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "2878c51dbbbc8b14c5e3",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_launches"
-                  }
-                },
-                "Property": "flight_number"
-              }
-            },
-            "Function": 2
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
