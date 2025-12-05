@@ -3,10 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Notebook1",
+				"name": "SpaceXAPI",
 				"type": "SynapseNotebook",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -22,17 +20,25 @@
 						"type": "NotebookReference"
 					},
 					"snapshot": true,
+					"sparkPool": {
+						"referenceName": "spacexlarge",
+						"type": "BigDataPoolReference"
+					},
+					"executorSize": "Small",
 					"conf": {
-						"spark.dynamicAllocation.enabled": null,
+						"spark.dynamicAllocation.enabled": true,
 						"spark.dynamicAllocation.minExecutors": null,
 						"spark.dynamicAllocation.maxExecutors": null
 					},
+					"driverSize": "Small",
 					"numExecutors": null
 				}
 			},
 			{
 				"name": "Copy launches from URL",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -80,6 +86,8 @@
 			{
 				"name": "Copy payloads from URL",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -127,6 +135,8 @@
 			{
 				"name": "Copy rockets from URL",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -174,6 +184,8 @@
 			{
 				"name": "Copy launchpads from URL",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
