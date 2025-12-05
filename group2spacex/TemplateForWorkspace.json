@@ -66,13 +66,13 @@
 								"referenceName": "spacexlarge",
 								"type": "BigDataPoolReference"
 							},
-							"executorSize": "Small",
+							"executorSize": "Medium",
 							"conf": {
 								"spark.dynamicAllocation.enabled": true,
 								"spark.dynamicAllocation.minExecutors": null,
 								"spark.dynamicAllocation.maxExecutors": null
 							},
-							"driverSize": "Small",
+							"driverSize": "Medium",
 							"numExecutors": null
 						}
 					},
@@ -937,7 +937,7 @@
 						"spark.dynamicAllocation.enabled": "true",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "b38383fc-7a77-4fa5-af2d-6eed610f137e"
+						"spark.autotune.trackingId": "4558f044-b3f9-497f-8df7-ad8bb2ee66b6"
 					}
 				},
 				"metadata": {
@@ -1217,7 +1217,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "22d78c94-32e2-4cf5-9cd7-bcd228961457"
+						"spark.autotune.trackingId": "2d433d57-af42-4d47-aa5d-f62c078bbec2"
 					}
 				},
 				"metadata": {
@@ -2011,7 +2011,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "301eb2c3-814d-4fa2-a984-ecdf2b79b608"
+						"spark.autotune.trackingId": "53b6a47e-a62b-4a80-94e8-5ab7f31d2d7e"
 					}
 				},
 				"metadata": {
@@ -2118,7 +2118,7 @@
 						"spark.dynamicAllocation.enabled": "true",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "6",
-						"spark.autotune.trackingId": "4a44c3a8-0499-458e-93af-5c23a2b01a02"
+						"spark.autotune.trackingId": "19fbc445-3d47-46e1-9800-a3f412b99848"
 					}
 				},
 				"metadata": {
