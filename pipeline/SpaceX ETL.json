@@ -24,13 +24,13 @@
 						"referenceName": "spacexlarge",
 						"type": "BigDataPoolReference"
 					},
-					"executorSize": "Small",
+					"executorSize": "Medium",
 					"conf": {
 						"spark.dynamicAllocation.enabled": true,
 						"spark.dynamicAllocation.minExecutors": null,
 						"spark.dynamicAllocation.maxExecutors": null
 					},
-					"driverSize": "Small",
+					"driverSize": "Medium",
 					"numExecutors": null
 				}
 			},
