@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "bfef7c818b07043833ac",
   "position": {
-    "x": 639.61927424152293,
-    "y": 379.96430696014278,
+    "x": 639.25840092699889,
+    "y": 376.73232908458868,
     "z": 1000,
-    "height": 336.56157049375372,
-    "width": 635.812016656752,
+    "height": 339.65237543453071,
+    "width": 637,
     "tabOrder": 0
   },
   "visual": {
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "dim_landpads.landpad_name",
-              "nativeQueryRef": "landpad_name",
-              "active": true
+              "nativeQueryRef": "Landpad",
+              "active": true,
+              "displayName": "Landpad"
             }
           ]
         },
@@ -51,7 +52,8 @@
                 }
               },
               "queryRef": "Sum(dim_landpads.landing_successes)",
-              "nativeQueryRef": "Sum of landing_successes"
+              "nativeQueryRef": "Total Landing Successes",
+              "displayName": "Total Landing Successes"
             },
             {
               "field": {
@@ -70,7 +72,8 @@
                 }
               },
               "queryRef": "Sum(dim_landpads.landing_attempts)",
-              "nativeQueryRef": "Sum of landing_attempts"
+              "nativeQueryRef": "Total Landing Attempts",
+              "displayName": "Total Landing Attempts"
             }
           ]
         }
@@ -316,6 +319,42 @@
               }
             ]
           }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0EB194'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(dim_landpads.landing_successes)"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#014D23'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(dim_landpads.landing_attempts)"
+          }
         }
       ],
       "labels": [
@@ -355,6 +394,26 @@
             ]
           }
         }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {
@@ -390,6 +449,13 @@
               "expr": {
                 "Literal": {
                   "Value": "12D"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Total Landing Successes and Total Landing Attempts by Landpad'"
                 }
               }
             }
@@ -466,7 +532,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "4721a3c00045d27dd4a6",
+        "name": "313512d79532a0a5c9a8",
         "field": {
           "Column": {
             "Expression": {
@@ -480,7 +546,7 @@
         "type": "Categorical"
       },
       {
-        "name": "f2ea8dbb2090a051680d",
+        "name": "a040d5bd800000d88d6d",
         "field": {
           "Aggregation": {
             "Expression": {
@@ -499,7 +565,7 @@
         "type": "Advanced"
       },
       {
-        "name": "4820fb84027304572bca",
+        "name": "b6d830b57146cd391b50",
         "field": {
           "Aggregation": {
             "Expression": {

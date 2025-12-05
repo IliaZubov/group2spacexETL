@@ -1,6 +1,26 @@
 table dim_cores
 	lineageTag: 5e0a781b-73f0-4041-8a2f-04f26acb5c76
 
+	measure KPI_Color_rtls = ```
+			
+			IF(
+			    SUM(dim_cores[rtls_landings]) < SUM(dim_cores[rtls_attempts]),
+			    "#B9000D",  
+			    "#0EB194"    
+			)
+			```
+		lineageTag: b5d1da48-65f8-4f15-9b3c-883d356322c2
+
+	measure KPI_Color_asds = ```
+			
+			IF(
+			    SUM(dim_cores[asds_landings]) < SUM(dim_cores[asds_attempts]),
+			    "#B9000D",  
+			    "#0EB194"    
+			)
+			```
+		lineageTag: 60cc1ef5-8931-4dc6-90e2-b137279d8f26
+
 	column asds_attempts
 		dataType: int64
 		formatString: 0

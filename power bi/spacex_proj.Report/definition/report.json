@@ -24,6 +24,19 @@
           }
         }
       }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "true"
+              }
+            }
+          }
+        }
+      }
     ]
   },
   "resourcePackages": [
@@ -43,11 +56,6 @@
       "type": "RegisteredResources",
       "items": [
         {
-          "name": "SpaceX-Simbolo38321252393480987.jpg",
-          "path": "SpaceX-Simbolo38321252393480987.jpg",
-          "type": "Image"
-        },
-        {
           "name": "station6611074853239691.png",
           "path": "station6611074853239691.png",
           "type": "Image"
@@ -60,6 +68,31 @@
         {
           "name": "vector-rocket-icon052605807325831644.jpg",
           "path": "vector-rocket-icon052605807325831644.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "the-milky-way01432235637961865.jpg",
+          "path": "the-milky-way01432235637961865.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "the-milky-way937330118390379.jpg",
+          "path": "the-milky-way937330118390379.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "the-milky-way46353598148502073.jpg",
+          "path": "the-milky-way46353598148502073.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "the-milky-way056172296050227444.jpg",
+          "path": "the-milky-way056172296050227444.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "screenshot_2025-12-05_102537451717023950555.png",
+          "path": "screenshot_2025-12-05_102537451717023950555.png",
           "type": "Image"
         }
       ]

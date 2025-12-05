@@ -1,18 +1,54 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "0ecbe65557473eb5b049",
+  "name": "b3248dd01330114e5d51",
   "position": {
-    "x": 5.3301606186793578,
-    "y": 377,
-    "z": 0,
-    "height": 339,
-    "width": 628.95895300416419,
-    "tabOrder": 5000
+    "x": 640,
+    "y": 57.103128621089226,
+    "z": 2004,
+    "height": 296.6396292004635,
+    "width": 635.5504055619931,
+    "tabOrder": 2003
   },
   "visual": {
-    "visualType": "azureMap",
+    "visualType": "clusteredColumnChart",
     "query": {
       "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_payloads"
+                    }
+                  },
+                  "Property": "orbit"
+                }
+              },
+              "queryRef": "dim_payloads.orbit",
+              "nativeQueryRef": "Orbit1",
+              "active": true,
+              "displayName": "Orbit"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_payloads"
+                    }
+                  },
+                  "Property": "regime"
+                }
+              },
+              "queryRef": "dim_payloads.regime",
+              "nativeQueryRef": "Regime",
+              "active": false,
+              "displayName": "Regime"
+            }
+          ]
+        },
         "Series": {
           "projections": [
             {
@@ -20,36 +56,19 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "dim_landpads"
-                    }
-                  },
-                  "Property": "landtype_type_text"
-                }
-              },
-              "queryRef": "dim_landpads.launch_type_text",
-              "nativeQueryRef": "landtype_type_text"
-            }
-          ]
-        },
-        "Size": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
                       "Entity": "fact_launches"
                     }
                   },
-                  "Property": "core_landind_success_rate"
+                  "Property": "launch_success"
                 }
               },
-              "queryRef": "fact_launches.core_landind_success_rate",
-              "nativeQueryRef": "core_landind_success_rate"
+              "queryRef": "fact_launches.launch_success",
+              "nativeQueryRef": "Launch Success",
+              "displayName": "Launch Success"
             }
           ]
         },
-        "Tooltips": {
+        "Y": {
           "projections": [
             {
               "field": {
@@ -58,172 +77,69 @@
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "dim_landpads"
+                          "Entity": "fact_launches"
                         }
                       },
-                      "Property": "full_name"
+                      "Property": "flight_number"
                     }
                   },
-                  "Function": 3
+                  "Function": 2
                 }
               },
-              "queryRef": "Min(dim_landpads.full_name)",
-              "nativeQueryRef": "First full_name"
-            }
-          ]
-        },
-        "X": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_landpads"
-                    }
-                  },
-                  "Property": "longitude"
-                }
-              },
-              "queryRef": "dim_landpads.longitude",
-              "nativeQueryRef": "longitude"
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_landpads"
-                    }
-                  },
-                  "Property": "latitude"
-                }
-              },
-              "queryRef": "dim_landpads.latitude",
-              "nativeQueryRef": "latitude"
+              "queryRef": "Sum(fact_launches.flight_number)",
+              "nativeQueryRef": "Total Launches",
+              "displayName": "Total Launches"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "fact_launches"
+                      }
+                    },
+                    "Property": "flight_number"
+                  }
+                },
+                "Function": 2
+              }
+            },
+            "direction": "Descending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_launches"
+                  }
+                },
+                "Property": "launch_success"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {
-      "mapControls": [
-        {
-          "properties": {
-            "defaultStyle": {
-              "expr": {
-                "Literal": {
-                  "Value": "'road'"
-                }
-              }
-            },
-            "showStylePicker": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "showNavigationControls": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "showSelectionControl": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "showBuildingFootprints": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "showRoadDetails": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "bubbleLayer": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "bubbleRadius": {
-              "expr": {
-                "Literal": {
-                  "Value": "6L"
-                }
-              }
-            },
-            "minBubbleRadius": {
-              "expr": {
-                "Literal": {
-                  "Value": "6L"
-                }
-              }
-            },
-            "maxRadius": {
-              "expr": {
-                "Literal": {
-                  "Value": "21L"
-                }
-              }
-            },
-            "bubbleStrokeWidth": {
-              "expr": {
-                "Literal": {
-                  "Value": "1L"
-                }
-              }
-            },
-            "autoStrokeColor": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "layerPosition": {
-              "expr": {
-                "Literal": {
-                  "Value": "''"
-                }
-              }
-            },
-            "mapTransparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "30D"
-                }
-              }
-            }
-          }
-        }
-      ],
       "legend": [
         {
           "properties": {
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Launch Success:'"
+                }
+              }
+            },
             "position": {
               "expr": {
                 "Literal": {
@@ -234,7 +150,7 @@
             "showTitle": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -247,6 +163,98 @@
                       "Percent": 0
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'OutsideEnd'"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "maxMarginFactor": {
+              "expr": {
+                "Literal": {
+                  "Value": "26L"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
@@ -360,9 +368,23 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 9,
-                      "Percent": -0.25
+                    "Literal": {
+                      "Value": "'#0EB194'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0EB194'"
                     }
                   }
                 }
@@ -379,15 +401,15 @@
                       "Column": {
                         "Expression": {
                           "SourceRef": {
-                            "Entity": "dim_landpads"
+                            "Entity": "fact_launches"
                           }
                         },
-                        "Property": "landtype_type_text"
+                        "Property": "core_landing_success"
                       }
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'Land'"
+                        "Value": "true"
                       }
                     }
                   }
@@ -402,9 +424,8 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 2,
-                      "Percent": -0.5
+                    "Literal": {
+                      "Value": "'#B9000D'"
                     }
                   }
                 }
@@ -421,56 +442,18 @@
                       "Column": {
                         "Expression": {
                           "SourceRef": {
-                            "Entity": "dim_landpads"
+                            "Entity": "fact_launches"
                           }
                         },
-                        "Property": "landtype_type_text"
+                        "Property": "core_landing_success"
                       }
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'Ocean'"
+                        "Value": "false"
                       }
                     }
                   }
-                }
-              }
-            ]
-          }
-        }
-      ],
-      "labels": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        },
-        {
-          "properties": {
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 1,
-                      "Percent": 0
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "dataViewWildcard": {
-                  "matchingOption": 1
                 }
               }
             ]
@@ -482,13 +465,6 @@
       "title": [
         {
           "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Core Landing Success Rate by Landing Type'"
-                }
-              }
-            },
             "titleWrap": {
               "expr": {
                 "Literal": {
@@ -594,15 +570,15 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "8967f7ec5cb33d8b98b3",
+        "name": "7af33d40000cce35796b",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "dim_landpads"
+                "Entity": "dim_payloads"
               }
             },
-            "Property": "landpad_type"
+            "Property": "orbit"
           }
         },
         "type": "Categorical",
@@ -611,7 +587,7 @@
           "From": [
             {
               "Name": "d",
-              "Entity": "dim_landpads",
+              "Entity": "dim_payloads",
               "Type": 0
             }
           ],
@@ -629,7 +605,7 @@
                                 "Source": "d"
                               }
                             },
-                            "Property": "landpad_type"
+                            "Property": "orbit"
                           }
                         }
                       ],
@@ -649,7 +625,6 @@
             }
           ]
         },
-        "howCreated": "User",
         "objects": {
           "general": [
             {
@@ -667,79 +642,51 @@
         }
       },
       {
-        "name": "77422407c61e7237c2b2",
+        "name": "c8f9ccc3775949843989",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "dim_landpads"
+                "Entity": "dim_payloads"
               }
             },
-            "Property": "landtype_type_text"
+            "Property": "regime"
           }
         },
         "type": "Categorical"
       },
       {
-        "name": "eb4200ccb2450c1b9b6a",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landind_success_rate"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "82fe425407c906d70c36",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_landpads"
-              }
-            },
-            "Property": "longitude"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "acb0e37e0580815b0d50",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_landpads"
-              }
-            },
-            "Property": "latitude"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "a5b8d4940800a7b0ce06",
+        "name": "ec98df4d10c422e72851",
         "field": {
           "Aggregation": {
             "Expression": {
               "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "dim_landpads"
+                    "Entity": "fact_launches"
                   }
                 },
-                "Property": "full_name"
+                "Property": "flight_number"
               }
             },
-            "Function": 3
+            "Function": 2
           }
         },
         "type": "Advanced"
+      },
+      {
+        "name": "b1c3ba7160e6dae7c92e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_launches"
+              }
+            },
+            "Property": "launch_success"
+          }
+        },
+        "type": "Categorical"
       }
     ]
   }

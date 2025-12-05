@@ -3,10 +3,10 @@
   "name": "d9708594ea61100dba01",
   "position": {
     "x": 0,
-    "y": 0,
-    "z": 8000,
-    "height": 276.40690065437241,
-    "width": 499.51219512195121
+    "y": 0.60923438164490651,
+    "z": 2000,
+    "height": 318.88760139049828,
+    "width": 516.86238836202926
   },
   "visual": {
     "visualType": "donutChart",
@@ -59,24 +59,18 @@
         "sort": [
           {
             "field": {
-              "Aggregation": {
+              "Column": {
                 "Expression": {
-                  "Column": {
-                    "Expression": {
-                      "SourceRef": {
-                        "Entity": "dim_cores"
-                      }
-                    },
-                    "Property": "core_id"
+                  "SourceRef": {
+                    "Entity": "dim_cores"
                   }
                 },
-                "Function": 2
+                "Property": "core_reused"
               }
             },
             "direction": "Descending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "objects": {
@@ -423,7 +417,21 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "62c5381da840d7ae7a7e",
+        "name": "51e1afaaddcd6b332e5d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_cores"
+              }
+            },
+            "Property": "core_reused"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ab54370e9a2507892a01",
         "field": {
           "Aggregation": {
             "Expression": {
@@ -440,20 +448,6 @@
           }
         },
         "type": "Advanced"
-      },
-      {
-        "name": "174f154a134a419950a2",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_cores"
-              }
-            },
-            "Property": "core_reused"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }
