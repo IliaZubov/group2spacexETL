@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 8",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [id]\n,[name]\n,[type]\n,[reused]\n,[mass_kg]\n,[orbit]\n,[reference_system]\n,[regime]\n,[lifespan_years]\n,[dragon_capsule]\n,[dragon_mass_returned_kg]\n,[dragon_flight_time_sec]\n,[dragon_water_landing]\n,[dragon_land_landing]\n FROM [default].[dbo].[dim_payloads]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "default",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
