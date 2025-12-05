@@ -1,0 +1,2407 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"type": "string",
+			"metadata": "Workspace name",
+			"defaultValue": "group2spacex"
+		},
+		"group2spacex-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'group2spacex-WorkspaceDefaultSqlServer'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:group2spacex.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"HTTP_spacex_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.spacexdata.com/v4/"
+		},
+		"HttpServer1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.spacexdata.com/v4/payloads"
+		},
+		"group2spacex-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://group2dls.dfs.core.windows.net"
+		}
+	},
+	"variables": {
+		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/spacexlarge')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SpaceX ETL')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "SpaceXAPI",
+						"type": "SynapseNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "SpaceX",
+								"type": "NotebookReference"
+							},
+							"snapshot": true,
+							"sparkPool": {
+								"referenceName": "spacexlarge",
+								"type": "BigDataPoolReference"
+							},
+							"executorSize": "Small",
+							"conf": {
+								"spark.dynamicAllocation.enabled": true,
+								"spark.dynamicAllocation.minExecutors": null,
+								"spark.dynamicAllocation.maxExecutors": null
+							},
+							"driverSize": "Small",
+							"numExecutors": null
+						}
+					},
+					{
+						"name": "Copy launches from URL",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "HTTP_spacexdata_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ADLS_spacex_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy payloads from URL",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "HTTP_payload_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ADLS_payload_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy rockets from URL",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "HTTP_rockets_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ADLS_spacexrockets_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy launchpads from URL",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "HTTP_spacexlaunchpads_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ADLS_spacexlaunchpads_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy landpads from URL",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "HTTP_spacexlandpads_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ADLS_spacexlandpads_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/notebooks/SpaceX')]",
+				"[concat(variables('workspaceId'), '/bigDataPools/spacexlarge')]",
+				"[concat(variables('workspaceId'), '/datasets/HTTP_spacexdata_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/ADLS_spacex_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/HTTP_payload_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/ADLS_payload_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/HTTP_rockets_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/ADLS_spacexrockets_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/HTTP_spacexlaunchpads_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/ADLS_spacexlaunchpads_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/HTTP_spacexlandpads_JSON')]",
+				"[concat(variables('workspaceId'), '/datasets/ADLS_spacexlandpads_JSON')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ADLS_payload_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "group2spacex-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "spacex_payloads_v4",
+						"fileSystem": "spacexfs"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/group2spacex-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ADLS_spacex_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "group2spacex-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "spacexfs"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/group2spacex-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ADLS_spacexlandpads_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "group2spacex-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "spacex_landpads_v4",
+						"fileSystem": "spacexfs"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/group2spacex-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ADLS_spacexlaunchpads_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "group2spacex-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "spacex_launchpads_v4",
+						"fileSystem": "spacexfs"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/group2spacex-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ADLS_spacexrockets_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "group2spacex-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "spacex_rockets_v4",
+						"fileSystem": "spacexfs"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/group2spacex-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/HTTP_payload_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HTTP_spacex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "payloads/"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/HTTP_spacex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/HTTP_rockets_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HTTP_spacex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "rockets/"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/HTTP_spacex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/HTTP_spacexdata_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HTTP_spacex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "launches/"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/HTTP_spacex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/HTTP_spacexlandpads_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HTTP_spacex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "landpads/"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/HTTP_spacex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/HTTP_spacexlaunchpads_JSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HTTP_spacex",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "launchpads/"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/HTTP_spacex')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/HTTP_spacex')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('HTTP_spacex_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/HttpServer1')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('HttpServer1_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SpaceXPowerBI')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "PowerBIWorkspace",
+				"typeProperties": {
+					"workspaceID": "d6ca58fa-2af4-4a26-8ed6-6377a16044bb",
+					"tenantID": "e9885073-5c41-4cad-84b0-174903b19bec"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/group2spacex-WorkspaceDefaultSqlServer')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('group2spacex-WorkspaceDefaultSqlServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/group2spacex-WorkspaceDefaultStorage')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('group2spacex-WorkspaceDefaultStorage_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SpaceXTrigger')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "SpaceX ETL",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2025-12-05T08:35:00",
+						"endTime": "2025-12-31T08:35:00",
+						"timeZone": "FLE Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								8
+							],
+							"weekDays": [
+								"Monday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/SpaceX ETL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [landpad_id]\n,[landpad_name]\n,[full_name]\n,[status]\n,[landpad_type]\n,[locality]\n,[region]\n,[latitude]\n,[longitude]\n,[landing_attempts]\n,[landing_successes]\n,[details]\n FROM [default].[dbo].[dim_landpads]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "default",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 2')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [launchpad_id]\n,[launchpad_name]\n,[full_name]\n,[locality]\n,[region]\n,[latitude]\n,[longitude]\n,[launch_attempts]\n,[launch_successes]\n,[launchpad_status]\n,[details]\n FROM [default].[dbo].[dim_launchpads]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "default",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 3')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [id]\n,[name]\n,[type]\n,[launch_id]\n,[reused]\n,[customers]\n,[nationalities]\n,[manufacturers]\n,[mass_kg]\n,[orbit]\n,[reference_system]\n,[regime]\n,[periapsis_km]\n,[lifespan_years]\n,[dragon_capsule]\n,[dragon_mass_returned_kg]\n,[dragon_flight_time_sec]\n,[dragon_water_landing]\n,[dragon_land_landing]\n FROM [default].[dbo].[dim_payloads]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "default",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 4')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [rocket_id]\n,[name]\n,[rocket_type]\n,[active]\n,[stages]\n,[boosters]\n,[cost_per_launch]\n,[success_rate_pct]\n,[first_flight]\n,[country]\n,[company]\n,[description]\n FROM [default].[dbo].[dim_rockets]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "default",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 5')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [rocket_id]\n,[name]\n,[rocket_type]\n,[active]\n,[stages]\n,[boosters]\n,[cost_per_launch]\n,[success_rate_pct]\n,[first_flight]\n,[country]\n,[company]\n,[description]\n FROM [default].[dbo].[dim_rockets]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "default",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 6')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "DROP TABLE dim_manufacturer;",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "default",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 7')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "DROP TABLE payloads_manufacturers\nGO\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "group2spacexDP",
+						"poolName": "group2spacexDP"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 8')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [id]\n,[name]\n,[type]\n,[reused]\n,[mass_kg]\n,[orbit]\n,[reference_system]\n,[regime]\n,[lifespan_years]\n,[dragon_capsule]\n,[dragon_mass_returned_kg]\n,[dragon_flight_time_sec]\n,[dragon_water_landing]\n,[dragon_land_landing]\n FROM [default].[dbo].[dim_payloads]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "default",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Launchpad Rocket and Landpad tables')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "spacexlarge",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "true",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "b38383fc-7a77-4fa5-af2d-6eed610f137e"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexlarge",
+						"name": "spacexlarge",
+						"type": "Spark",
+						"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexlarge",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.5",
+						"nodeCount": 10,
+						"cores": 16,
+						"memory": 112,
+						"automaticScaleJobs": true
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"import requests\n",
+							"import json\n",
+							"from pyspark.sql import SparkSession\n",
+							"from pyspark.sql.functions import col, crc32\n",
+							"\n",
+							"# Fetch from API\n",
+							"launchpad_url = \"https://api.spacexdata.com/v4/launchpads\"\n",
+							"response = requests.get(launchpad_url)\n",
+							"launchpad_data = response.json()\n",
+							"\n",
+							"# Convert Python list/dict → Spark RDD → Spark DataFrame\n",
+							"rdd = spark.sparkContext.parallelize(launchpad_data)\n",
+							"df_dim_launchpads = spark.read.json(rdd)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"# Drop and rename columns\n",
+							"df_dim_launchpads = (\n",
+							"    df_dim_launchpads\n",
+							"    .drop(\"images\", \"launches\", \"timezone\", \"rockets\")  # remove nested + unused\n",
+							"    .withColumnRenamed(\"id\", \"launchpad_id\")\n",
+							"    .withColumnRenamed(\"name\", \"launchpad_name\")\n",
+							"    .withColumnRenamed(\"status\", \"launchpad_status\")\n",
+							")"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"# Reorder columns\n",
+							"cols = df_dim_launchpads.columns\n",
+							"new_cols = [\"launchpad_id\"] + [c for c in cols if c != \"launchpad_id\"]\n",
+							"df_dim_launchpads.columns = df_dim_launchpads.columns.select(new_cols)\n",
+							"\n",
+							"# Hash the ID column\n",
+							"df_dim_launchpads = df_dim_launchpads.withColumn(\"launchpad_id\", crc32(col(\"launchpad_id\")))\n",
+							"display(df_dim_launchpads)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"editable": false,
+							"run_control": {
+								"frozen": true
+							},
+							"collapsed": false
+						},
+						"source": [
+							"# Write to SQL table\n",
+							"df_dim_launchpads.write.mode(\"overwrite\").saveAsTable(\"dim_launchpads\")\n",
+							"display(df_dim_launchpads)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"# Fetch from API\n",
+							"landpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
+							"response = requests.get(landpad_url)\n",
+							"landpad_data = response.json()\n",
+							"\n",
+							"# Convert Python list/dict → Spark RDD → Spark DataFrame\n",
+							"rdd = spark.sparkContext.parallelize(landpad_data)\n",
+							"df_dim_landpads = spark.read.json(rdd)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"# Drop and rename columns\n",
+							"df_dim_landpads = (\n",
+							"    df_dim_landpads\n",
+							"    .drop(\"launches\", \"wikipedia\", \"images.large\")  # remove nested + unused\n",
+							"    .withColumnRenamed(\"id\", \"landpad_id\")\n",
+							"    .withColumnRenamed(\"name\", \"landpad_name\")\n",
+							"    .withColumnRenamed(\"type\", \"landpad_type\")\n",
+							")"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"# Reorder columns\n",
+							"cols = df_dim_landpads.columns\n",
+							"new_cols = [\"landpad_id\"] + [c for c in cols if c != \"landpad_id\"]\n",
+							"df_dim_landpads.columns = df_dim_landpads.columns.select(new_cols)\n",
+							"\n",
+							"# Hash the ID column\n",
+							"df_dim_landpads = df_dim_landpads.withColumn(\"landpad_id\", crc32(col(\"landpad_id\")))"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"editable": false,
+							"run_control": {
+								"frozen": true
+							},
+							"collapsed": false
+						},
+						"source": [
+							"# Write to SQL table\n",
+							"df_dim_landpads.write.mode(\"overwrite\").saveAsTable(\"dim_landpads\")\n",
+							"display(df_dim_landpads)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"editable": true,
+							"run_control": {
+								"frozen": false
+							}
+						},
+						"source": [
+							"# pandas\n",
+							"rocket_url = \"https://api.spacexdata.com/v4/rockets\"\n",
+							"headers = {\n",
+							"    \"Content-Type\": \"application/json\"}\n",
+							"\n",
+							"response = requests.get(rocket_url)\n",
+							"rocket_data = response.json()"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"editable": true,
+							"run_control": {
+								"frozen": false
+							}
+						},
+						"source": [
+							"df_rockets = pd.json_normalize(rocket_data)\n",
+							"df_dim_rockets = df_rockets[['name', 'type', 'active', 'stages', 'boosters', 'cost_per_launch', 'success_rate_pct', 'first_flight', 'country', 'company', 'description', 'id']]\n",
+							"df_dim_rockets = df_dim_rockets.rename(columns={'id': 'rocket_id', 'type': 'rocket_type'})"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"editable": true,
+							"run_control": {
+								"frozen": false
+							}
+						},
+						"source": [
+							"# Reorder columns\n",
+							"cols = df_dim_rockets.columns\n",
+							"new_cols = [\"rocket_id\"] + [c for c in cols if c != \"rocket_id\"]\n",
+							"df_dim_rockets = df_dim_rockets[new_cols]"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"editable": true,
+							"run_control": {
+								"frozen": false
+							},
+							"collapsed": false
+						},
+						"source": [
+							"spark_dim_rockets = spark.createDataFrame(df_dim_rockets)\n",
+							"spark_dim_rockets = spark_dim_rockets.withColumn('rocket_id', crc32('rocket_id'))\n",
+							"spark_dim_rockets.write.saveAsTable(\"dim_rockets\")\n",
+							"display(spark_dim_rockets)"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SpaceX')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "spacexlarge",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "22d78c94-32e2-4cf5-9cd7-bcd228961457"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexlarge",
+						"name": "spacexlarge",
+						"type": "Spark",
+						"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexlarge",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.5",
+						"nodeCount": 10,
+						"cores": 16,
+						"memory": 112,
+						"automaticScaleJobs": true
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"import requests, json\n",
+							"from pyspark.sql import SparkSession\n",
+							"from pyspark.sql.functions import hash, col, crc32, explode, explode_outer\n",
+							"import pandas as pd\n",
+							"\n",
+							"spark = SparkSession.builder.appName(\"launches_data\").getOrCreate()\n",
+							"\n",
+							"launches_url = \"https://api.spacexdata.com/v4/launches\"\n",
+							"\n",
+							"headers = {\n",
+							"    \"Content-Type\": \"application/json\"}\n",
+							"\n",
+							"response = requests.get(launches_url).json()\n",
+							"\n",
+							"json_rdd = sc.parallelize([json.dumps(record) for record in response])\n",
+							"\n",
+							"df_raw = spark.read.json(json_rdd)\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 50
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_fail = df_raw.withColumn(\n",
+							"    \"failure_reason\",  col(\"failures\").getItem(0).reason\n",
+							").withColumn(\n",
+							"    \"failure_time\",    col(\"failures\").getItem(0).time\n",
+							").withColumn(\n",
+							"    \"failure_altitude\",col(\"failures\").getItem(0).altitude\n",
+							")\n",
+							"df1 = df_fail.withColumn(\"core\", explode(\"cores\"))\n",
+							"df2 = df1.withColumn(\"payload_id\", explode(\"payloads\"))\n",
+							"df_spark_launches = df2.select(\n",
+							"    \"id\",\n",
+							"    \"flight_number\",\n",
+							"    \"name\",\n",
+							"    \"date_utc\",\n",
+							"    \"rocket\",\n",
+							"    \"success\",\n",
+							"    \"details\",\n",
+							"    \"launchpad\",\n",
+							"    col(\"fairings.reused\").alias(\"fairings_reused\"),\n",
+							"    col(\"fairings.recovered\").alias(\"fairings_recovered\"),\n",
+							"    col(\"fairings.ships\").alias(\"fairings_ships\"),\n",
+							"    \"payload_id\",\n",
+							"    col(\"core.core\").alias(\"core_id\"),\n",
+							"    col(\"core.flight\").alias(\"core_flight\"),\n",
+							"    col(\"core.gridfins\").alias(\"core_gridfins\"),\n",
+							"    col(\"core.legs\").alias(\"core_legs\"),\n",
+							"    col(\"core.reused\").alias(\"core_reused\"),\n",
+							"    col(\"core.landing_attempt\").alias(\"core_landing_attempt\"),\n",
+							"    col(\"core.landing_success\").alias(\"core_landing_success\"),\n",
+							"    col(\"core.landing_type\").alias(\"core_landing_type\"),\n",
+							"    col(\"core.landpad\").alias(\"core_landpad\"),\n",
+							"    \"failure_reason\",\n",
+							"    \"failure_time\",\n",
+							"    \"failure_altitude\"\n",
+							")\n",
+							"\n",
+							"for c in df_spark_launches.columns:\n",
+							"    new_c = c.replace(\".\", \"_\").replace(\" \", \"_\").replace(\"-\", \"_\")\n",
+							"    df_spark_launches = df_spark_launches.withColumnRenamed(c, new_c)\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 51
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_spark_launches = df_spark_launches.withColumn(\"fairings_ships_id\", explode_outer(\"fairings_ships\"))"
+						],
+						"outputs": [],
+						"execution_count": 52
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_spark_launches = df_spark_launches.drop(\"fairings_ships\")"
+						],
+						"outputs": [],
+						"execution_count": 53
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"display(df_spark_launches)"
+						],
+						"outputs": [],
+						"execution_count": 54
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"rename_map = {\n",
+							"    'core': 'core_id', \n",
+							"    'flight': 'core_flight', \n",
+							"    'gridfins': 'core_grid_fins', \n",
+							"    'legs': 'core_legs', \n",
+							"    'reused': 'core_reused', \n",
+							"    'landing_attempt': 'core_landing_attempt', \n",
+							"    'landing_success': 'core_landing_success', \n",
+							"    'landing_type':'core_landing_type', \n",
+							"    'landpad':'core_landpad',\n",
+							"    'id': 'launch_id',\n",
+							"    'name': 'launch_name',\n",
+							"    'date_utc': 'launch_date_utc',\n",
+							"    'rocket': 'rocket_id',\n",
+							"    'success': 'launch_success',\n",
+							"    'details': 'launch_details',\n",
+							"    'launchpad': 'launchpad_id'\n",
+							"}\n",
+							"\n",
+							"def rename_columns(df, mapping):\n",
+							"    for old, new in mapping.items():\n",
+							"        if old in df.columns:\n",
+							"            df = df.withColumnRenamed(old, new)\n",
+							"    return df\n",
+							"\n",
+							"df_spark_launches = rename_columns(df_spark_launches, rename_map)"
+						],
+						"outputs": [],
+						"execution_count": 55
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"display(df_spark_launches)"
+						],
+						"outputs": [],
+						"execution_count": 56
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"fact_launches = df_spark_launches.withColumns(\n",
+							"    {\n",
+							"        'core_id': crc32('core_id'), \n",
+							"        'launch_id': crc32('launch_id'), \n",
+							"        'core_landpad_id': crc32('core_landpad'), \n",
+							"        'rocket_id': crc32('rocket_id'), \n",
+							"        'launchpad_id': crc32('launchpad_id'), \n",
+							"        'payload_id': crc32('payload_id'),\n",
+							"        'fairings_ships_id': crc32('fairings_ships_id')\n",
+							"    }\n",
+							")\n",
+							"fact_launches = fact_launches.drop(\"core_landpad\")\n",
+							"display(fact_launches)"
+						],
+						"outputs": [],
+						"execution_count": 57
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"cores_url = \"https://api.spacexdata.com/v4/cores\"\n",
+							"\n",
+							"headers = {\n",
+							"    \"Content-Type\": \"application/json\"}\n",
+							"\n",
+							"response = requests.get(cores_url).json()\n",
+							"\n",
+							"json_rdd = sc.parallelize([json.dumps(record) for record in response])\n",
+							"\n",
+							"df_cores_raw = spark.read.json(json_rdd)"
+						],
+						"outputs": [],
+						"execution_count": 58
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_cores_raw = df_cores_raw.drop('launches', 'serial')\n",
+							"df_cores_raw = (df_cores_raw\n",
+							"    .withColumnRenamed(\"id\", \"core_id\")\n",
+							"    .withColumnRenamed(\"status\", \"core_status\")\n",
+							"    .withColumnRenamed(\"serial\", \"core_serial\")\n",
+							"    .withColumnRenamed(\"block\", \"core_block\")\n",
+							")\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 59
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"dim_cores = df_cores_raw.withColumn(\"core_id\", crc32(\"core_id\"))\n",
+							"display(dim_cores)"
+						],
+						"outputs": [],
+						"execution_count": 60
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_cores.groupBy(\"core_id\") \\\n",
+							"  .count() \\\n",
+							"  .show()"
+						],
+						"outputs": [],
+						"execution_count": 61
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_cores.write.mode(\"overwrite\").saveAsTable(\"default.dim_cores\")\n",
+							"fact_launches.write.mode(\"overwrite\").saveAsTable(\"default.fact_launches\")"
+						],
+						"outputs": [],
+						"execution_count": 62
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"launchpad_url = \"https://api.spacexdata.com/v4/launchpads\"\n",
+							"\n",
+							"response = requests.get(launchpad_url)\n",
+							"\n",
+							"launchpad_data = response.json()\n",
+							"\n",
+							"rdd = spark.sparkContext.parallelize(launchpad_data)\n",
+							"\n",
+							"df_dim_launchpads = spark.read.json(rdd)"
+						],
+						"outputs": [],
+						"execution_count": 63
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_dim_launchpads = (\n",
+							"    df_dim_launchpads\n",
+							"    .drop(\"images\", \"launches\", \"timezone\", \"rockets\")\n",
+							"    .withColumnRenamed(\"id\", \"launchpad_id\")\n",
+							"    .withColumnRenamed(\"name\", \"launchpad_name\")\n",
+							"    .withColumnRenamed(\"status\", \"launchpad_status\")\n",
+							")"
+						],
+						"outputs": [],
+						"execution_count": 64
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"dim_launchpads = df_dim_launchpads.withColumn(\"launchpad_id\", crc32(col(\"launchpad_id\")))\n",
+							"display(dim_launchpads)"
+						],
+						"outputs": [],
+						"execution_count": 65
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_launchpads.write.mode(\"overwrite\").saveAsTable(\"dim_launchpads\")"
+						],
+						"outputs": [],
+						"execution_count": 66
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"landpad_url = \"https://api.spacexdata.com/v4/landpads\"\n",
+							"response = requests.get(landpad_url)\n",
+							"landpad_data = response.json()\n",
+							"\n",
+							"rdd = spark.sparkContext.parallelize(landpad_data)\n",
+							"df_dim_landpads = spark.read.json(rdd)"
+						],
+						"outputs": [],
+						"execution_count": 67
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_dim_landpads = (\n",
+							"    df_dim_landpads\n",
+							"    .drop(\"launches\", \"wikipedia\", \"images\")  \n",
+							"    .withColumnRenamed(\"id\", \"landpad_id\")\n",
+							"    .withColumnRenamed(\"name\", \"landpad_name\")\n",
+							"    .withColumnRenamed(\"type\", \"landpad_type\")\n",
+							")"
+						],
+						"outputs": [],
+						"execution_count": 68
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_landpads = df_dim_landpads.withColumn(\"landpad_id\", crc32(col(\"landpad_id\")))"
+						],
+						"outputs": [],
+						"execution_count": 69
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"display(dim_landpads)"
+						],
+						"outputs": [],
+						"execution_count": 70
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_landpads.write.mode(\"overwrite\").saveAsTable(\"dim_landpads\")"
+						],
+						"outputs": [],
+						"execution_count": 71
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"rocket_url = \"https://api.spacexdata.com/v4/rockets\"\n",
+							"\n",
+							"response = requests.get(rocket_url).json()\n",
+							"#rocket_data = response.json()\n",
+							"\n",
+							"#rdd = spark.sparkContext.parallelize(rocket_data)\n",
+							"\n",
+							"json_rdd = sc.parallelize([json.dumps(record) for record in response])\n",
+							"df_dim_rockets = spark.read.json(json_rdd)"
+						],
+						"outputs": [],
+						"execution_count": 72
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"display(df_dim_rockets)"
+						],
+						"outputs": [],
+						"execution_count": 73
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"dim_rockets = df_dim_rockets.select(\n",
+							"    col(\"id\").alias(\"rocket_id\"),\n",
+							"    col(\"name\"),\n",
+							"    col(\"type\"),\n",
+							"    col(\"active\"),\n",
+							"    col(\"stages\"),\n",
+							"    col(\"boosters\"),\n",
+							"    col(\"cost_per_launch\"),\n",
+							"    col(\"success_rate_pct\"),\n",
+							"    col(\"first_flight\"),\n",
+							"    col(\"country\"),\n",
+							"    col(\"company\"),\n",
+							"    col(\"description\")\n",
+							")"
+						],
+						"outputs": [],
+						"execution_count": 74
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_rockets = dim_rockets.withColumn(\"rocket_id\", crc32(\"rocket_id\"))"
+						],
+						"outputs": [],
+						"execution_count": 75
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"display(dim_rockets)"
+						],
+						"outputs": [],
+						"execution_count": 76
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_rockets.write.mode(\"overwrite\").saveAsTable(\"dim_rockets\")"
+						],
+						"outputs": [],
+						"execution_count": 77
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"payload_url = \"https://api.spacexdata.com/v4/payloads\"\n",
+							"headers = {\n",
+							"    \"Content-Type\": \"application/json\"}\n",
+							"\n",
+							"response = requests.get(payload_url)\n",
+							"payload_data = response.json()"
+						],
+						"outputs": [],
+						"execution_count": 78
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_payloads = pd.json_normalize(\n",
+							"    payload_data,\n",
+							"    meta=[\n",
+							"        'id',\n",
+							"        'name',\n",
+							"        'type',\n",
+							"        'reused',\n",
+							"        ['dragon', 'capsule'],\n",
+							"        ['dragon', 'mass_returned_kg'],\n",
+							"        ['dragon', 'flight_time_sec'],\n",
+							"        ['dragon', 'water_landing'],\n",
+							"        ['dragon', 'land_landing'],\n",
+							"        'mass_kg',\n",
+							"        'orbit',\n",
+							"        'reference_system',\n",
+							"        'regtime',\n",
+							"        'longitude',\n",
+							"        'semi_major_axis_km',\n",
+							"        'eccentricity',\n",
+							"        'periapsis_km',\n",
+							"        'apoapsis_km',\n",
+							"        'inclination_deg',\n",
+							"        'period_min',\n",
+							"        'lifespan_years',\n",
+							"        'epoch',\n",
+							"        'mean_motion',\n",
+							"        'raan',\n",
+							"        'arg_of_pericenter',\n",
+							"        'mean_anomaly',\n",
+							"        'id'\n",
+							"    ],\n",
+							"    sep='_',\n",
+							"    errors='ignore'\n",
+							")\n",
+							"\n",
+							"df_dim_payloads = df_payloads.explode('customers').reset_index(drop=True).explode('manufacturers').reset_index(drop=True).explode('nationalities').reset_index(drop=True).explode('norad_ids').reset_index(drop=True)\n",
+							"df_dim_payloads.drop('dragon_manifest', axis=1, inplace=True)\n",
+							"df_dim_payloads.head(20)\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 79
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_dim_payloads = df_dim_payloads.drop(columns=\"dragon_mass_returned_lbs\")\n",
+							"df_dim_payloads = df_dim_payloads.drop(columns=\"mass_lbs\")\n",
+							"df_dim_payloads = df_dim_payloads.drop(columns=\"norad_ids\")\n",
+							"df_dim_payloads = df_dim_payloads.drop(columns=[\"semi_major_axis_km\",\"eccentricity\", \"epoch\", \"arg_of_pericenter\", \"inclination_deg\",\"raan\",\"mean_anomaly\",\"period_min\", \"mean_motion\"])"
+						],
+						"outputs": [],
+						"execution_count": 80
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_dim_payloads = df_dim_payloads.rename(columns={\"launch\": \"launch_id\"})"
+						],
+						"outputs": [],
+						"execution_count": 81
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"#reorder columns\n",
+							"df_dim_payloads = df_dim_payloads[\n",
+							"    [\n",
+							"        \"id\", \"name\", \"type\", \"launch_id\", \"reused\", \"customers\",\n",
+							"        \"nationalities\", \"manufacturers\", \"mass_kg\", \"orbit\",\n",
+							"        \"reference_system\", \"regime\", \"periapsis_km\", \"lifespan_years\", \"dragon_capsule\", \n",
+							"        \"dragon_mass_returned_kg\", \"dragon_flight_time_sec\", \"dragon_water_landing\",\n",
+							"        \"dragon_land_landing\"\n",
+							"    ]\n",
+							"]\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 82
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_spark_payloads =  spark.createDataFrame(df_dim_payloads)"
+						],
+						"outputs": [],
+						"execution_count": 83
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_spark_payloads = df_spark_payloads.withColumn('id', crc32('id'))\n",
+							"df_spark_payloads = df_spark_payloads.withColumn('launch_id', crc32('launch_id'))"
+						],
+						"outputs": [],
+						"execution_count": 84
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df2 = df_spark_payloads.select(\"manufacturers\")\n",
+							"df2 = df2.withColumnRenamed(\"manufacturers\", \"manufacturer\")\n",
+							"df2 = df2.withColumn(\"id\", crc32(\"manufacturer\"))\n",
+							"df2 = df2.select(\"id\", \"manufacturer\")\n",
+							"df2 = df2.dropna(how=\"all\")\n",
+							"df2 = df2.distinct()"
+						],
+						"outputs": [],
+						"execution_count": 85
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df3 = df_spark_payloads.select(\"nationalities\")\n",
+							"df3 = df3.withColumnRenamed(\"nationalities\", \"nationality\")\n",
+							"df3 = df3.withColumn(\"id\", crc32(\"nationality\"))\n",
+							"df3 = df3.select(\"id\", \"nationality\")\n",
+							"df3 = df3.dropna(how=\"all\")\n",
+							"df3 = df3.distinct()\n",
+							"df3.show()"
+						],
+						"outputs": [],
+						"execution_count": 86
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df4 = df_spark_payloads.select(\"customers\")\n",
+							"df4 = df4.withColumnRenamed(\"customers\", \"customer\")\n",
+							"\n",
+							"df4 = df4.withColumn(\"id\", crc32(\"customer\"))\n",
+							"df4 = df4.select(\"id\", \"customer\")\n",
+							"df4 = df4.dropna(how=\"all\")\n",
+							"df4 = df4.distinct()\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 87
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df2.write.mode(\"overwrite\").saveAsTable(\"dim_manufacturers\")\n",
+							"df3.write.mode(\"overwrite\").saveAsTable(\"dim_nationalities\")\n",
+							"df4.write.mode(\"overwrite\").saveAsTable(\"dim_customers\")"
+						],
+						"outputs": [],
+						"execution_count": 88
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"display(df_spark_payloads)"
+						],
+						"outputs": [],
+						"execution_count": 89
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"df5 = df_spark_payloads.select(\n",
+							"    col(\"id\").alias(\"payloads_id\"),\n",
+							"    crc32(col(\"manufacturers\")).alias(\"manufacturer_id\")\n",
+							")\n",
+							"df5 = df5.distinct()\n",
+							"display(df5)"
+						],
+						"outputs": [],
+						"execution_count": 90
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"df6 = df_spark_payloads.select(\n",
+							"    col(\"id\").alias(\"payloads_id\"),\n",
+							"    crc32(col(\"customers\")).alias(\"customer_id\")\n",
+							")\n",
+							"df6 = df6.distinct()\n",
+							"display(df6)"
+						],
+						"outputs": [],
+						"execution_count": 91
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"df7 = df_spark_payloads.select(\n",
+							"    col(\"id\").alias(\"payloads_id\"),\n",
+							"    crc32(col(\"nationalities\")).alias(\"nationality_id\")\n",
+							")\n",
+							"df7 = df7.distinct()\n",
+							"display(df7)"
+						],
+						"outputs": [],
+						"execution_count": 92
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df5.write.mode(\"overwrite\").saveAsTable(\"payloads_manufacturers\")\n",
+							"df6.write.mode(\"overwrite\").saveAsTable(\"payloads_customers\")\n",
+							"df7.write.mode(\"overwrite\").saveAsTable(\"payloads_nationalities\")"
+						],
+						"outputs": [],
+						"execution_count": 93
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"dim_payloads = df_spark_payloads.drop(\"manufacturers\", \"nationalities\", \"customers\", \"launch_id\", \"periapsis_km\")\n",
+							"dim_payloads = dim_payloads.distinct()\n",
+							"display(dim_payloads)"
+						],
+						"outputs": [],
+						"execution_count": 94
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_payloads.groupBy(\"id\").count().filter(\"count > 1\").show()"
+						],
+						"outputs": [],
+						"execution_count": 95
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"dim_payloads.write.mode(\"overwrite\").saveAsTable(\"dim_payloads\")"
+						],
+						"outputs": [],
+						"execution_count": 96
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"fact_launches.printSchema()"
+						],
+						"outputs": [],
+						"execution_count": 97
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"import com.microsoft.spark.sqlanalytics\n",
+							"\n",
+							"fact_launches.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.fact_launches\")\n",
+							"dim_payloads.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_payloads\")\n",
+							"dim_cores.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_cores\")\n",
+							"dim_landpads.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_landpads\")\n",
+							"dim_launchpads.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_launchpads\")\n",
+							"dim_rockets.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_rockets\")\n",
+							"df2.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_manufacturers\")\n",
+							"df3.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_nationalities\")\n",
+							"df4.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.dim_customers\")\n",
+							"df5.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.payloads_manufacturers\")\n",
+							"df6.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.payloads_customers\")\n",
+							"df7.write.mode(\"overwrite\").synapsesql(\"group2spacexDP.dbo.payloads_nationalities\")"
+						],
+						"outputs": [],
+						"execution_count": 98
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/sanna dim work')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "spacexlarge",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "301eb2c3-814d-4fa2-a984-ecdf2b79b608"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexlarge",
+						"name": "spacexlarge",
+						"type": "Spark",
+						"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexlarge",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.5",
+						"nodeCount": 10,
+						"cores": 16,
+						"memory": 112,
+						"automaticScaleJobs": true
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"from pyspark.sql.functions import col, crc32, lit\n",
+							"from pyspark.sql.functions import explode"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df = spark.table(\"default.dim_payloads\")\n",
+							"df2 = df.select(\"manufacturers\")"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"#create \n",
+							"df2 = df2.withColumnRenamed(\"manufacturers\", \"manufacturer\")\n",
+							"df2 = df2.withColumn(\"id\", crc32(\"manufacturer\"))\n",
+							"df2 = df2.select(\"id\", \"manufacturer\")\n",
+							"df2 = df2.dropna(how=\"all\")\n",
+							"df2 = df2.distinct()\n",
+							"#df2.show()\n",
+							"#df2.write.mode(\"overwrite\").saveAsTable(\"default.dim_manufacturer\")"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df3 = df3.select(\"nationalities\")\n",
+							"df3 = df3.withColumnRenamed(\"nationalities\", \"nationality\")\n",
+							"df3 = df3.withColumn(\"id\", crc32(\"nationality\"))\n",
+							"df3 = df2.select(\"id\", \"nationality\")\n",
+							"df3 = df3.dropna(how=\"all\")\n",
+							"df3 = df3.distinct()\n",
+							"df3.show()"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/sanna payloads_siivous')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "spacexlarge",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "112g",
+					"driverCores": 16,
+					"executorMemory": "112g",
+					"executorCores": 16,
+					"numExecutors": 1,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "true",
+						"spark.dynamicAllocation.minExecutors": "1",
+						"spark.dynamicAllocation.maxExecutors": "6",
+						"spark.autotune.trackingId": "4a44c3a8-0499-458e-93af-5c23a2b01a02"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexlarge",
+						"name": "spacexlarge",
+						"type": "Spark",
+						"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexlarge",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.5",
+						"nodeCount": 10,
+						"cores": 16,
+						"memory": 112,
+						"automaticScaleJobs": true
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"\n",
+							"from pyspark.sql.functions import from_json, col, crc32\n",
+							"from pyspark.sql.types import StructType, StructField, StringType, IntegerType\n",
+							"from pyspark.sql.functions import schema_of_json, lit\n",
+							"from pyspark.sql.functions import explode\n",
+							"import requests\n",
+							"import json\n",
+							"import pandas as pd"
+						],
+						"outputs": [],
+						"execution_count": 17
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"payload_url = \"https://api.spacexdata.com/v4/payloads\"\n",
+							"headers = {\n",
+							"    \"Content-Type\": \"application/json\"}\n",
+							"\n",
+							"response = requests.get(payload_url)\n",
+							"payload_data = response.json()"
+						],
+						"outputs": [],
+						"execution_count": 4
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_payloads = pd.json_normalize(\n",
+							"    payload_data,\n",
+							"    meta=[\n",
+							"        'id',\n",
+							"        'name',\n",
+							"        'type',\n",
+							"        'reused',\n",
+							"        ['dragon', 'capsule'],\n",
+							"        ['dragon', 'mass_returned_kg'],\n",
+							"        ['dragon', 'flight_time_sec'],\n",
+							"        ['dragon', 'water_landing'],\n",
+							"        ['dragon', 'land_landing'],\n",
+							"        'mass_kg',\n",
+							"        'orbit',\n",
+							"        'reference_system',\n",
+							"        'regtime',\n",
+							"        'longitude',\n",
+							"        'semi_major_axis_km',\n",
+							"        'eccentricity',\n",
+							"        'periapsis_km',\n",
+							"        'apoapsis_km',\n",
+							"        'inclination_deg',\n",
+							"        'period_min',\n",
+							"        'lifespan_years',\n",
+							"        'epoch',\n",
+							"        'mean_motion',\n",
+							"        'raan',\n",
+							"        'arg_of_pericenter',\n",
+							"        'mean_anomaly',\n",
+							"        'id'\n",
+							"    ],\n",
+							"    sep='_',\n",
+							"    errors='ignore'\n",
+							")\n",
+							"\n",
+							"df_dim_payloads = df_payloads.explode('customers').reset_index(drop=True).explode('manufacturers').reset_index(drop=True).explode('nationalities').reset_index(drop=True).explode('norad_ids').reset_index(drop=True)\n",
+							"df_dim_payloads.drop('dragon_manifest', axis=1, inplace=True)\n",
+							"df_dim_payloads.head(20)\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 5
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_dim_payloads.drop(columns=\"norad_ids\")"
+						],
+						"outputs": [],
+						"execution_count": 6
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"#dropping some unnecessary columns (non-metric system, irrelevant orbit identifier)\n",
+							"df_dim_payloads = df_dim_payloads.drop(columns=\"dragon_mass_returned_lbs\")\n",
+							"df_dim_payloads = df_dim_payloads.drop(columns=\"mass_lbs\")\n",
+							"df_dim_payloads = df_dim_payloads.drop(columns=\"norad_ids\")"
+						],
+						"outputs": [],
+						"execution_count": 7
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"#dropping orbital mechanics stats\n",
+							"df_dim_payloads = df_dim_payloads.drop(columns=[\"semi_major_axis_km\",\"eccentricity\", \"epoch\", \"arg_of_pericenter\", \"inclination_deg\",\"raan\",\"mean_anomaly\",\"period_min\", \"mean_motion\"])\n",
+							"df_dim_payloads.info() "
+						],
+						"outputs": [],
+						"execution_count": 8
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"#df_dim_payloads = df_dim_payloads.drop(columns=[\"mean_motion\"])\n",
+							"df_dim_payloads.head(10) "
+						],
+						"outputs": [],
+						"execution_count": 9
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_dim_payloads = df_dim_payloads.rename(columns={\"launch\": \"launch_id\"})"
+						],
+						"outputs": [],
+						"execution_count": 10
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_dim_payloads.info()"
+						],
+						"outputs": [],
+						"execution_count": 11
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"#reorder columns\n",
+							"df_dim_payloads = df_dim_payloads[\n",
+							"    [\n",
+							"        \"id\", \"name\", \"type\", \"launch_id\", \"reused\", \"customers\",\n",
+							"        \"nationalities\", \"manufacturers\", \"mass_kg\", \"orbit\",\n",
+							"        \"reference_system\", \"regime\", \"periapsis_km\", \"lifespan_years\", \"dragon_capsule\", \n",
+							"        \"dragon_mass_returned_kg\", \"dragon_flight_time_sec\", \"dragon_water_landing\",\n",
+							"        \"dragon_land_landing\"\n",
+							"    ]\n",
+							"]\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 12
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_dim_payloads.head()"
+						],
+						"outputs": [],
+						"execution_count": 13
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"#turn to spark df\n",
+							"df_spark =  spark.createDataFrame(df_dim_payloads)"
+						],
+						"outputs": [],
+						"execution_count": 14
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"#hash ids\n",
+							"df_spark = df_spark.withColumn('id', crc32('id'))\n",
+							"df_spark = df_spark.withColumn('launch_id', crc32('launch_id'))"
+						],
+						"outputs": [],
+						"execution_count": 18
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df_spark.write.mode(\"overwrite\").saveAsTable(\"default.dim_payloads\")"
+						],
+						"outputs": [],
+						"execution_count": 22
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df = spark.table(\"default.dim_payloads\")"
+						],
+						"outputs": [],
+						"execution_count": 23
+					},
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"df.createOrReplaceTempView(\"mytable\")"
+						],
+						"outputs": [],
+						"execution_count": 24
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/spacexlarge')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 15
+				},
+				"autoScale": {
+					"enabled": true,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 10,
+				"nodeSize": "Large",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.5",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "swedencentral"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/group2spacexDP')]",
+			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"collation": "SQL_Latin1_General_CP1_CI_AS",
+				"maxSizeBytes": 263882790666240,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "swedencentral"
+		}
+	]
+}
