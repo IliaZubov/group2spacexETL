@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "e8246cc3e59757b80b20",
+  "name": "73f2f2fdc07e048b789e",
   "position": {
-    "x": 5.1911935110081115,
-    "y": 199,
-    "z": 3000,
-    "height": 175,
-    "width": 184,
-    "tabOrder": 2000
+    "x": 3.707995365005794,
+    "y": 57.103128621089226,
+    "z": 2002,
+    "height": 245.46929316338355,
+    "width": 215.80533024333721
   },
   "visual": {
     "visualType": "slicer",
@@ -20,16 +19,15 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "dim_cores"
+                      "Entity": "dim_payloads"
                     }
                   },
-                  "Property": "core_status"
+                  "Property": "type"
                 }
               },
-              "queryRef": "dim_cores.core_status",
-              "nativeQueryRef": "Core Status",
-              "active": true,
-              "displayName": "Core Status"
+              "queryRef": "dim_payloads.type",
+              "nativeQueryRef": "type",
+              "active": true
             }
           ]
         }
@@ -52,6 +50,19 @@
       "general": [
         {
           "properties": {}
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Payload Type'"
+                }
+              }
+            }
+          }
         }
       ],
       "items": [
@@ -177,76 +188,18 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "6afa09cf4796e575e7ca",
+        "name": "3b881f36ee65093e38cd",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "dim_cores"
+                "Entity": "dim_payloads"
               }
             },
-            "Property": "core_status"
+            "Property": "type"
           }
         },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "d",
-              "Entity": "dim_cores",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "Not": {
-                  "Expression": {
-                    "In": {
-                      "Expressions": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Source": "d"
-                              }
-                            },
-                            "Property": "core_status"
-                          }
-                        }
-                      ],
-                      "Values": [
-                        [
-                          {
-                            "Literal": {
-                              "Value": "null"
-                            }
-                          }
-                        ]
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "objects": {
-          "general": [
-            {
-              "properties": {
-                "isInvertedSelectionMode": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "true"
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        }
+        "type": "Categorical"
       }
     ]
   }

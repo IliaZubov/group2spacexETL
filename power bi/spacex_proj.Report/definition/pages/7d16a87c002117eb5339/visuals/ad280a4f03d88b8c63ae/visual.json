@@ -4,10 +4,10 @@
   "position": {
     "x": 690.79365079365084,
     "y": 86.174055829228251,
-    "z": 1001,
+    "z": 1000,
     "height": 234.00109469074988,
     "width": 547.87082649151614,
-    "tabOrder": 1001
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "tableEx",
@@ -136,65 +136,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "48b2d99691b8a56638ed",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landpad_id"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "8796c9cae3b74aebdd38",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_type"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "1c7fd93f49ebb86b0085",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_attempt"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "c3809734c646e406ad31",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_launches"
-              }
-            },
-            "Property": "core_landing_success"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

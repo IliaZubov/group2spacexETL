@@ -236,6 +236,13 @@ table fact_launches
 
 		annotation SummarizationSetBy = Automatic
 
+	column core_landing_succes_binary = IF(fact_launches[core_landing_success] = TRUE(), 1, IF(fact_launches[core_landing_success] = FALSE(), 0, BLANK()))
+		formatString: 0
+		lineageTag: a2a18a95-d46d-4cb5-88c8-3a78a3c5e911
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fact_launches = m
 		mode: import
 		source =

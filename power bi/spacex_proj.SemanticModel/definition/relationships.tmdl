@@ -3,6 +3,7 @@ relationship AutoDetected_ed8101ae-4065-4ff4-9f05-46ba24affd1a
 	toColumn: dim_cores.core_id
 
 relationship AutoDetected_915407dd-246f-4939-9cd0-adb882cf1593
+	crossFilteringBehavior: bothDirections
 	fromColumn: fact_launches.launchpad_id
 	toColumn: dim_launchpads.launchpad_id
 

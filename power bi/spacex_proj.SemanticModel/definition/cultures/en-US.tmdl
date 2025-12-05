@@ -1938,6 +1938,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.727
 			          }
+			        },
+			        {
+			          "Landpad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -6009,7 +6019,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "rate": {
+			          "fee": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -6019,13 +6029,13 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "fee": {
+			          "budget per launch": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.476
+			            "Weight": 0.468
 			          }
 			        }
 			      ]
@@ -10408,42 +10418,604 @@ cultureInfo en-US
 			        }
 			      ],
 			      "SemanticType": "Time"
-			    }
-			  },
-			  "Relationships": {
-			    "dim_payload_has_payloads_customer": {
-			      "Binding": {
-			        "ConceptualEntity": "dim_payloads"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "dim_payload": {
-			          "Target": {
-			            "Entity": "dim_payload"
-			          }
-			        },
-			        "payloads_customer": {
-			          "Target": {
-			            "Entity": "payloads_customer"
-			          }
+			    },
+			    "dim_core.core_reused": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_cores",
+			          "ConceptualProperty": "core_reused"
 			        }
 			      },
-			      "Phrasings": [
+			      "State": "Generated",
+			      "Terms": [
 			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "dim_payload"
+			          "core reused": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "core_reused": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "hub reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
 			            },
-			            "Object": {
-			              "Role": "payloads_customer"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "dim_payloads_have_payloads_customers"
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "nucleus reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "mainstay reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "basis reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "crux reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "meat reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "substance reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "midpoint reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "center reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "heart reused": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
 			        }
 			      ]
 			    },
+			    "dim_landpad.landtype_type_text": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_landpads",
+			          "ConceptualProperty": "landtype_type_text"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "landtype type text": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "landtype_type_text": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "landtype category text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "landtype genre text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "landtype manner text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "landtype variety text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "landtype brand text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "landtype class text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "landtype kind text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "landtype style text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "landtype form text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "landtype grouping text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        }
+			      ]
+			    },
+			    "dim_landpad.latitude": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_landpads",
+			          "ConceptualProperty": "latitude"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "latitude": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "leeway": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "freedom": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "autonomy": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "liberty": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "opportunity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "room": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "scope": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "space": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "rope": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "location": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        }
+			      ]
+			    },
+			    "dim_landpad.longitude": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_landpads",
+			          "ConceptualProperty": "longitude"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "longitude": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "dim_payload.dragon_capsule_landing_rate": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_payloads",
+			          "ConceptualProperty": "dragon_capsule_landing_rate"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "dragon capsule landing rate": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "dragon_capsule_landing_rate": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "rate": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "landing rate": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "capsule landing rate": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "dragon capsule landing degree": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "dragon capsule landing frequency": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "dragon capsule landing percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "dragon capsule landing ratio": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "dragon capsule landing quotient": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "capsule landing degree": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "capsule landing frequency": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "capsule landing percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "capsule landing ratio": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "capsule landing quotient": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        }
+			      ]
+			    },
+			    "fact_launch.core_landing_succes_binary": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fact_launches",
+			          "ConceptualProperty": "core_landing_succes_binary"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "core landing succes binary": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "core landing succe binary": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.78
+			          }
+			        },
+			        {
+			          "core_landing_succes_binary": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "dim_core.KPI_color_rtls": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_cores",
+			          "ConceptualProperty": "KPI_Color_rtls"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "KPI color rtls": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "KPI_Color_rtls": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "dim_core.KPI_color_asds": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_cores",
+			          "ConceptualProperty": "KPI_Color_asds"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "KPI color asds": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "KPI_Color_asds": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    }
+			  },
+			  "Relationships": {
 			    "dim_payload_has_payloads_manufacturer": {
 			      "Binding": {
 			        "ConceptualEntity": "dim_payloads"
@@ -10474,6 +11046,283 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "dim_payloads_have_payloads_manufacturers"
+			        }
+			      ]
+			    },
+			    "dim_core_has_KPI_color_asds": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_cores"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_core": {
+			          "Target": {
+			            "Entity": "dim_core"
+			          }
+			        },
+			        "dim_core.KPI_color_asds": {
+			          "Target": {
+			            "Entity": "dim_core.KPI_color_asds"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_core"
+			            },
+			            "Object": {
+			              "Role": "dim_core.KPI_color_asds"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_cores_have_KPI_color_asds"
+			        }
+			      ]
+			    },
+			    "dim_core_has_KPI_color_rtls": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_cores"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_core": {
+			          "Target": {
+			            "Entity": "dim_core"
+			          }
+			        },
+			        "dim_core.KPI_color_rtls": {
+			          "Target": {
+			            "Entity": "dim_core.KPI_color_rtls"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_core"
+			            },
+			            "Object": {
+			              "Role": "dim_core.KPI_color_rtls"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_cores_have_KPI_color_rtls"
+			        }
+			      ]
+			    },
+			    "fact_launch_has_core_landing_succes_binary": {
+			      "Binding": {
+			        "ConceptualEntity": "fact_launches"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_launch": {
+			          "Target": {
+			            "Entity": "fact_launch"
+			          }
+			        },
+			        "fact_launch.core_landing_succes_binary": {
+			          "Target": {
+			            "Entity": "fact_launch.core_landing_succes_binary"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_launch"
+			            },
+			            "Object": {
+			              "Role": "fact_launch.core_landing_succes_binary"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_launches_have_core_landing_succes_binaries"
+			        }
+			      ]
+			    },
+			    "dim_payload_has_dragon_capsule_landing_rate": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_payloads"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_payload": {
+			          "Target": {
+			            "Entity": "dim_payload"
+			          }
+			        },
+			        "dim_payload.dragon_capsule_landing_rate": {
+			          "Target": {
+			            "Entity": "dim_payload.dragon_capsule_landing_rate"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_payload"
+			            },
+			            "Object": {
+			              "Role": "dim_payload.dragon_capsule_landing_rate"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_payloads_have_dragon_capsule_landing_rate"
+			        }
+			      ]
+			    },
+			    "dim_landpad_has_longitude": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_landpads"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_landpad": {
+			          "Target": {
+			            "Entity": "dim_landpad"
+			          }
+			        },
+			        "dim_landpad.longitude": {
+			          "Target": {
+			            "Entity": "dim_landpad.longitude"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_landpad"
+			            },
+			            "Object": {
+			              "Role": "dim_landpad.longitude"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_landpads_have_longitudes"
+			        }
+			      ]
+			    },
+			    "dim_landpad_has_latitude": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_landpads"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_landpad": {
+			          "Target": {
+			            "Entity": "dim_landpad"
+			          }
+			        },
+			        "dim_landpad.latitude": {
+			          "Target": {
+			            "Entity": "dim_landpad.latitude"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_landpad"
+			            },
+			            "Object": {
+			              "Role": "dim_landpad.latitude"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_landpads_have_latitudes"
+			        }
+			      ]
+			    },
+			    "dim_landpad_has_landtype_type_text": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_landpads"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_landpad": {
+			          "Target": {
+			            "Entity": "dim_landpad"
+			          }
+			        },
+			        "dim_landpad.landtype_type_text": {
+			          "Target": {
+			            "Entity": "dim_landpad.landtype_type_text"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_landpad"
+			            },
+			            "Object": {
+			              "Role": "dim_landpad.landtype_type_text"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_landpads_have_landtype_type_texts"
+			        }
+			      ]
+			    },
+			    "dim_core_has_core_reused": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_cores"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_core": {
+			          "Target": {
+			            "Entity": "dim_core"
+			          }
+			        },
+			        "dim_core.core_reused": {
+			          "Target": {
+			            "Entity": "dim_core.core_reused"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_core"
+			            },
+			            "Object": {
+			              "Role": "dim_core.core_reused"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_cores_have_core_reused"
+			        },
+			        {
+			          "DynamicAdjective": {
+			            "Subject": {
+			              "Role": "dim_core"
+			            },
+			            "Adjective": {
+			              "Role": "dim_core.core_reused"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "core_reused_describe_dim_cores"
 			        }
 			      ]
 			    },
@@ -13155,39 +14004,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "dim_landpad_has_longitude": {
-			      "Binding": {
-			        "ConceptualEntity": "dim_landpads"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "dim_landpad": {
-			          "Target": {
-			            "Entity": "dim_landpad"
-			          }
-			        },
-			        "dim_landpad.longitude": {
-			          "Target": {
-			            "Entity": "dim_landpad.longitude"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "dim_landpad"
-			            },
-			            "Object": {
-			              "Role": "dim_landpad.longitude"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "dim_landpads_have_longitudes"
-			        }
-			      ]
-			    },
 			    "dim_landpad_has_locality": {
 			      "Binding": {
 			        "ConceptualEntity": "dim_landpads"
@@ -13218,39 +14034,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "dim_landpads_have_localities"
-			        }
-			      ]
-			    },
-			    "dim_landpad_has_latitude": {
-			      "Binding": {
-			        "ConceptualEntity": "dim_landpads"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "dim_landpad": {
-			          "Target": {
-			            "Entity": "dim_landpad"
-			          }
-			        },
-			        "dim_landpad.latitude": {
-			          "Target": {
-			            "Entity": "dim_landpad.latitude"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "dim_landpad"
-			            },
-			            "Object": {
-			              "Role": "dim_landpad.latitude"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "dim_landpads_have_latitudes"
 			        }
 			      ]
 			    },
@@ -14089,6 +14872,39 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "some_dim_payloads_are_reused_dim_payloads"
+			        }
+			      ]
+			    },
+			    "dim_payload_has_payloads_customer": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_payloads"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_payload": {
+			          "Target": {
+			            "Entity": "dim_payload"
+			          }
+			        },
+			        "payloads_customer": {
+			          "Target": {
+			            "Entity": "payloads_customer"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_payload"
+			            },
+			            "Object": {
+			              "Role": "payloads_customer"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_payloads_have_payloads_customers"
 			        }
 			      ]
 			    },
