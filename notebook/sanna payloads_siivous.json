@@ -4,20 +4,20 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "spacexmedium",
+			"referenceName": "spacexlarge",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "28g",
-			"driverCores": 4,
-			"executorMemory": "28g",
-			"executorCores": 4,
-			"numExecutors": 2,
+			"driverMemory": "112g",
+			"driverCores": 16,
+			"executorMemory": "112g",
+			"executorCores": 16,
+			"numExecutors": 1,
 			"conf": {
-				"spark.dynamicAllocation.enabled": "false",
-				"spark.dynamicAllocation.minExecutors": "2",
-				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "f3e5d8ee-d1d0-4f0f-8cf2-f0d08929d101"
+				"spark.dynamicAllocation.enabled": "true",
+				"spark.dynamicAllocation.minExecutors": "1",
+				"spark.dynamicAllocation.maxExecutors": "6",
+				"spark.autotune.trackingId": "def206ee-3c55-4357-9adf-5bc9900c5983"
 			}
 		},
 		"metadata": {
@@ -31,19 +31,19 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexmedium",
-				"name": "spacexmedium",
+				"id": "/subscriptions/23b183d5-a30f-46b8-b418-ad060fb67787/resourceGroups/Group2-ETL-Proj/providers/Microsoft.Synapse/workspaces/group2spacex/bigDataPools/spacexlarge",
+				"name": "spacexlarge",
 				"type": "Spark",
-				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexmedium",
+				"endpoint": "https://group2spacex.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spacexlarge",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
 				},
 				"sparkVersion": "3.5",
 				"nodeCount": 10,
-				"cores": 4,
-				"memory": 28,
-				"automaticScaleJobs": false
+				"cores": 16,
+				"memory": 112,
+				"automaticScaleJobs": true
 			},
 			"sessionKeepAliveTimeout": 30
 		},
